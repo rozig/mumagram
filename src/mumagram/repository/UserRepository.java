@@ -4,43 +4,18 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
-import mumagram.model.Post;
 import mumagram.model.User;
 import mumagram.util.DbUtil;
 
-public class PostRepository {
+public class UserRepository {
 	private Connection connection;
 	
-	public PostRepository() {
+	public UserRepository() {
 		connection = DbUtil.getConnection();
 	}
 	
-	public Post findOneById(int id) {
-		Post post = new Post();
-		try {
-			PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT id, picture, description, user_id, created_date, updated_date FROM post WHERE id = ?"
-			);
-			preparedStatement.setInt(1, id);
-			ResultSet rs = preparedStatement.executeQuery();
-			
-			if(rs.next()) {
-				User user = getUser(rs.getInt("user_id"));
-				post.setId(rs.getInt("id"));
-				post.setPicture(rs.getString("picture"));
-				post.setDescription(rs.getString("description"));
-				post.setUser(user);
-				post.setCreatedDate(new Date());
-			}
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return post;
-	}
-	
-	private User getUser(int id) {
+	public User findOneById(int id) {
 		User user = new User();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(
