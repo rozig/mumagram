@@ -23,11 +23,12 @@ public class FeedServlet extends HttpServlet {
 
 	public void init(ServletConfig config) throws ServletException {}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		User user = userRepository.findOneById(1);
+		response.getWriter().append("Served at: ").append(request.getContextPath()).append("\n" + user.getEmail());
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		doGet(request, response);
 	}
 
