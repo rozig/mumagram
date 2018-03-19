@@ -24,10 +24,7 @@ public class FeedServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		
-		User user = userRepository.findOneById(1);
-		response.getWriter().append("Served at: ").append(request.getContextPath()).append("\n" + user.getEmail());
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
