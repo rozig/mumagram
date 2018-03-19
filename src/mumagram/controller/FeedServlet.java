@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import mumagram.model.User;
 import mumagram.repository.UserRepository;
 
-@WebServlet("/FeedServlet")
+@WebServlet("/login")
 public class FeedServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	UserRepository userRepository;
