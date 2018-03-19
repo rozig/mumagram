@@ -8,19 +8,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import mumagram.model.User;
+import mumagram.repository.UserRepository;
+
 @WebServlet("/FeedServlet")
 public class FeedServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	UserRepository userRepository;
 
     public FeedServlet() {
         super();
+        userRepository = new UserRepository();
     }
 
-	public void init(ServletConfig config) throws ServletException {
-	}
+	public void init(ServletConfig config) throws ServletException {}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.getWriter().append("Served at: ").append(request.getContextPath());
+		
+		
+		User user = userRepository.findOneById(1);
+		response.getWriter().append("Served at: ").append(request.getContextPath()).append("\n" + user.getEmail());
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
