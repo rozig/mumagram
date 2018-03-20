@@ -1,5 +1,19 @@
-.empty-wrapper article, .empty-wrapper div, .empty-wrapper footer, .empty-wrapper header, .empty-wrapper main,
-.empty-wrapper nav, .empty-wrapper section {
+html {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+*, *:before, *:after {
+  -webkit-box-sizing: inherit;
+  -moz-box-sizing: inherit;
+  box-sizing: inherit;
+}
+.empty-wrapper{
+  min-height: 100%;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  position: relative;
   -webkit-box-align: stretch;
   -webkit-align-items: stretch;
   -ms-flex-align: stretch;
@@ -23,17 +37,32 @@
   padding: 0;
   position: relative;
 }
-.empty-wrapper{
-  min-height: 100%;
-  overflow: hidden;
-  margin: 0;
-  padding: 0;
-  position: relative;
-}
 .empty-main{
   background-color: #fafafa;
 }
 .empty-container{
+  -webkit-box-align: stretch;
+  -webkit-align-items: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  border: 0 solid #000;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  margin: 0;
+  padding: 0;
+  position: relative;
   -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
   -webkit-flex-direction: row;
@@ -95,6 +124,9 @@
 .empty-field{
   margin: 0 40px 6px;
 }
+.empty-field .uk-inline{
+  display: flex;
+}
 .empty-info {
   color: #262626;
   font-size: 14px;
@@ -126,16 +158,6 @@ a:hover{
   -webkit-transition: .15s all ease-in-out;
   -o-transition: .15s all ease-in-out;
   transition: .15s all ease-in-out;
-}
-html {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-*, *:before, *:after {
-  -webkit-box-sizing: inherit;
-  -moz-box-sizing: inherit;
-  box-sizing: inherit;
 }
 .main-header-holder{
   height: 75px;
