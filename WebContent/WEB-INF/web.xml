@@ -25,6 +25,7 @@
     <servlet-name>Logout</servlet-name>
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
+
   <servlet>
     <servlet-name>Feed</servlet-name>
     <servlet-class>mumagram.controller.FeedServlet</servlet-class>
@@ -49,6 +50,15 @@
     <servlet-name>EditProfile</servlet-name>
     <url-pattern>/profile/edit</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>SearchUser</servlet-name>
+    <servlet-class>mumagram.controller.SearchUserServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>SearchUser</servlet-name>
+    <url-pattern>/search</url-pattern>
+  </servlet-mapping>
+  
   <session-config>
     <session-timeout>1</session-timeout>
   </session-config>

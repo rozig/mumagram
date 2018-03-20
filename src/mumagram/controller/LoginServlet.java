@@ -26,10 +26,6 @@ public class LoginServlet extends HttpServlet {
 		userRepository = new UserRepository();
 	}
 
-	public void init() {
-
-	}
-
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if (service.validateSession(session)) {

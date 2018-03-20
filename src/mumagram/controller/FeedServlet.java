@@ -3,7 +3,6 @@ package mumagram.controller;
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -23,9 +22,6 @@ public class FeedServlet extends HttpServlet {
 
 	public FeedServlet() {
 		super();
-	}
-
-	public void init(ServletConfig config) throws ServletException {
 		service = new Service();
 	}
 
