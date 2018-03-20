@@ -105,3 +105,9 @@ article, div, footer, header, main, nav, section {
   background-size: 470px 640px;
   background-position: center center;
 }
+
+@media (max-width: 880px){
+  .empty-little{
+    display: none;
+  }
+}
