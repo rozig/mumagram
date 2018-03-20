@@ -19,6 +19,11 @@
       <div class="uk-navbar-right">
         <ul class="uk-subnav">
           <li>
+            <a href="#">
+              <span uk-icon="camera"></span>
+            </a>
+          </li>
+          <li>
             <a href="#"><span uk-icon="user"></span></a>
             <div uk-dropdown="mode: click; pos: bottom-right">
               <ul class="uk-nav uk-dropdown-nav">
