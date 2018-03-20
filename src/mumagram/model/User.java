@@ -1,5 +1,7 @@
 package mumagram.model;
 
+import java.time.LocalDate;
+
 public class User {
 	private int id;
 	private String firstname;
@@ -7,10 +9,18 @@ public class User {
 	private String email;
 	private String username;
 	private String password;
-	private String hash;
+	private String salt;
 	private String bio;
 	private String profilePicture;
-	private boolean isPrivate = false;
+	private LocalDate createdDate;
+	private LocalDate updatedDate;
+	private boolean isPrivate;
+	
+	public User() {
+		bio = null;
+		isPrivate = false;
+		createdDate = LocalDate.now();
+	}
 
 	public int getId() {
 		return id;
@@ -48,11 +58,11 @@ public class User {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	public String getHash() {
-		return hash;
+	public String getSalt() {
+		return salt;
 	}
-	public void setHash(String hash) {
-		this.hash = hash;
+	public void setSalt(String salt) {
+		this.salt = salt;
 	}
 	public String getBio() {
 		return bio;
@@ -65,6 +75,18 @@ public class User {
 	}
 	public void setProfilePicture(String profilePicture) {
 		this.profilePicture= profilePicture;
+	}
+	public LocalDate getCreatedDate() {
+		return createdDate;
+	}
+	public void setCreatedDate(LocalDate createdDate) {
+		this.createdDate = createdDate;
+	}
+	public LocalDate getUpdatedDate() {
+		return updatedDate;
+	}
+	public void setUpdatedDate(LocalDate updatedDate) {
+		this.updatedDate = updatedDate;
 	}
 	public boolean isPrivate() {
 		return isPrivate;

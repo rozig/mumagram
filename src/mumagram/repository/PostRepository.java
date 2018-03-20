@@ -44,7 +44,7 @@ public class PostRepository {
 		User user = new User();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT id, firstname, lastname, email, username, password, hash, bio, profile_picture, is_private FROM user WHERE id = ?"
+				"SELECT id, firstname, lastname, email, username, password, salt, bio, profile_picture, is_private FROM user WHERE id = ?"
 			);
 			preparedStatement.setInt(1, id);
 			ResultSet rs = preparedStatement.executeQuery();
@@ -56,7 +56,7 @@ public class PostRepository {
 				user.setEmail(rs.getString("email"));
 				user.setUsername(rs.getString("username"));
 				user.setPassword(rs.getString("password"));
-				user.setHash(rs.getString("hash"));
+				user.setSalt(rs.getString("salt"));
 				user.setBio(rs.getString("bio"));
 				user.setProfilePicture(rs.getString("profile_picture"));
 				user.setPrivate(rs.getBoolean("is_private"));
