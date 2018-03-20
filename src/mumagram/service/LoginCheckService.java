@@ -11,12 +11,17 @@ public class LoginCheckService {
 
 	public boolean validateSession(HttpServletRequest req) {
 		session = req.getSession(false);
-		String sessionuser = (String) session.getAttribute("name");
-		if (session != null && !sessionuser.isEmpty() && sessionuser != null) {
-			return true;
+		if (session != null && session.getAttribute("username") != null) {
+			String sessionuser = (String) session.getAttribute("username");
+			System.out.println("Session service: " + sessionuser);
+			if (session != null && sessionuser != null && !sessionuser.isEmpty()) {
+				return true;
+			} else {
+				return false;
+			}
+
 		} else {
 			return false;
 		}
-
 	}
 }

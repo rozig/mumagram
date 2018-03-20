@@ -12,7 +12,14 @@
 		<servlet-name>Login</servlet-name>
 		<url-pattern>/login</url-pattern>
 	</servlet-mapping>
-
+	<servlet>
+		<servlet-name>Logout</servlet-name>
+		<servlet-class>mumagram.controller.LogoutServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Logout</servlet-name>
+		<url-pattern>/logout</url-pattern>
+	</servlet-mapping>
 	<servlet>
 		<servlet-name>Feed</servlet-name>
 		<servlet-class>mumagram.controller.FeedServlet</servlet-class>
@@ -21,4 +28,7 @@
 		<servlet-name>Feed</servlet-name>
 		<url-pattern>/feed</url-pattern>
 	</servlet-mapping>
+	<session-config>
+		<session-timeout>1</session-timeout>
+	</session-config>
 </web-app>

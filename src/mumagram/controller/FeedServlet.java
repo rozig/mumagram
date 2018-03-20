@@ -22,20 +22,22 @@ public class FeedServlet extends HttpServlet {
 
 	public FeedServlet() {
 		super();
-		userRepository = new UserRepository();
+		// userRepository = new UserRepository();
 	}
 
 	public void init(ServletConfig config) throws ServletException {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		User user = userRepository.findOneById(1);
+		// User user = userRepository.findOneById(1);
 		LoginCheckService lg = new LoginCheckService();
 		if (lg.validateSession(request)) {
-			response.sendRedirect("feed.jsp");
+			System.out.println("Feed get heseg");
+			response.sendRedirect("pages/feed.jsp");
 		} else {
-			request.setAttribute("error", "Please login your username");
-			RequestDispatcher rd = request.getRequestDispatcher("login.jsp");
+			System.out.println("login");
+			request.setAttribute("error", "Please login your username and password");
+			RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
 			rd.forward(request, response);
 		}
 	}

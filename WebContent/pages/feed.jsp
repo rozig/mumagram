@@ -8,6 +8,7 @@
 <meta charset="utf-8">
 </head>
 <body>
-
+	<h1>Hello</h1>
+	<a href="/mumagram/logout?logout=true">Log out</a>
 </body>
 </html>
