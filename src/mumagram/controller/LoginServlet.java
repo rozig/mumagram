@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import mumagram.service.LoginCheckService;
+import mumagram.service.Service;
 
 /**
  * Servlet implementation class LoginServlet
@@ -19,37 +19,26 @@ import mumagram.service.LoginCheckService;
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
+	private Service service;
 
-	/**
-	 * @see HttpServlet#HttpServlet()
-	 */
 	public LoginServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		LoginCheckService lg = new LoginCheckService();
-		// if (request != null) {
-		// if (lg.validateSession(request)) {
-		// response.sendRedirect("feed.jsp");
-		// } else {
-		// request.setAttribute("error", "Please login your username");
-		// RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
-		// rd.forward(request, response);
-		// }
-		//
-		// response.sendRedirect("/pages/login.jsp");
-		// }
-		if (lg.validateSession(request)) {
-			response.sendRedirect("pages/feed.jsp");
+	public void init() {
+		service = new Service();
+	}
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		if (service.validateSession(request)) {
+			response.sendRedirect("/mumagram/feed");
 		} else {
-			response.sendRedirect("/mumagram/pages/login.jsp");
+			if (request.getParameter("error") != null) {
+				request.setAttribute("error", request.getParameter("error"));
+			}
+			RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
+			rd.forward(request, response);
 		}
 	}
 
@@ -57,8 +46,7 @@ public class LoginServlet extends HttpServlet {
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
 	 *      response)
 	 */
-	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String username = request.getParameter("username");
 		String pass = request.getParameter("password");
@@ -77,9 +65,7 @@ public class LoginServlet extends HttpServlet {
 			}
 
 		} else {
-			request.setAttribute("error", "Please login your username and password");
-			RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
-			rd.forward(request, response);
+			response.sendRedirect("/mumagram/login?error=Please login your username and password");
 		}
 
 	}

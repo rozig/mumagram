@@ -18,6 +18,8 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import com.amazonaws.auth.AWSCredentials;
@@ -142,6 +144,22 @@ public class Service {
 			Transport.send(message);
 		} catch(MessagingException mex) {
 			mex.printStackTrace();
+		}
+	}
+	// Check session if exist
+	public boolean validateSession(HttpServletRequest req) {
+		HttpSession session = req.getSession(false);
+		if (session != null && session.getAttribute("username") != null) {
+			String sessionuser = (String) session.getAttribute("username");
+			System.out.println("Session service: " + sessionuser);
+			if (session != null && sessionuser != null && !sessionuser.isEmpty()) {
+				return true;
+			} else {
+				return false;
+			}
+
+		} else {
+			return false;
 		}
 	}
 }

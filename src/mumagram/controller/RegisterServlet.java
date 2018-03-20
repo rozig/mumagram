@@ -54,11 +54,11 @@ public class RegisterServlet extends HttpServlet {
 		
 		Pattern usernamePattern = Pattern.compile("^[a-zA-Z0-9._-]{3,}$", Pattern.CASE_INSENSITIVE);
 		Pattern emailPattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-		if(!emailPattern.matcher(email).matches()) {
-			request.setAttribute("errorMessage", "Your email address is incorrect!");
-			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
-			return;
-		}
+//		if(!emailPattern.matcher(email).matches()) {
+//			request.setAttribute("errorMessage", "Your email address is incorrect!");
+//			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
+//			return;
+//		}
 		if(!usernamePattern.matcher(username).matches()) {
 			request.setAttribute("errorMessage", "Your username is incorrect!");
 			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);

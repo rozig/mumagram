@@ -13,24 +13,26 @@ import javax.servlet.http.HttpSession;
 
 import mumagram.model.User;
 import mumagram.repository.UserRepository;
-import mumagram.service.LoginCheckService;
+import mumagram.service.Service;
 
 @WebServlet("/feed")
 public class FeedServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	UserRepository userRepository;
+	private Service service;
 
 	public FeedServlet() {
 		super();
 	}
 
 	public void init(ServletConfig config) throws ServletException {
+		service = new Service();
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// User user = userRepository.findOneById(1);
-		LoginCheckService lg = new LoginCheckService();
-		if (lg.validateSession(request)) {
+
+		if (service.validateSession(request)) {
 			System.out.println("Feed get heseg");
 			User user = new User();
 			user.setEmail("asdf@asdf.com");
@@ -41,10 +43,7 @@ public class FeedServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/pages/feed.jsp");
 			rd.forward(request, response);
 		} else {
-			System.out.println("login");
 			response.sendRedirect("/mumagram/login?error=Please login your username and password");
-//			RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
-//			rd.forward(request, response);
 		}
 	}
 
