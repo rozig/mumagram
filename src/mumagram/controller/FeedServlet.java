@@ -30,15 +30,9 @@ public class FeedServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// User user = userRepository.findOneById(1);
-
-		if (service.validateSession(request)) {
-			System.out.println("Feed get heseg");
-			User user = new User();
-			user.setEmail("asdf@asdf.com");
-			user.setFirstname("sadf");
-			user.setUsername("sfd");
-			user.setProfilePicture("/assets/images/profile.jpg");
+		HttpSession session = request.getSession(false);
+		if(service.validateSession(session)) {
+			User user = (User) session.getAttribute("user");
 			request.setAttribute("user", user);
 			RequestDispatcher rd = request.getRequestDispatcher("/pages/feed.jsp");
 			rd.forward(request, response);

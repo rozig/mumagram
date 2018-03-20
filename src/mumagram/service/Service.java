@@ -18,7 +18,6 @@ import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
@@ -33,6 +32,8 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
+
+import mumagram.model.User;
 
 
 public class Service {
@@ -146,18 +147,16 @@ public class Service {
 			mex.printStackTrace();
 		}
 	}
+
 	// Check session if exist
-	public boolean validateSession(HttpServletRequest req) {
-		HttpSession session = req.getSession(false);
-		if (session != null && session.getAttribute("username") != null) {
-			String sessionuser = (String) session.getAttribute("username");
-			System.out.println("Session service: " + sessionuser);
-			if (session != null && sessionuser != null && !sessionuser.isEmpty()) {
+	public boolean validateSession(HttpSession session) {
+		if(session != null) {
+			User user = (User) session.getAttribute("user");
+			if(user != null && user.getId() > 0) {
 				return true;
 			} else {
 				return false;
 			}
-
 		} else {
 			return false;
 		}
