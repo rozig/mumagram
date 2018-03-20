@@ -26,3 +26,9 @@ hs_err_pid*
 .project
 .settings
 src/db.properties
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
