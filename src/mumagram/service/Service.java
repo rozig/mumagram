@@ -1,16 +1,24 @@
 package mumagram.service;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Properties;
 import java.util.Random;
 
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Part;
-
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
@@ -19,13 +27,16 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.util.IOUtils;
+
 
 public class Service {
 	private static final Random RANDOM = new SecureRandom();
 
-	public static String getNextSalt() {
+	public String getNextSalt() {
 		byte[] salt = new byte[16];
 	    RANDOM.nextBytes(salt);
 	    StringBuilder sb = new StringBuilder();
@@ -67,9 +78,12 @@ public class Service {
 	    return null;
 	}
 	
-	public String fileUploader(String filename, InputStream stream) throws IOException {
+	public String imageUploader(String name, Part profilePicturePart) throws IOException {
 		String resultStr = null;
 		try {
+			String[] filExt = getFileName(profilePicturePart).split("\\.");
+			String filename = name + "." + filExt[1];
+			String contentType = profilePicturePart.getContentType();
 			AWSCredentials credentials = new BasicAWSCredentials(
 			  "AKIAIJ5FTHNX4GMTKJJQ", 
 			  "cbfkvOKxULn3HBIgCFnSEbv4CUBWyzn5IJnM6N/t"
@@ -81,7 +95,16 @@ public class Service {
 			
 			List<Bucket> buckets = s3client.listBuckets();
 			
-			s3client.putObject(new PutObjectRequest(buckets.get(0).getName(), filename, stream, new ObjectMetadata()));
+			ObjectMetadata meta = new ObjectMetadata();
+			
+			byte[] bytes = IOUtils.toByteArray(profilePicturePart.getInputStream());
+			meta.setContentLength(bytes.length);
+			meta.setContentType(contentType);
+			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
+			
+			PutObjectRequest objectPutRequest = new PutObjectRequest(buckets.get(0).getName(), filename, byteArrayInputStream, meta);
+			objectPutRequest.setCannedAcl(CannedAccessControlList.PublicRead);
+			s3client.putObject(objectPutRequest);
 			
 			resultStr = String.valueOf(s3client.getUrl(
 				buckets.get(0).getName(),
@@ -92,4 +115,33 @@ public class Service {
 		}
 		return resultStr;
     }
+	
+	public void sendEmail(String recipient, String subject, String content) {
+		String username = "60593ce370128e";
+		String password = "02074b42b9b08f";
+		
+		Properties props = System.getProperties();
+		props.setProperty("mail.smtp.auth", "true");
+		props.setProperty("mail.smtp.host", "smtp.mailtrap.io");
+		props.setProperty("mail.smtp.port", "2525");
+		props.setProperty("mail.smtp.user", username);
+		props.setProperty("mail.smtp.password", password);
+		
+		Session session = Session.getInstance(props, new Authenticator() {
+			protected PasswordAuthentication getPasswordAuthentication() {
+				return new PasswordAuthentication(username, password);
+			}
+		});
+		
+		try {
+			MimeMessage message = new MimeMessage(session);
+			message.setFrom(new InternetAddress("no-reply@mumagram.com"));
+			message.addRecipient(Message.RecipientType.TO, new InternetAddress(recipient));
+			message.setSubject(subject);
+			message.setContent(content, "text/html");
+			Transport.send(message);
+		} catch(MessagingException mex) {
+			mex.printStackTrace();
+		}
+	}
 }
