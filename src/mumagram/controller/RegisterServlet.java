@@ -3,6 +3,7 @@ package mumagram.controller;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -10,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
 import mumagram.model.User;
@@ -32,7 +34,13 @@ public class RegisterServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
+		HttpSession session = request.getSession(false);
+		if(service.validateSession(session)) {
+			response.sendRedirect("/mumagram/feed");
+		} else {
+			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
+			return;
+		}
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -47,40 +55,40 @@ public class RegisterServlet extends HttpServlet {
 		if(firstname == null || firstname.isEmpty() || lastname == null || lastname.isEmpty() ||
 			username == null || username.isEmpty() || email == null || email.isEmpty() ||
 			password == null || password.isEmpty() || passwordRepeat == null || passwordRepeat.isEmpty()) {
-			request.setAttribute("errorMessage", "You must fill all fields!");
+			request.setAttribute("error", "You must fill all fields!");
 			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
 			return;
 		}
 		
-		Pattern usernamePattern = Pattern.compile("^[a-zA-Z0-9._-]{3,}$", Pattern.CASE_INSENSITIVE);
+		Pattern usernamePattern = Pattern.compile("^[a-zA-Z0-9_-]{3,}$", Pattern.CASE_INSENSITIVE);
 		Pattern emailPattern = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 //		if(!emailPattern.matcher(email).matches()) {
-//			request.setAttribute("errorMessage", "Your email address is incorrect!");
+//			request.setAttribute("error", "Your email address is incorrect!");
 //			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
 //			return;
 //		}
 		if(!usernamePattern.matcher(username).matches()) {
-			request.setAttribute("errorMessage", "Your username is incorrect!");
+			request.setAttribute("error", "Your username is incorrect!");
 			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
 			return;
 		}
 		
 		if(!password.equals(passwordRepeat)) {
-			request.setAttribute("errorMessage", "Passwords doesn't match!");
+			request.setAttribute("error", "Passwords doesn't match!");
 			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
 			return;
 		}
 		
 		User existingUserByEmail = userRepository.findOneByEmail(email);
 		if(existingUserByEmail != null) {
-			request.setAttribute("errorMessage", "Email is in use!");
+			request.setAttribute("error", "Email is in use!");
 			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
 			return;
 		}
 
 		User existingUserByUsername = userRepository.findOneByUsername(username);
 		if(existingUserByUsername != null) {
-			request.setAttribute("errorMessage", "Username is in use!");
+			request.setAttribute("error", "Username is in use!");
 			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
 			return;
 		}

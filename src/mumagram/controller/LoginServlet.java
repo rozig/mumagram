@@ -15,9 +15,6 @@ import mumagram.model.User;
 import mumagram.repository.UserRepository;
 import mumagram.service.Service;
 
-/**
- * Servlet implementation class LoginServlet
- */
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -47,12 +44,7 @@ public class LoginServlet extends HttpServlet {
 		}
 	}
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
-	 *      response)
-	 */
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		String username = request.getParameter("username");
 		String pass = request.getParameter("password");
 
@@ -60,7 +52,6 @@ public class LoginServlet extends HttpServlet {
 			User existingUserByUsername = userRepository.findOneByUsername(username);
 			String existingpass = existingUserByUsername.getPassword();
 			String existingsalt = existingUserByUsername.getSalt();
-			//System.out.println("pass check:"+service.checkPassword(existingpass, existingsalt, pass));
 			if (service.checkPassword(existingpass, existingsalt, pass)) {// validating password and username
 				HttpSession session = request.getSession();
 				session.setAttribute("user", existingUserByUsername);
@@ -73,7 +64,5 @@ public class LoginServlet extends HttpServlet {
 		} else {
 			response.sendRedirect("/mumagram/login?error=Please login your username and password");
 		}
-
 	}
-
 }

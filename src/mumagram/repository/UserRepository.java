@@ -179,4 +179,29 @@ public class UserRepository {
 		}
 		return result;
 	}
+	
+	public boolean update(User user) {
+		boolean result = false;
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"UPDATE user SET firstname = ?, lastname = ?, email = ?, username = ?, password = ?, salt = ?, bio = ?, profile_picture = ?, is_private = ?, updated_date = ?)"
+				+ "WHERE id = ?"
+			);
+			preparedStatement.setString(1, user.getFirstname());
+			preparedStatement.setString(2, user.getLastname());
+			preparedStatement.setString(3, user.getEmail());
+			preparedStatement.setString(4, user.getUsername());
+			preparedStatement.setString(5, user.getPassword());
+			preparedStatement.setString(6, user.getSalt());
+			preparedStatement.setString(7, user.getBio());
+			preparedStatement.setString(8, user.getProfilePicture());
+			preparedStatement.setBoolean(9, user.isPrivate());
+			preparedStatement.setDate(10, Date.valueOf(user.getUpdatedDate()));
+			preparedStatement.setInt(11, user.getId());
+			result = preparedStatement.execute();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
+	}
 }
