@@ -2,6 +2,8 @@ package mumagram.model;
 
 import java.time.LocalDate;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 public class User {
 	private int id;
 	private String firstname;
@@ -76,12 +78,16 @@ public class User {
 	public void setProfilePicture(String profilePicture) {
 		this.profilePicture= profilePicture;
 	}
+	
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
 	public LocalDate getCreatedDate() {
 		return createdDate;
 	}
 	public void setCreatedDate(LocalDate createdDate) {
 		this.createdDate = createdDate;
 	}
+	
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
 	public LocalDate getUpdatedDate() {
 		return updatedDate;
 	}

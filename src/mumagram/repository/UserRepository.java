@@ -5,6 +5,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import mumagram.model.User;
 import mumagram.util.DbUtil;
@@ -203,5 +205,37 @@ public class UserRepository {
 			e.printStackTrace();
 		}
 		return result;
+	}
+
+	public List<User> search(String query) {
+		List<User> users = new ArrayList<User>();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"SELECT id, firstname, lastname, email, username, profile_picture FROM user WHERE username LIKE ? OR firstname LIKE ? OR lastname LIKE ?"
+			);
+			preparedStatement.setString(1, "%" + query + "%");
+			preparedStatement.setString(2, "%" + query + "%");
+			preparedStatement.setString(3, "%" + query + "%");
+			ResultSet rs = preparedStatement.executeQuery();
+			
+			while(rs.next()) {
+				User user = new User();
+				user.setId(rs.getInt("id"));
+				user.setFirstname(rs.getString("firstname"));
+				user.setLastname(rs.getString("lastname"));
+				user.setEmail(rs.getString("email"));
+				user.setUsername(rs.getString("username"));
+				user.setPassword(null);
+				user.setSalt(null);
+				user.setBio(null);
+				user.setProfilePicture(rs.getString("profile_picture"));
+				user.setPrivate(false);
+				
+				users.add(user);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return users;
 	}
 }
