@@ -102,7 +102,7 @@ public class RegisterServlet extends HttpServlet {
 		
 		service.sendEmail(email, "Welcome to mumagram", "Registration successful");
 		
-		response.sendRedirect("/");
+		response.sendRedirect("/mumagram/feed");
 	}
 
 }

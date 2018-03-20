@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import mumagram.model.User;
+import mumagram.repository.UserRepository;
 import mumagram.service.Service;
 
 /**
@@ -20,13 +22,16 @@ import mumagram.service.Service;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Service service;
+	private UserRepository userRepository;
 
 	public LoginServlet() {
 		super();
+		service = new Service();
+		userRepository = new UserRepository();
 	}
 
 	public void init() {
-		service = new Service();
+
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -52,18 +57,19 @@ public class LoginServlet extends HttpServlet {
 		String pass = request.getParameter("password");
 
 		if (username != null && !username.isEmpty() && pass != null && !pass.isEmpty()) {
-
-			System.out.println("Irsen");
-			if (pass.equals("123")) {// validating password and username
-				HttpSession session = request.getSession(false);
-				session.setAttribute("username", username);
+			User existingUserByUsername = userRepository.findOneByUsername(username);
+			String existingpass = existingUserByUsername.getPassword();
+			String existingsalt = existingUserByUsername.getSalt();
+			//System.out.println("pass check:"+service.checkPassword(existingpass, existingsalt, pass));
+			if (service.checkPassword(existingpass, existingsalt, pass)) {// validating password and username
+				HttpSession session = request.getSession();
+				session.setAttribute("user", existingUserByUsername);
 				response.sendRedirect("/mumagram/feed");
 			} else {
 				request.setAttribute("error", "Sorry, your password was incorrect. Please double-check your password.");
 				RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
 				rd.forward(request, response);
 			}
-
 		} else {
 			response.sendRedirect("/mumagram/login?error=Please login your username and password");
 		}
