@@ -11,11 +11,11 @@ import mumagram.util.DbUtil;
 
 public class UserRepository {
 	private Connection connection;
-	
+
 	public UserRepository() {
 		connection = DbUtil.getConnection();
 	}
-	
+
 	public User findOneById(int id) {
 		User user = null;
 		try {
@@ -120,7 +120,7 @@ public class UserRepository {
 				user.setProfilePicture(rs.getString("profile_picture"));
 				user.setPrivate(rs.getBoolean("is_private"));
 			}
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return user;
