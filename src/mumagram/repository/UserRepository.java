@@ -10,21 +10,20 @@ import mumagram.util.DbUtil;
 
 public class UserRepository {
 	private Connection connection;
-	
+
 	public UserRepository() {
 		connection = DbUtil.getConnection();
 	}
-	
+
 	public User findOneById(int id) {
 		User user = new User();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT id, firstname, lastname, email, username, password, hash, bio, profile_picture, is_private FROM user WHERE id = ?"
-			);
+					"SELECT id, firstname, lastname, email, username, password, hash, bio, profile_picture, is_private FROM user WHERE id = ?");
 			preparedStatement.setInt(1, id);
 			ResultSet rs = preparedStatement.executeQuery();
-			
-			if(rs.next()) {
+
+			if (rs.next()) {
 				user.setId(rs.getInt("id"));
 				user.setFirstname(rs.getString("firstname"));
 				user.setLastname(rs.getString("lastname"));
@@ -36,7 +35,7 @@ public class UserRepository {
 				user.setProfilePicture(rs.getString("profile_picture"));
 				user.setPrivate(rs.getBoolean("is_private"));
 			}
-		} catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return user;

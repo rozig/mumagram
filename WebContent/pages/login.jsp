@@ -1,6 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
+<<<<<<< Updated upstream
 <t:empty>
 	<jsp:attribute name="pagetitle">
 	<title>Mumagram - Login</title>
@@ -42,3 +43,17 @@
 		</div>
 	</jsp:body>
 </t:empty>
+=======
+<html>
+<head>
+<title>Login</title>
+</head>
+<body>
+	<form action="/mumagram/login" method="post">
+		<input type="text" name="username" required="required" /> <input
+			type="password" name="password" required="required" />
+		<button>Login</button>
+	</form>
+</body>
+</html>
+>>>>>>> Stashed changes
