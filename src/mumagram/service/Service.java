@@ -27,6 +27,7 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.Bucket;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
@@ -101,7 +102,9 @@ public class Service {
 			meta.setContentType(contentType);
 			ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(bytes);
 			
-			s3client.putObject(new PutObjectRequest(buckets.get(0).getName(), filename, byteArrayInputStream, meta));
+			PutObjectRequest objectPutRequest = new PutObjectRequest(buckets.get(0).getName(), filename, byteArrayInputStream, meta);
+			objectPutRequest.setCannedAcl(CannedAccessControlList.PublicRead);
+			s3client.putObject(objectPutRequest);
 			
 			resultStr = String.valueOf(s3client.getUrl(
 				buckets.get(0).getName(),
