@@ -9,7 +9,7 @@ CREATE TABLE mumagram.user (
     email varchar(191) NOT NULL,
     username varchar(191) NOT NULL,
     password varchar(191) NOT NULL,
-    hash varchar(191) NOT NULL,
+    salt varchar(191) NOT NULL,
     bio text NULL,
     profile_picture varchar(191) NULL,
     is_private boolean NOT NULL,
