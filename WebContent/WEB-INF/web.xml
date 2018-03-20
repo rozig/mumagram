@@ -28,6 +28,14 @@
 		<servlet-name>Feed</servlet-name>
 		<url-pattern>/</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>Register</servlet-name>
+		<servlet-class>mumagram.controller.RegisterServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Register</servlet-name>
+		<url-pattern>/register</url-pattern>
+	</servlet-mapping>
 	<session-config>
 		<session-timeout>1</session-timeout>
 	</session-config>

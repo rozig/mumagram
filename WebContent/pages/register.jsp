@@ -16,7 +16,7 @@
 						enctype="multipart/form-data">
               <div class="uk-margin empty-field">
                 <div class="uk-inline">
-                  <span class="uk-form-icon" uk-icon="icon: mail"></span>
+                  <span class="uk-form-icon" uk-icon="icon: user"></span>
                   <input class="uk-input" name="firstname"
 									placeholder="Firstname" type="text">
                 </div>
@@ -24,7 +24,7 @@
 
               <div class="uk-margin empty-field">
                 <div class="uk-inline">
-                  <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                  <span class="uk-form-icon" uk-icon="icon: user"></span>
 				<input class="uk-input" type="text" name="lastname"
 									placeholder="Lastname">
                 </div>
@@ -47,17 +47,10 @@
               </div>
               
               <div class="uk-margin empty-field">
-                <div class="uk-inline">
-                  <span class="uk-form-icon" uk-icon="icon: lock"></span>
-                  <input class="uk-input" type="text" name="email"
-									placeholder="Email address">
-                </div>
-              </div>
-              <div class="uk-margin empty-field">
               	<div class="uk-inline">
               	   <span class="uk-form-icon" uk-icon="icon: lock"></span>
               		<input class="uk-input" type="password"
-									name="password-repeat" placeholder="Password repeat" />
+									name="password" placeholder="Password" />
               	</div>
  			  </div>
  			  <div class="uk-margin empty-field">
