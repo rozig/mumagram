@@ -14,7 +14,7 @@
         </div>
         <div class="sidebar-profile-text">
           <div class="sidebar-profile-username">
-            <a href="#" class="sidebar-username">
+            <a href="#" class="sidebar-username link">
               ${user.username}
             </a>
           </div>
