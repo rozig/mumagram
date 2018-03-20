@@ -48,31 +48,33 @@ public class RegisterServlet extends HttpServlet {
 			password == null || password.isEmpty() || passwordRepeat == null || passwordRepeat.isEmpty()) {
 			request.setAttribute("errorMessage", "You must fill all fields!");
 			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
+			return;
 		}
 		
 		if(!password.equals(passwordRepeat)) {
 			request.setAttribute("errorMessage", "Passwords doesn't match!");
 			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
+			return;
 		}
 		
 		User existingUserByEmail = userRepository.findOneByEmail(email);
 		if(existingUserByEmail != null) {
 			request.setAttribute("errorMessage", "Email is in use!");
 			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
+			return;
 		}
 
 		User existingUserByUsername = userRepository.findOneByUsername(username);
 		if(existingUserByUsername != null) {
 			request.setAttribute("errorMessage", "Username is in use!");
 			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
+			return;
 		}
 		
 		String salt = service.getNextSalt();
 		String encodedPassword = service.encodePassword(password, salt);
 
-		String[] filExt = service.getFileName(profilePicturePart).split("\\.");
-		String fileName = username + "." + filExt[1];
-		String profilePicture = service.fileUploader(fileName, profilePicturePart.getInputStream());
+		String profilePicture = service.imageUploader(username, profilePicturePart);
 
 		User user = new User();
 		user.setFirstname(firstname);
@@ -83,6 +85,8 @@ public class RegisterServlet extends HttpServlet {
 		user.setSalt(salt);
 		user.setProfilePicture(profilePicture);
 		userRepository.save(user);
+		
+		service.sendEmail(email, "Welcome to mumagram", "Registration successful");
 		
 		response.sendRedirect("/");
 	}

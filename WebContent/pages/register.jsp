@@ -16,5 +16,6 @@
 		<input type="file" name="profile-picture" placeholder="Profile picture">
 		<button type="submit">Register</button>
 	</form>
+	<div>${ errorMessage }</div>
 </body>
 </html>
