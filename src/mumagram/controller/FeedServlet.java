@@ -22,7 +22,6 @@ public class FeedServlet extends HttpServlet {
 
 	public FeedServlet() {
 		super();
-		// userRepository = new UserRepository();
 	}
 
 	public void init(ServletConfig config) throws ServletException {
@@ -33,7 +32,14 @@ public class FeedServlet extends HttpServlet {
 		LoginCheckService lg = new LoginCheckService();
 		if (lg.validateSession(request)) {
 			System.out.println("Feed get heseg");
-			response.sendRedirect("pages/feed.jsp");
+			User user = new User();
+			user.setEmail("asdf@asdf.com");
+			user.setFirstname("sadf");
+			user.setUsername("sfd");
+			user.setProfilePicture("/assets/images/profile.jpg");
+			request.setAttribute("user", user);
+			RequestDispatcher rd = request.getRequestDispatcher("/pages/feed.jsp");
+			rd.forward(request, response);
 		} else {
 			System.out.println("login");
 			request.setAttribute("error", "Please login your username and password");

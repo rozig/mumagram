@@ -1,4 +1,4 @@
-<%@tag description="Generic page template" pageEncoding="UTF-8"%>
+<%@tag description="Login page template" pageEncoding="UTF-8"%>
 <%@attribute name="pagetitle" fragment="true" %>
 <!DOCTYPE html>
 <html>

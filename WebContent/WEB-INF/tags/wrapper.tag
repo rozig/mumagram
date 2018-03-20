@@ -1,28 +1,29 @@
 <%@tag description="Generic page template" pageEncoding="UTF-8"%>
-<%@attribute name="pagetitle" fragment="true"%>
-<%@attribute name="header" fragment="true"%>
-<%@attribute name="footer" fragment="true"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@attribute name="pagetitle" fragment="true" %>
 <!DOCTYPE html>
 <html>
-<head>
-<jsp:invoke fragment="pagetitle" />
 
-<%@include file="../html/head.html"%>
-</head>
+  <head>
+    <jsp:invoke fragment="pagetitle"/>
+    <%@include file="../html/head.html" %>
+  </head>
+  
+  <body>
+	<div class="main-wrapper">
+	
+    <t:header></t:header>
 
-<body>
-	<div id="pageheader">
-		<jsp:invoke fragment="header" />
-	</div>
+    <div class="main-main">
+      <div class="main-container">
 
-	<div id="body">
-		<jsp:doBody />
-	</div>
-
-	<div id="pagefooter">
-		<jsp:invoke fragment="footer" />
-	</div>
-
-	<%@include file="../html/foot.html"%>
-</body>
+        <div class="main-body">
+        	<jsp:doBody/>
+        </div>
+      </div>
+    </div>
+  </div>
+    
+	<%@include file="../html/foot.html" %>
+  </body>
 </html>
