@@ -35,8 +35,8 @@ public class LoginServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		if (service.validateSession(request)) {
+		HttpSession session = request.getSession(false);
+		if (service.validateSession(session)) {
 			response.sendRedirect("/mumagram/feed");
 		} else {
 			if (request.getParameter("error") != null) {
