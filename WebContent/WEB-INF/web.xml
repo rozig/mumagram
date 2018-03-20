@@ -32,7 +32,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>Feed</servlet-name>
-    <url-pattern>/</url-pattern>
+    <url-pattern></url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>ViewProfile</servlet-name>
