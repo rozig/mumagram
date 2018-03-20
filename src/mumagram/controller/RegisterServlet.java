@@ -35,7 +35,7 @@ public class RegisterServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if(service.validateSession(session)) {
-			response.sendRedirect("/mumagram/feed");
+			response.sendRedirect("/mumagram");
 		} else {
 			request.getRequestDispatcher("/pages/register.jsp").forward(request, response);
 			return;
@@ -109,7 +109,7 @@ public class RegisterServlet extends HttpServlet {
 		
 		service.sendEmail(email, "Welcome to mumagram", "Registration successful");
 		
-		response.sendRedirect("/mumagram/feed");
+		response.sendRedirect("/mumagram");
 	}
 
 }

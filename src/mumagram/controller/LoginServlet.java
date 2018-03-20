@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if (service.validateSession(session)) {
-			response.sendRedirect("/mumagram/feed");
+			response.sendRedirect("/mumagram");
 		} else {
 			if (request.getParameter("error") != null) {
 				request.setAttribute("error", request.getParameter("error"));
@@ -50,7 +50,7 @@ public class LoginServlet extends HttpServlet {
 			if (service.checkPassword(existingpass, existingsalt, pass)) {// validating password and username
 				HttpSession session = request.getSession();
 				session.setAttribute("user", existingUserByUsername);
-				response.sendRedirect("/mumagram/feed");
+				response.sendRedirect("/mumagram");
 			} else {
 				request.setAttribute("error", "Sorry, your password was incorrect. Please double-check your password.");
 				RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
