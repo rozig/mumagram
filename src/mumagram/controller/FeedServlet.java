@@ -42,9 +42,9 @@ public class FeedServlet extends HttpServlet {
 			rd.forward(request, response);
 		} else {
 			System.out.println("login");
-			request.setAttribute("error", "Please login your username and password");
-			RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
-			rd.forward(request, response);
+			response.sendRedirect("/mumagram/login?error=Please login your username and password");
+//			RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
+//			rd.forward(request, response);
 		}
 	}
 
