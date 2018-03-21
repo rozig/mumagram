@@ -1,15 +1,19 @@
 package mumagram.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Post {
 	private int id;
 	private String picture;
 	private String description;
 	private User user;
-	private Date createdDate;
-	private Date updatedDate = null;
+	private LocalDate createdDate;
+	private LocalDate updatedDate = null;
 
+	public Post() {
+		createdDate = LocalDate.now();
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -34,16 +38,16 @@ public class Post {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	public Date getCreatedDate() {
+	public LocalDate getCreatedDate() {
 		return createdDate;
 	}
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(LocalDate createdDate) {
 		this.createdDate = createdDate;
 	}
-	public Date getUpdatedDate() {
+	public LocalDate getUpdatedDate() {
 		return updatedDate;
 	}
-	public void setUpdatedDate(Date updatedDate) {
+	public void setUpdatedDate(LocalDate updatedDate) {
 		this.updatedDate = updatedDate;
 	}
 }
