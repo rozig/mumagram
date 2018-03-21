@@ -49,6 +49,7 @@ public class LoginServlet extends HttpServlet {
 				request.setAttribute("error", "Sorry, your username or password was incorrect. Please check your username.");
 				RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
 				rd.forward(request, response);
+				return;
 			}
 			String existingpass = existingUserByUsername.getPassword();
 			String existingsalt = existingUserByUsername.getSalt();
