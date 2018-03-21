@@ -19,7 +19,7 @@
       <div class="uk-navbar-right">
         <ul class="uk-subnav">
           <li>
-            <a href="#upload-modal" uk-toggle>
+            <a href="${baseUrl}/post">
               <span uk-icon="camera"></span>
             </a>
           </li>
@@ -39,12 +39,3 @@
     </nav>
   </div>
 </header>
-
-<!-- This is the modal -->
-<div id="upload-modal" uk-modal>
-    <div class="uk-modal-dialog uk-modal-body">
-        <button class="uk-modal-close-default" type="button" uk-close></button>
-        <h2 class="uk-modal-title">Upload</h2>
-        <div id="drag-drop-area"></div>
-    </div>
-</div>

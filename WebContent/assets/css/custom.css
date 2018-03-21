@@ -537,3 +537,171 @@ a:hover{
 .posts-profile a:hover .posts-profile-overlay{
   opacity: 1;
 }
+.post-hidden-wrapper{
+  position: relative;
+}
+/* for file upload */
+.dashboard-wrap,
+.instagram-wrap{
+  background: #fff;
+  display: -ms-flexbox;
+  display: -webkit-box;
+  display: flex;
+  -ms-flex-direction: column;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  flex-direction: column;
+  height: 550px;
+  overflow: hidden;
+  min-height: 300px;
+  margin-bottom: 100px;
+}
+.dashboard-wrap.has-advanced-upload .dashboard-files{
+  outline: 2px dashed #999;
+  outline-offset: -10px;
+
+  -webkit-transition: outline-offset .15s ease-in-out, background-color .15s linear;
+  transition: outline-offset .15s ease-in-out, background-color .15s linear;
+}
+.dashboard-wrap.is-dragover .dashboard-files{
+  outline-offset: -10px;
+  outline-color: #111;
+  background-color: #fff;
+}
+.uk-display-hidden{
+  display: none;
+}
+.dashboard-filesContainer{
+  position: relative;
+  background: #fff;
+  overflow-y: hidden;
+  margin: 0;
+  -ms-flex: 1;
+  -webkit-box-flex: 1;
+  flex: 1;
+}
+.dashboard-files {
+  margin: 0;
+  padding: 10px;
+  padding-top: 15px;
+  overflow-y: auto;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+.dashboard-filesContainer:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+.dashboard-bgIcon {
+  width: 100%;
+  max-width: 360px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  opacity: .7;
+  -webkit-transition: all .3s;
+  transition: all .3s;
+  padding: 0 20px;
+}
+.dicon {
+  max-width: 100%;
+  max-height: 100%;
+  fill: currentColor;
+  display: inline-block;
+  vertical-align: text-top;
+  overflow: hidden;
+}
+.dicon {
+  width: 100%;
+  fill: none;
+  stroke: #525252;
+  height: 110px;
+}
+.dashboard-dropFilesTitle {
+  text-align: center;
+  font-size: 16px;
+  line-height: 1.45;
+  font-weight: 400;
+  color: #525252;
+  margin: 0;
+  margin-top: 25px;
+}
+.dashboard-browse {
+  outline:none;
+  background: none;
+  -webkit-appearance: none;
+  font-family: inherit;
+  font-size: inherit;
+  line-height: 1;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  color: inherit;
+  cursor: pointer;
+  color: #2275d7;
+}
+.insta-pic-top-wrapper .uk-modal-footer{
+  background: none;
+  border: none;
+  background: #111111;
+}
+.instagram-wrap{
+  height: auto;
+  background: #292727;
+  display: none;
+}
+.instagram-wrap .uk-modal-close{
+  background: #fff;
+}
+.insta-pic-container{
+  background: #292727;
+  margin: 15px 0;
+  height: 450px;
+  overflow: hidden;
+  text-align: center;
+}
+.insta-pic-container img{
+  object-fit: contain;
+}
+.insta-pic-options{
+  height: 175px;
+}
+.insta-pic-option{
+  border: 1px dashed #6f6f6f;
+}
+.insta-pic-options-wrapper{
+  padding: 20px 20px 5px;
+  background: #111111;
+}
+.insta-pic-options-container{
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 20px;
+  grid-auto-rows: minmax(100px, auto);
+}
+.filter-aqua{
+  -webkit-filter: sepia(.5) hue-rotate(-30deg) saturate(1.4);
+  filter: sepia(.5) hue-rotate(-30deg) saturate(1.4);
+}
+.filter-charmes {
+  -webkit-filter: sepia(.25) contrast(1.25) brightness(1.25) saturate(1.35) hue-rotate(-5deg);
+  filter: sepia(.25) contrast(1.25) brightness(1.25) saturate(1.35) hue-rotate(-5deg);
+}
+.filter-lofi {
+  -webkit-filter: saturate(1.1) contrast(1.5);
+  filter: saturate(1.1) contrast(1.5);
+}
+.filter-inkwell {
+  -webkit-filter: brightness(1.25) contrast(.85) grayscale(1);
+  filter: brightness(1.25) contrast(.85) grayscale(1);
+}
+.filter-reyes {
+  -webkit-filter: sepia(.75) contrast(.75) brightness(1.25) saturate(1.4);
+  filter: sepia(.75) contrast(.75) brightness(1.25) saturate(1.4);
+}

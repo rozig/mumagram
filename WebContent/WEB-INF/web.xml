@@ -68,6 +68,14 @@
     <url-pattern>/follow</url-pattern>
   </servlet-mapping>
   <servlet>
+    <servlet-name>Post</servlet-name>
+    <servlet-class>mumagram.controller.PostServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Post</servlet-name>
+    <url-pattern>/post</url-pattern>
+  </servlet-mapping>
+  <servlet>
     <servlet-name>Feed</servlet-name>
     <servlet-class>mumagram.controller.FeedServlet</servlet-class>
   </servlet>

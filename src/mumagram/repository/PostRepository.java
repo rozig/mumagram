@@ -5,7 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.Date;
+import java.sql.Date;
 
 import mumagram.model.Post;
 import mumagram.model.User;
@@ -22,7 +22,7 @@ public class PostRepository {
 		Post post = new Post();
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT id, picture, description, user_id, created_date, updated_date FROM post WHERE id = ?"
+				"SELECT id, picture, description, filter, user_id, created_date, updated_date FROM post WHERE id = ?"
 			);
 			preparedStatement.setInt(1, id);
 			ResultSet rs = preparedStatement.executeQuery();
@@ -32,13 +32,35 @@ public class PostRepository {
 				post.setId(rs.getInt("id"));
 				post.setPicture(rs.getString("picture"));
 				post.setDescription(rs.getString("description"));
+				post.setFilter(rs.getString("filter"));
+				post.setCreatedDate(LocalDate.parse(rs.getString("created_date")));
 				post.setUser(user);
-				post.setCreatedDate(LocalDate.now());
+				
 			}
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
 		return post;
+	}
+	
+	public boolean save(Post post) {
+		boolean result = false;
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"INSERT INTO `post` (`picture`,`description`,`filter`,`user_id`,`created_date`)"
+				+ "VALUES"
+				+ "(?, ?, ?, ?, ?, ?)"
+			);
+			preparedStatement.setString(1, post.getPicture());
+			preparedStatement.setString(2, post.getDescription());
+			preparedStatement.setString(3, post.getFilter());
+			preparedStatement.setInt(4, post.getUser().getId());
+			preparedStatement.setDate(5, Date.valueOf(post.getCreatedDate()));
+			result = preparedStatement.execute();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 	
 	private User getUser(int id) {
