@@ -50,7 +50,7 @@ public class PostRepository {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"INSERT INTO `post` (`picture`,`description`,`filter`,`user_id`,`created_date`)"
 				+ "VALUES"
-				+ "(?, ?, ?, ?, ?, ?)"
+				+ "(?, ?, ?, ?, ?)"
 			);
 			preparedStatement.setString(1, post.getPicture());
 			preparedStatement.setString(2, post.getDescription());
