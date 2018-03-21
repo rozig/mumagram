@@ -53,6 +53,14 @@
     <servlet-name>SearchUser</servlet-name>
     <url-pattern>/search</url-pattern>
   </servlet-mapping>
+  <servlet>
+    <servlet-name>Follow</servlet-name>
+    <servlet-class>mumagram.controller.FollowServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>Follow</servlet-name>
+    <url-pattern>/follow</url-pattern>
+  </servlet-mapping>
   
   <servlet>
     <servlet-name>Feed</servlet-name>

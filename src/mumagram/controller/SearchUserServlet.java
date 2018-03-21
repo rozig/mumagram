@@ -38,7 +38,7 @@ public class SearchUserServlet extends HttpServlet {
 
 			JsonResponse jsonResponse = new JsonResponse();
 			jsonResponse.setCode(1000);
-			jsonResponse.setMessage("success");
+			jsonResponse.setStatus("success");
 			jsonResponse.setData(users);
 
 			ObjectMapper mapper = new ObjectMapper();
