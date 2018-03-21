@@ -59,7 +59,7 @@
 		</div>
 		
 		<div class="empty-content">
-		  <p class="empty-info">Don't you have an account? <a href="#">Sign up</a>
+		  <p class="empty-info">Don't you have an account? <a href="${baseUrl}/register">Sign up</a>
 			</p>
 		</div>
 	</jsp:body>

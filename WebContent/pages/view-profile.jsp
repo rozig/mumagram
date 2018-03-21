@@ -13,7 +13,7 @@
             <div class="profile-big-img-wrapper">
               <div class="profile-big-img-content">
                 <span class="profile-img-big uk-border-circle"><img
-						src="${user.profilePicture }" alt="" />
+						src="${profile.profilePicture }" alt="" />
                 <img src="/mumagram/assets/images/profile.jpg" alt=""
 						class="profile-big-img">
                 </span>
@@ -22,11 +22,21 @@
 
             <section class="profile-header-body">
               <div class="profile-header-top uk-flex uk-flex-middle">
-                <h1 class="profile-post-name">${user.username }</h1>
-                <a href="#" class="profile-button">
-                  <button
-							class="uk-button uk-button-default uk-button-small">Edit profile</button>
-                </a>
+                <h1 class="profile-post-name">${profile.username }</h1>
+                <c:choose>
+  				<c:when test="${not empty profile_user}">
+	                <a href="#" class="follow-button">
+	                  <button
+								class="uk-button uk-button-default uk-button-small">Follow</button>
+	                </a>
+	            </c:when>
+              		<c:otherwise>
+               		<a href="${ baseUrl }/profile/edit" class="profile-button">
+	                  <button
+								class="uk-button uk-button-default uk-button-small">Edit profile</button>
+	                </a>
+              		</c:otherwise>
+				</c:choose>
               </div>
               <div class="profile-header-middle">
                 <ul class="profile-middle-ul">
@@ -43,7 +53,7 @@
               </div>
 
               <div class="profile-header-bottom">
-                <h2 class="profile-bottom-name">${user.firstname } ${user.lastname }</h2>
+                <h2 class="profile-bottom-name">${profile.fullname}</h2>
               </div>
             </section>
             <div class="uk-clearfix"></div>

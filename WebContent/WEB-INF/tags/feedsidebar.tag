@@ -8,18 +8,18 @@
     <div class="sidebar-profile">
       <div class="sidebar-profile-wrapper">
         <div class="sidebar-profile-pic-wrapper">
-          <a href="#" class="sidebar-pic uk-border-circle">
-            <img src="/mumagram/${user.profilePicture}" alt=""/>
+          <a href="${ baseUrl }/profile" class="sidebar-pic uk-border-circle">
+            <img src="${user.profilePicture}" alt=""/>
           </a>
         </div>
         <div class="sidebar-profile-text">
           <div class="sidebar-profile-username">
-            <a href="#" class="sidebar-username link">
+            <a href="${ baseUrl }/profile" class="sidebar-username link">
               ${user.username}
             </a>
           </div>
           <div class="sidebar-profile-name">
-            ${user.firstname}
+            ${user.fullname}
           </div>
         </div>
       </div>

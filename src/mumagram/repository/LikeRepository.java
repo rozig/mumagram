@@ -6,36 +6,38 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import mumagram.model.Follower;
+import mumagram.model.Like;
+import mumagram.model.Post;
 import mumagram.model.User;
 import mumagram.util.DbUtil;
 
-public class FollowerRepository {
+public class LikeRepository {
 	private UserRepository userRepository;
+	private PostRepository postRepository;
 
-	public FollowerRepository() {
+	public LikeRepository() {
 		userRepository = new UserRepository();
+		postRepository = new PostRepository();
 	}
 
-	public Follower findOneById(int id) {
-		Follower follower = null;
+	public Like findOneById(int id) {
+		Like like = null;
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT id, user_id, follower_id, status, created_date, updated_date FROM user_followers WHERE id = ?"
+				"SELECT id, user_id, post_id, created_date, updated_date FROM like WHERE id = ?"
 			);
 			preparedStatement.setInt(1, id);
 			ResultSet rs = preparedStatement.executeQuery();
-			
+
 			if(rs.next()) {
 				User user = userRepository.findOneById(rs.getInt("user_id"));
-				User followerUser = userRepository.findOneById(rs.getInt("follower_id"));
-				follower = new Follower();
-				follower.setId(rs.getInt("id"));
-				follower.setUser(user);
-				follower.setFollower(followerUser);
-				follower.setStatus(rs.getString("status"));
-				follower.setCreatedDate(rs.getDate("created_date").toLocalDate());
-				follower.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
+				Post post = postRepository.findOneById(rs.getInt("post_id"));
+				like = new Like();
+				like.setId(rs.getInt("id"));
+				like.setUser(user);
+				like.setPost(post);
+				like.setCreatedDate(rs.getDate("created_date").toLocalDate());
+				like.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
 			}
 
 			rs.close();
@@ -43,27 +45,26 @@ public class FollowerRepository {
 		} catch(SQLException e) {
 			e.printStackTrace();
 		}
-		return follower;
+		return like;
 	}
 	
-	public Follower isFollower(User user, User follower) {
-		Follower result = null;
+	public Like isLiked(Post post, User user) {
+		Like result = null;
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT id, user_id, follower_id, status, created_date, updated_date FROM user_followers WHERE user_id = ? AND follower_id = ?"
+				"SELECT id, user_id, post_id, created_date, updated_date FROM like WHERE user_id = ? AND post_id = ?"
 			);
 			preparedStatement.setInt(1, user.getId());
-			preparedStatement.setInt(2, follower.getId());
+			preparedStatement.setInt(2, post.getId());
 			ResultSet rs = preparedStatement.executeQuery();
 			if(rs.next()) {
-				User followingUser = userRepository.findOneById(rs.getInt("user_id"));
-				User followerUser = userRepository.findOneById(rs.getInt("follower_id"));
+				User likedUser = userRepository.findOneById(rs.getInt("user_id"));
+				Post likedPost = postRepository.findOneById(rs.getInt("post_id"));
 
-				result = new Follower();
+				result = new Like();
 				result.setId(rs.getInt("id"));
-				result.setUser(followingUser);
-				result.setFollower(followerUser);
-				result.setStatus(rs.getString("status"));
+				result.setUser(likedUser);
+				result.setPost(likedPost);
 				result.setCreatedDate(rs.getDate("created_date").toLocalDate());
 				result.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
 			}
@@ -76,18 +77,17 @@ public class FollowerRepository {
 		return result;
 	}
 	
-	public boolean save(Follower follower) {
+	public boolean save(Like like) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"INSERT INTO user_followers(user_id, follower_id, status, created_date)"
+				"INSERT INTO like(user_id, post_id, created_date)"
 				+ "VALUES"
-				+ "(?, ?, ?, ?)"
+				+ "(?, ?, ?)"
 			);
-			preparedStatement.setInt(1, follower.getUser().getId());
-			preparedStatement.setInt(2, follower.getFollower().getId());
-			preparedStatement.setString(3, follower.getStatus());
-			preparedStatement.setDate(4, Date.valueOf(follower.getCreatedDate()));
+			preparedStatement.setInt(1, like.getUser().getId());
+			preparedStatement.setInt(2, like.getPost().getId());
+			preparedStatement.setDate(3, Date.valueOf(like.getCreatedDate()));
 			result = preparedStatement.execute();
 
 			preparedStatement.close();
@@ -97,18 +97,17 @@ public class FollowerRepository {
 		return result;
 	}
 	
-	public boolean update(Follower follower) {
+	public boolean update(Like like) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"UPDATE user_followers SET user_id = ?, follower_id = ?, status = ?, updated_date = ?"
+				"UPDATE like SET user_id = ?, post_id = ?, updated_date = ?"
 				+ "WHERE id = ?"
 			);
-			preparedStatement.setInt(1, follower.getUser().getId());
-			preparedStatement.setInt(2, follower.getFollower().getId());
-			preparedStatement.setString(3, follower.getStatus());
-			preparedStatement.setDate(4, Date.valueOf(follower.getUpdatedDate()));
-			preparedStatement.setInt(5, follower.getId());
+			preparedStatement.setInt(1, like.getUser().getId());
+			preparedStatement.setInt(2, like.getPost().getId());
+			preparedStatement.setDate(3, Date.valueOf(like.getUpdatedDate()));
+			preparedStatement.setInt(4, like.getId());
 			result = preparedStatement.execute();
 
 			preparedStatement.close();
@@ -118,13 +117,13 @@ public class FollowerRepository {
 		return result;
 	}
 	
-	public boolean delete(Follower follower) {
+	public boolean delete(Like like) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"DELETE FROM user_followers WHERE id = ?"
+				"DELETE FROM like WHERE id = ?"
 			);
-			preparedStatement.setInt(1, follower.getId());
+			preparedStatement.setInt(1, like.getId());
 			result = preparedStatement.execute();
 
 			preparedStatement.close();

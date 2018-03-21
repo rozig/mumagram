@@ -1,7 +1,6 @@
 package mumagram.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -53,6 +52,7 @@ public class ViewProfileServlet extends HttpServlet {
 
 			posts = postRepository.getPostsByUser(user);
 			request.setAttribute("posts", posts);
+			request.setAttribute("profile",  user);
 
 			RequestDispatcher rd = request.getRequestDispatcher("/pages/view-profile.jsp");
 			rd.forward(request, response);

@@ -39,6 +39,9 @@ public class User {
 	public String getLastname() {
 		return lastname;
 	}
+	public String getFullname() {
+		return firstname + " " + lastname;
+	}
 	public void setLastname(String lastname) {
 		this.lastname = lastname;
 	}

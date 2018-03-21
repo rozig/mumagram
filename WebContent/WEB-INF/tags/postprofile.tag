@@ -4,10 +4,9 @@
 <%@attribute name="post" required="true" type="mumagram.model.Post"%>
 
 <div class="posts-profile">
-  <a href="#">
+  <a href="${ baseUrl }/post/${ post.id }">
     <div class="posts-profile-container">
-      <div class="posts-profile-content">
-        <img src="${post.picture}" alt="">
+      <div class="posts-profile-content ${ post.filter }" style="background-image: url(${post.picture})">
       </div>
       <div class="posts-profile-overlay uk-flex uk-flex-middle">
         <ul class="posts-profile-overlay-icons">

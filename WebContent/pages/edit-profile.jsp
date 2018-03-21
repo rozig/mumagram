@@ -14,7 +14,7 @@
             <div class="edit-profile">
             <div class="empty-content">
             		<div class="uk-grid">
-            		<div class="uk-width-auto">
+            		<div class="uk-width-1-4">
 					        <ul class="uk-tab-right"
 							uk-tab="connect: #component-tab-left; animation: uk-animation-fade">
 					            <li class="uk-active"><a href="#">Edit Profile</a></li>
@@ -22,7 +22,7 @@
 					            <li><a href="#">Authorized Applications</a></li>
 					        </ul>
             		</div>
-   				 <div class="uk-width-expand">
+   				 <div class="uk-width-3-4">
 					<ul id="component-tab-left" class="uk-switcher">
 		                    <li>
 							 <div class="empty-form edit-profile-data">
