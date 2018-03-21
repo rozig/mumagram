@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.Date;
 
 import mumagram.model.Post;
@@ -32,7 +33,7 @@ public class PostRepository {
 				post.setPicture(rs.getString("picture"));
 				post.setDescription(rs.getString("description"));
 				post.setUser(user);
-				post.setCreatedDate(new Date());
+				post.setCreatedDate(LocalDate.now());
 			}
 		} catch(SQLException e) {
 			e.printStackTrace();
