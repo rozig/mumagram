@@ -2,9 +2,15 @@
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" metadata-complete="true" version="3.1">
   <display-name>mumagram</display-name>
   <welcome-file-list>
-	<welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
-	  
+  
+  <listener>
+    <listener-class>
+             mumagram.listener.MyAppServletContextListener 
+    </listener-class>
+  </listener>
+  
   <servlet>
     <servlet-name>Register</servlet-name>
     <servlet-class>mumagram.controller.RegisterServlet</servlet-class>
@@ -61,7 +67,6 @@
     <servlet-name>Follow</servlet-name>
     <url-pattern>/follow</url-pattern>
   </servlet-mapping>
-  
   <servlet>
     <servlet-name>Feed</servlet-name>
     <servlet-class>mumagram.controller.FeedServlet</servlet-class>
@@ -70,7 +75,6 @@
     <servlet-name>Feed</servlet-name>
     <url-pattern></url-pattern>
   </servlet-mapping>
-  
   <session-config>
     <session-timeout>60</session-timeout>
   </session-config>

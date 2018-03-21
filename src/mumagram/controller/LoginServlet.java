@@ -28,7 +28,6 @@ public class LoginServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		System.out.println(service.getBaseUrl(request));
 		if (service.validateSession(session)) {
 			response.sendRedirect("/mumagram");
 		} else {

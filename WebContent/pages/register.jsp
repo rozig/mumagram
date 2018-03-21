@@ -24,7 +24,7 @@
 
               <div class="uk-margin empty-field">
                 <div class="uk-inline">
-                  <span class="uk-form-icon" uk-icon="icon: user"></span>
+                  <span class="uk-form-icon" uk-icon="icon: users"></span>
 				<input class="uk-input" type="text" name="lastname"
 									placeholder="Lastname">
                 </div>
@@ -32,7 +32,7 @@
 
               <div class="uk-margin empty-field">
                 <div class="uk-inline">
-                  <span class="uk-form-icon" uk-icon="icon: user"></span>
+                  <span class="uk-form-icon" uk-icon="icon: cog"></span>
                   <input class="uk-input" type="text" name="username"
 									placeholder="Username">
                 </div>
@@ -40,7 +40,7 @@
 
               <div class="uk-margin empty-field">
                 <div class="uk-inline">
-                  <span class="uk-form-icon" uk-icon="icon: lock"></span>
+                  <span class="uk-form-icon" uk-icon="icon: mail"></span>
                   <input class="uk-input" type="text" name="email"
 									placeholder="Email address">
                 </div>
@@ -55,16 +55,21 @@
  			  </div>
  			  <div class="uk-margin empty-field">
               	<div class="uk-inline">
-              	   <span class="uk-form-icon" uk-icon="icon: lock"></span>
+              	   <span class="uk-form-icon" uk-icon="icon: unlock"></span>
               		<input class="uk-input" type="password"
-									name="password-repeat" placeholder="Password repeat" />
+									name="password-repeat" placeholder="Confirm password" />
               	</div>
  			  </div>
  			  <div class="uk-margin empty-field">
               	<div class="uk-inline">
-              	   <span class="uk-form-icon" uk-icon="icon: lock"></span>
-              		<input class="uk-input" type="file"
-									name="profile-picture" placeholder="Profile picture" />
+              	   <div class="uk-margin">
+				        <div uk-form-custom>
+				            <input type="file"
+									name="profile-picture"/>
+				            <button class="uk-button uk-button-default" type="button" tabindex="-1">Upload profile image</button>
+				        </div>
+				    </div>
+              		
               	</div>
  			  </div>
               <div class="uk-margin empty-field">
@@ -80,7 +85,7 @@
 	<div>${ errorMessage }</div>
 
       <div class="empty-content">
-        <p class="empty-info">Have an account? <a href="#">Log in</a>
+        <p class="empty-info">Have an account? <a href="${baseUrl}/login">Log in</a>
 			</p>
       </div>
 	</jsp:body>

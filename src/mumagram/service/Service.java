@@ -120,12 +120,6 @@ public class Service {
 		return resultStr;
     }
 	
-	// Using this gist https://gist.github.com/beradrian/d66008b6c5a784185c29
-	public String getBaseUrl(HttpServletRequest request) {
-		String baseUrl = request.getRequestURL().substring(0, request.getRequestURL().length() - request.getRequestURI().length()) + request.getContextPath();
-		return baseUrl;
-	}
-	
 	public void sendEmail(String recipient, String subject, String content) {
 		String username = "60593ce370128e";
 		String password = "02074b42b9b08f";
