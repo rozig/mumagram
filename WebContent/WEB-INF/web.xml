@@ -83,6 +83,30 @@
     <servlet-name>Feed</servlet-name>
     <url-pattern></url-pattern>
   </servlet-mapping>
+  <servlet>
+	<servlet-name>AddComment</servlet-name>
+	<servlet-class>mumagram.controller.AddCommentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>AddComment</servlet-name>
+	<url-pattern>/comment/add</url-pattern>
+  </servlet-mapping>
+  <servlet>
+	<servlet-name>EditComment</servlet-name>
+	<servlet-class>mumagram.controller.EditCommentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>EditComment</servlet-name>
+	<url-pattern>/comment/edit</url-pattern>
+  </servlet-mapping>
+  <servlet>
+	<servlet-name>DeleteComment</servlet-name>
+	<servlet-class>mumagram.controller.DeleteCommentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>DeleteComment</servlet-name>
+	<url-pattern>/comment/delete</url-pattern>
+  </servlet-mapping>
   <session-config>
     <session-timeout>60</session-timeout>
   </session-config>
