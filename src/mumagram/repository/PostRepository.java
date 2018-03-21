@@ -4,8 +4,6 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +77,7 @@ public class PostRepository {
 	
 	public boolean delete(Post post) {
 		boolean result = false;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"DELETE FROM post WHERE id = ?"
 			);
