@@ -12,25 +12,32 @@ import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import mumagram.model.Follower;
 import mumagram.model.JsonResponse;
+import mumagram.model.Like;
+import mumagram.model.Post;
 import mumagram.model.User;
+import mumagram.repository.LikeRepository;
+import mumagram.repository.PostRepository;
 import mumagram.service.Service;
 
 @WebServlet("/LikeServlet")
 public class LikeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Service service;
-       
+	private PostRepository postRepository;
+	private LikeRepository likeRepository;
+
     public LikeServlet() {
         super();
         service = new Service();
+        postRepository = new PostRepository();
+        likeRepository = new LikeRepository();
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JsonResponse jsonResponse = new JsonResponse();
-		jsonResponse.setCode(1000);
-		jsonResponse.setStatus("success");
+		jsonResponse.setCode(2000);
+		jsonResponse.setStatus("error");
 		jsonResponse.setData("GET Method is not allowed!");
 
 		ObjectMapper mapper = new ObjectMapper();
@@ -82,11 +89,12 @@ public class LikeServlet extends HttpServlet {
 				out.flush();
 			}
 			
-			if(followingUser.getId() == user.getId()) {
+			Post post = postRepository.findOneById(Integer.parseInt(postId));
+			if(post == null) {
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(2000);
 				jsonResponse.setStatus("error");
-				jsonResponse.setData("You can not follow yourself!");
+				jsonResponse.setData("Post with id " + postId + " doesn't exist!");
 
 				ObjectMapper mapper = new ObjectMapper();
 				String resultJson = mapper.writeValueAsString(jsonResponse);
@@ -97,25 +105,18 @@ public class LikeServlet extends HttpServlet {
 				out.write(resultJson);
 				out.flush();
 			}
-			Follower existingFollowing = followerRepository.isFollower(followingUser, user);
+
+			Like existingLike = likeRepository.isLiked(post, user);
 			String responseMessage;
-			if(existingFollowing != null && (existingFollowing.getStatus().equals("following") || existingFollowing.getStatus().equals("pending"))) {
-				followerRepository.delete(existingFollowing);
-				responseMessage = "You're unfollowed this user!";
+			if(existingLike != null) {
+				likeRepository.delete(existingLike);
+				responseMessage = "You disliked this post!";
 			} else {
-				Follower follower = new Follower();
-				follower.setUser(followingUser);
-				follower.setFollower(user);
-				if(followingUser.isPrivate()) {
-					follower.setStatus("pending");
-					responseMessage = "Your follow request is sent!";
-				} else {
-					follower.setStatus("following");
-					responseMessage = "You're now following " + followingUser.getUsername();
-				}
-				request.setAttribute("user", user);
-				request.setAttribute("userId", user.getId());
-				followerRepository.save(follower);
+				Like like = new Like();
+				like.setUser(user);
+				like.setPost(post);
+				likeRepository.save(like);
+				responseMessage = "You liked this post!";
 			}
 
 			JsonResponse jsonResponse = new JsonResponse();
