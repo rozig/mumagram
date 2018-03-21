@@ -1,8 +1,9 @@
 package mumagram.model;
 
 public class JsonResponse {
+	// 1000 - success, 2000 - error, 3000 - access
 	private int code;
-	private String message;
+	private String status;
 	private Object data;
 
 	public int getCode() {
@@ -11,11 +12,11 @@ public class JsonResponse {
 	public void setCode(int code) {
 		this.code = code;
 	}
-	public String getMessage() {
-		return message;
+	public String getStatus() {
+		return status;
 	}
-	public void setMessage(String message) {
-		this.message = message;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	public Object getData() {
 		return data;

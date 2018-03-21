@@ -179,8 +179,9 @@ public class UserRepository {
 		boolean result = false;
 		try {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-					"UPDATE user SET firstname = ?, lastname = ?, email = ?, username = ?, password = ?, salt = ?, bio = ?, profile_picture = ?, is_private = ?, updated_date = ?)"
-							+ "WHERE id = ?");
+				"UPDATE user SET firstname = ?, lastname = ?, email = ?, username = ?, password = ?, salt = ?, bio = ?, profile_picture = ?, is_private = ?, updated_date = ?"
+				+ "WHERE id = ?"
+			);
 			preparedStatement.setString(1, user.getFirstname());
 			preparedStatement.setString(2, user.getLastname());
 			preparedStatement.setString(3, user.getEmail());
