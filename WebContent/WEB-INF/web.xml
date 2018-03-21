@@ -66,6 +66,14 @@
     <servlet-name>Follow</servlet-name>
     <url-pattern>/follow</url-pattern>
   </servlet-mapping>
+  <servlet>
+	<servlet-name>AddComment</servlet-name>
+	<servlet-class>mumagram.controller.AddCommentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>AddComment</servlet-name>
+	<url-pattern>/comment/add</url-pattern>
+  </servlet-mapping>
   
   <session-config>
     <session-timeout>60</session-timeout>
