@@ -9,51 +9,321 @@
 
 	<jsp:body>
     
-	<header class="profile-header">
-            <div class="profile-big-img-wrapper">
-              <div class="profile-big-img-content">
-                <span class="profile-img-big uk-border-circle"><img
-						src="${user.profilePicture }" alt="" />
-                <img src="/mumagram/assets/images/profile.jpg" alt=""
-						class="profile-big-img">
-                </span>
-              </div>
-            </div>
 
-            <section class="profile-header-body">
-              <div class="profile-header-top uk-flex uk-flex-middle">
-                <h1 class="profile-post-name">${user.username }</h1>
-                <a href="#" class="profile-button">
-                  <button
-							class="uk-button uk-button-default uk-button-small">Edit profile</button>
-                </a>
-              </div>
-              <div class="profile-header-middle">
-                <ul class="profile-middle-ul">
-                  <li class="profile-posts">
-                    <span><strong>${countPost}</strong> posts</span>
-                  </li>
-                  <li class="profile-followers">
-                    <span><strong>${countFollower}</strong> followers</span>
-                  </li>
-                  <li class="profile-followings">
-                    <span><strong>${countFollowing}</strong> followings</span>
-                  </li>
-                </ul>
-              </div>
 
-              <div class="profile-header-bottom">
-                <h2 class="profile-bottom-name">${user.firstname } ${user.lastname }</h2>
-              </div>
-            </section>
-            <div class="uk-clearfix"></div>
-          </header>
+            <div class="edit-profile">
+            <div class="empty-content">
+            		<div class="uk-grid">
+            		<div class="uk-width-auto">
+					        <ul class="uk-tab-right"
+							uk-tab="connect: #component-tab-left; animation: uk-animation-fade">
+					            <li class="uk-active"><a href="#">Edit Profile</a></li>
+					            <li><a href="#">Change Password</a></li>
+					            <li><a href="#">Authorized Applications</a></li>
+					        </ul>
+            		</div>
+   				 <div class="uk-width-expand">
+					<ul id="component-tab-left" class="uk-switcher">
+		                    <li>
+							 <div class="empty-form edit-profile-data">
+					            <form method="post" action="/mumagram/profile/edit"
+										enctype="multipart/form-data">
+								 <div class="uk-margin empty-field">
+								 	<div uk-grid>
+								 		<div class="uk-width-1-4">
+								 			<div class="profile-small-img-wrapper">
+									              <div class="profile-small-img-content">
+									              
+									                <span
+																class="profile-img-small uk-border-circle"><img
+																src="${user.profilePicture }" alt="" />
+															
+									                </span>
 
-          <div class="posts-profile-wrapper">
-            <c:forEach var="post" items="${posts }">
-			  <t:postprofile post="${post}" />
-			</c:forEach>
-          </div>
+									               
+									            </div>
+									        </div>
+								 		</div>
+								 		<div class="uk-width-3-4">
+								 		 <h1 class="profile-post-name">${user.username }</h1>
+								 		</div>
+									  </div>
+									    
+								 </div>
+								 <div class="uk-clearfix"></div>		
+
+					              <div class="uk-margin empty-field">
+									<div uk-grid>
+										<div class="uk-width-1-4">
+												<label class="uk-form-label" for="firstname-text">Firstname</label>
+										</div>
+										<div class="uk-width-3-4">
+											<div class="uk-form-controls edit-profile-form-control">					           
+								                  <span class="uk-form-icon"
+															uk-icon="icon: user"></span>
+								                  <input class="uk-input" name="firstname"
+															value="${user.firstname }" id="firstname-text"
+															type="text">
+												<input type="hidden" name="id" value="${user.id}" />
+											</div>
+										</div>
+									</div>
+
+					              </div>
+
+					
+					              <div class="uk-margin empty-field">
+										<div uk-grid>
+            										<div class="uk-width-1-4">
+            												<label class="uk-form-label" for="lastname-text">Lastname</label>
+            										</div>
+            										<div class="uk-width-3-4">
+            												 <div
+														class="uk-form-controls edit-profile-form-control">	
+												                <span class="uk-form-icon"
+															uk-icon="icon: user"></span>
+																<input class="uk-input" name="lastname"
+															value="${user.lastname }" id="lastname-text" type="text">
+														</div>
+            										</div>
+            								</div>
+					                
+
+					              </div>
+					
+					              <div class="uk-margin empty-field">
+						              <div uk-grid>
+	            										<div class="uk-width-1-4">
+	            											<label class="uk-form-label" for="username-text">Username</label>
+	            										</div>
+	            										<div class="uk-width-3-4">
+	            											<div
+														class="uk-form-controls edit-profile-form-control">	
+	            												<span class="uk-form-icon" uk-icon="icon: user"></span>
+						                  					<input class="uk-input" type="text"
+															name="username" value="${user.username }">
+	            											</div>
+	            										</div>
+	            						  </div>
+					              </div>
+					              <div class="uk-margin empty-field">
+						              <div uk-grid>
+	            										<div class="uk-width-1-4">
+	            											<label class="uk-form-label" for="email-text">Email&ensp;&ensp;&ensp;&ensp;</label>
+	            										</div>
+	            										<div class="uk-width-3-4">
+	            											<div
+														class="uk-form-controls edit-profile-form-control">	
+	            												<span class="uk-form-icon" uk-icon="icon: mail"></span>
+						                  					<input class="uk-input" type="text"
+															name="email" value="${user.email }">
+	            											</div>
+	            										</div>
+	            						  </div>
+					              </div>
+					              <div class="uk-margin empty-field">
+						              <div uk-grid>
+	            										 <div class="uk-width-1-4">
+	            											<label class="uk-form-label" for="email-text">Private&ensp;&ensp;</label>
+	            										</div>
+	            										<div class="uk-width-3-4">
+	            											<div
+														class="uk-form-controls edit-profile-form-control">	
+						                  					<label><input class="uk-checkbox"
+															type="checkbox" id="is-private" name="is-private"
+															value="checked"
+															${user['private'] ? 'checked' : 'unchecked'}>  When your account is private, only people you approve can see your photos  on Mumagram. Your existing followers won't be affected </label>
+	            											</div>
+	            										</div>
+	            						  </div>
+					              </div>
+					              <div class="uk-margin empty-field">
+						              <div uk-grid>
+	            										 <div class="uk-width-1-4">
+	            											<label class="uk-form-label" for="email-text">Bio &ensp;&ensp;&ensp;&ensp;</label>
+	            										</div>
+	            										<div class="uk-width-3-4">
+	            											<div
+														class="uk-form-controls edit-profile-form-control">	
+	            												<textarea class="uk-textarea" rows="5"
+															name="bio">${user.bio}</textarea>
+	            											</div>
+	            										</div>
+	            						  </div>
+					              </div>
+					
+					          					              
+					              <div class="uk-margin empty-field">
+					                <div class="uk-inline">
+					                <div class="uk-width-1-4">
+					                </div>
+					               <div class="uk-width-3-4">
+					                		<button
+														class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Submit</button>
+					                </div>
+					                  
+					                </div>
+					              </div>
+					            		<c:choose>
+									    <c:when test="${errorMessage != null }">
+						
+										 <div class="uk-margin empty-field">			 				
+											<div class="uk-alert-danger" uk-alert>
+									
+									    		<p> ${errorMessage }</p>
+										</div>
+										</div>
+									    </c:when>
+									    <c:otherwise>
+									    </c:otherwise>
+									</c:choose>
+									    
+									<c:choose>
+									    <c:when test="${successMessage != null }">
+						
+										 <div class="uk-margin empty-field">			 				
+										<div class="uk-alert-success" uk-alert>
+									
+									    <p> ${successMessage }</p>
+										</div>
+										</div>
+									    </c:when>
+									    <c:otherwise>
+									    </c:otherwise>
+								    </c:choose>
+								</form>				          
+						</div>
+		              </li>
+		              <li>
+		                    <div class="empty-form edit-profile-data">
+					            <form method="post" action="/mumagram/profile/edit"
+										enctype="multipart/form-data">
+								 <div class="uk-margin empty-field">
+								 	<div uk-grid>
+								 		<div class="uk-width-1-4">
+								 			<div class="profile-small-img-wrapper">
+									              <div class="profile-small-img-content">
+									              
+									                <span
+																class="profile-img-small uk-border-circle"><img
+																src="${user.profilePicture }" alt="" />
+															
+									                </span>
+
+									               
+									            </div>
+									        </div>
+								 		</div>
+								 		<div class="uk-width-3-4">
+								 		 <h1 class="profile-post-name">${user.username }</h1>
+								 		</div>
+									  </div>
+								 </div>
+								 <div class="uk-clearfix"></div>		
+
+				
+					              <div class="uk-margin empty-field">
+						              <div uk-grid>
+	            										<div class="uk-width-1-4">
+	            											<label class="uk-form-label" for="oldpassword">Old password</label>
+	            										</div>
+	            										<div class="uk-width-3-4">
+	            											<div
+														class="uk-form-controls edit-profile-form-control">	
+	            												<span class="uk-form-icon" uk-icon="icon: lock"></span>
+						                  					<input class="uk-input" type="password"
+															id="oldpassword" name="oldpass">
+															<input type="hidden" name="id" value="${user.id}" />
+	            											</div>
+	            										</div>
+	            						  </div>
+					              </div>
+					              <div class="uk-margin empty-field">
+						              <div uk-grid>
+	            										<div class="uk-width-1-4">
+	            											<label class="uk-form-label" for="newpassword">New password</label>
+	            										</div>
+	            										<div class="uk-width-3-4">
+	            											<div
+														class="uk-form-controls edit-profile-form-control">	
+	            												<span class="uk-form-icon" uk-icon="icon: lock"></span>
+						                  					<input class="uk-input" type="password"
+															id="newpassword" name="newpassword">
+	            											</div>
+	            										</div>
+	            						  </div>
+					              </div>
+					              <div class="uk-margin empty-field">
+						              <div uk-grid>
+	            										<div class="uk-width-1-4">
+	            											<label class="uk-form-label"
+														for="confirm-newpassword">Confirm new password</label>
+	            										</div>
+	            										<div class="uk-width-3-4">
+	            											<div
+														class="uk-form-controls edit-profile-form-control">	
+	            												<span class="uk-form-icon" uk-icon="icon: lock"></span>
+						                  					<input class="uk-input" type="password"
+															id="confirm-newpassword" name="confirm-newpassword">
+	            											</div>
+	            										</div>
+	            						  </div>
+					              </div>
+
+					              
+					              <div class="uk-margin empty-field">
+					                <div class="uk-inline">
+					                <div class="uk-width-1-4">
+					                &ensp;
+					                </div>
+					                <div class="uk-width-3-4">
+					                		<button class="uk-input uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Change password</button>
+					                </div>
+					                  
+					                </div>
+					              </div>
+					            		<c:choose>
+									    <c:when test="${errorMessage != null }">
+						
+										 <div class="uk-margin empty-field">			 				
+											<div class="uk-alert-danger" uk-alert>
+									
+									    		<p> ${errorMessage }</p>
+										</div>
+										</div>
+									    </c:when>
+									    <c:otherwise>
+									    </c:otherwise>
+									</c:choose>
+									    
+									<c:choose>
+									    <c:when test="${successMessage != null }">
+						
+										 <div class="uk-margin empty-field">			 				
+										<div class="uk-alert-success" uk-alert>
+									
+									    <p> ${successMessage }</p>
+										</div>
+										</div>
+									    </c:when>
+									    <c:otherwise>
+									    </c:otherwise>
+								    </c:choose>
+								</form>				          
+						</div>
+		              </li>
+		              <li>
+		                    Duis aute irure dolor in reprehenderit in voluptate velit 
+		                    esse cillum dolore eu fugiat nulla pariatur, sed do eiusmod.
+		              </li>
+                		</ul>
+				</div>
+				</div>
+				</div>
+			</div>	
+			
+			
+			
 
   </jsp:body>
 </t:wrapper>
