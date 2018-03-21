@@ -14,17 +14,15 @@ import mumagram.model.User;
 import mumagram.util.DbUtil;
 
 public class PostRepository {
-	private Connection connection;
 	private UserRepository userRepository;
 
 	public PostRepository() {
-		connection = DbUtil.getConnection();
 		userRepository = new UserRepository();
 	}
 
 	public Post findOneById(int id) {
 		Post post = new Post();
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"SELECT id, picture, description, filter, user_id, created_date, updated_date FROM post WHERE id = ?"
 			);
@@ -45,8 +43,6 @@ public class PostRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return post;
 	}
@@ -54,7 +50,7 @@ public class PostRepository {
 	public List<Post> getPostsByUser(User user) {
 		List<Post> posts = new ArrayList<Post>();
 
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"SELECT id,picture,description,user_id,created_date, updated_date FROM post WHERE user_id = ? ORDER BY created_date DESC ,id DESC LIMIT 9");
 			preparedStatement.setInt(1, user.getId());
@@ -76,8 +72,6 @@ public class PostRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 
 		return posts;
@@ -86,7 +80,7 @@ public class PostRepository {
 	public int getLikeCount(Post post) {
 		int result = 0;
 		
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"SELECT count(1) AS `count` FROM post p INNER JOIN like l ON p.id = l.post_id WHERE p.id = ?");
 			preparedStatement.setInt(1, post.getId());
@@ -99,8 +93,6 @@ public class PostRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		
 		return result;
@@ -109,7 +101,7 @@ public class PostRepository {
 	public int getCommentCount(Post post) {
 		int result = 0;
 		
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"SELECT count(1) AS `count` FROM post p INNER JOIN comment c ON p.id = c.post_id WHERE p.id = ?");
 			preparedStatement.setInt(1, post.getId());
@@ -122,8 +114,6 @@ public class PostRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		
 		return result;
@@ -131,7 +121,7 @@ public class PostRepository {
 
 	public boolean save(Post post) {
 		boolean result = false;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"INSERT INTO `post` (`picture`,`description`,`filter`,`user_id`,`created_date`)"
 				+ "VALUES"
