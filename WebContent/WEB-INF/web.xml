@@ -74,6 +74,14 @@
 	<servlet-name>AddComment</servlet-name>
 	<url-pattern>/comment/add</url-pattern>
   </servlet-mapping>
+  <servlet>
+	<servlet-name>EditComment</servlet-name>
+	<servlet-class>mumagram.controller.EditCommentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>EditComment</servlet-name>
+	<url-pattern>/comment/edit</url-pattern>
+  </servlet-mapping>
   
   <session-config>
     <session-timeout>60</session-timeout>
