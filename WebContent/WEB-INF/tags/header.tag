@@ -19,12 +19,12 @@
       <div class="uk-navbar-right">
         <ul class="uk-subnav">
           <li>
-            <a href="#">
+            <a href="#upload-modal" uk-toggle>
               <span uk-icon="camera"></span>
             </a>
           </li>
           <li>
-            <a href="#upload-modal" uk-toggle><span uk-icon="user"></span></a>
+            <a href="#"><span uk-icon="user"></span></a>
             <div uk-dropdown="mode: click; pos: bottom-right">
               <ul class="uk-nav uk-dropdown-nav">
                 <li><a href="#">View profile</a></li>
@@ -46,6 +46,5 @@
         <button class="uk-modal-close-default" type="button" uk-close></button>
         <h2 class="uk-modal-title">Upload</h2>
         <div id="drag-drop-area"></div>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
     </div>
 </div>
