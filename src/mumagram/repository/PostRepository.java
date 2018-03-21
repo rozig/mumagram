@@ -5,10 +5,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
-
 import mumagram.model.Post;
 import mumagram.model.User;
 import mumagram.util.DbUtil;
@@ -35,7 +35,7 @@ public class PostRepository {
 				post.setPicture(rs.getString("picture"));
 				post.setDescription(rs.getString("description"));
 				post.setFilter(rs.getString("filter"));
-				post.setCreatedDate(LocalDate.parse(rs.getString("created_date")));
+				post.setCreatedDate( rs.getDate("created_date").toLocalDate() );
 				post.setUser(user);
 			}
 		} catch (SQLException e) {
@@ -115,5 +115,19 @@ public class PostRepository {
 		}
 
 		return posts;
+	}
+	
+	public boolean delete(Post post) {
+		boolean result = false;
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"DELETE FROM post WHERE id = ?"
+			);
+			preparedStatement.setInt(1, post.getId());
+			result = preparedStatement.execute();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

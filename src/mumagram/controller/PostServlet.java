@@ -39,8 +39,30 @@ public class PostServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if(service.validateSession(session)) {
-			RequestDispatcher rd = request.getRequestDispatcher("/pages/post.jsp");
-			rd.forward(request, response);
+			String pathInfo = request.getPathInfo();
+			String[] postId = null;
+			
+			if(pathInfo != null && !pathInfo.isEmpty()) {
+				postId = request.getPathInfo().split("/");
+			}
+			
+			if(postId == null ) {
+				RequestDispatcher rd = request.getRequestDispatcher("/pages/post.jsp");
+				rd.forward(request, response);
+			}else {
+				if(postId.length>=2 && !postId[1].isEmpty()) {
+					int id = Integer.parseInt(postId[1]);
+					
+					Post post = postRepository.findOneById(id);
+					request.setAttribute("post", post);
+					
+					RequestDispatcher rd = request.getRequestDispatcher("/pages/viewpost.jsp");
+					rd.forward(request, response);
+				}else {
+					RequestDispatcher rd = request.getRequestDispatcher("/pages/post.jsp");
+					rd.forward(request, response);
+				}
+			}
 		} else {
 			response.sendRedirect("/mumagram/login?error=Please login your username and password");
 		}
