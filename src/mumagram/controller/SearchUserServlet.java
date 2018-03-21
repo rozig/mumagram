@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import mumagram.model.JsonResponse;
 import mumagram.model.User;
 import mumagram.repository.UserRepository;
 import mumagram.service.Service;
@@ -35,9 +36,14 @@ public class SearchUserServlet extends HttpServlet {
 			String query = request.getParameter("query");
 			List<User> users = userRepository.search(query);
 
-			ObjectMapper mapper = new ObjectMapper();
-			String resultJson = mapper.writeValueAsString(users);
+			JsonResponse jsonResponse = new JsonResponse();
+			jsonResponse.setCode(1000);
+			jsonResponse.setMessage("success");
+			jsonResponse.setData(users);
 
+			ObjectMapper mapper = new ObjectMapper();
+			String resultJson = mapper.writeValueAsString(jsonResponse);
+			
 			response.setContentType("application/json");
 
 			PrintWriter out = response.getWriter();
