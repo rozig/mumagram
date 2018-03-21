@@ -9,7 +9,7 @@
       <div class="sidebar-profile-wrapper">
         <div class="sidebar-profile-pic-wrapper">
           <a href="#" class="sidebar-pic uk-border-circle">
-            <img src="/mumagram/${user.profilePicture}" alt=""/>
+            <img src="${user.profilePicture}" alt=""/>
           </a>
         </div>
         <div class="sidebar-profile-text">

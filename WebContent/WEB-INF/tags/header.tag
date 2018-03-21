@@ -6,7 +6,7 @@
 
     <nav class="main-nav uk-navbar uk-navbar-container uk-margin">
       <div class="uk-navbar-left">
-        <a class="uk-navbar-item uk-logo main-logo" href="#">Mumagram</a>
+        <a class="uk-navbar-item uk-logo main-logo" href="${baseUrl}">Mumagram</a>
 
         <div class="uk-navbar-toggle">
           <form class="uk-search uk-search-default">
@@ -19,7 +19,7 @@
       <div class="uk-navbar-right">
         <ul class="uk-subnav">
           <li>
-            <a href="#">
+            <a href="${baseUrl}/post">
               <span uk-icon="camera"></span>
             </a>
           </li>
@@ -27,9 +27,9 @@
             <a href="#"><span uk-icon="user"></span></a>
             <div uk-dropdown="mode: click; pos: bottom-right">
               <ul class="uk-nav uk-dropdown-nav">
-                <li><a href="/mumagram/profile">View profile</a></li>
-                <li><a href="/mumagram/profile/edit">Edit profile</a></li>
-                <li><a href="/mumagram/logout?logout=true">Log out</a></li>
+                <li><a href="${baseUrl}/profile">View profile</a></li>
+                <li><a href="${baseUrl}/profile/edit">Edit profile</a></li>
+                <li><a href="${baseUrl}/logout?logout=true">Log out</a></li>
               </ul>
             </div>
           </li>
