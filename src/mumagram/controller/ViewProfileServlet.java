@@ -23,6 +23,7 @@ public class ViewProfileServlet extends HttpServlet {
 	private Service service;
 	private UserRepository userRepository;
 	private PostRepository postRepository;
+	private String pathInfo;
 
 	public ViewProfileServlet() {
 		super();
@@ -34,13 +35,23 @@ public class ViewProfileServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if (service.validateSession(session)) {
-			String username = request.getParameter("username");
+			pathInfo = request.getPathInfo();
+			if(pathInfo == null || pathInfo.isEmpty() || pathInfo.split("/").length <= 1) {
+				response.sendRedirect("/mumagram/");
+				return;
+			}
+			String username = pathInfo.split("/")[1];
+			if(username.split("@").length <= 1) {
+				response.sendRedirect("/mumagram/");
+				return;
+			}
+			String usernameWithoutAt = username.split("@")[1];
 			User user = null;
 			List<Post> posts = null;
-			if (username == null || username.isEmpty()) {
+			if(username == null || username.isEmpty()) {
 				user = (User) session.getAttribute("user");
 			} else {
-				user = userRepository.findOneByUsername(username);
+				user = userRepository.findOneByUsername(usernameWithoutAt);
 			}
 			request.setAttribute("user", user);
 			int countPost = userRepository.countPost(user.getId());
@@ -50,14 +61,17 @@ public class ViewProfileServlet extends HttpServlet {
 			int countFollowing = userRepository.countFollower(user.getId());
 			request.setAttribute("countFollowing", countFollowing);
 
-			posts = postRepository.getPostsByUser(user);
+			if(!user.isPrivate() || (user.isPrivate() && user.getId() == ((User) session.getAttribute("user")).getId())) {
+				posts = postRepository.getPostsByUser(user);
+			}
+			
 			request.setAttribute("posts", posts);
 			request.setAttribute("profile",  user);
 
 			RequestDispatcher rd = request.getRequestDispatcher("/pages/view-profile.jsp");
 			rd.forward(request, response);
 		} else {
-			response.sendRedirect("/mumagram/login?error=Please login your username and password");
+			response.sendRedirect("/mumagram/login");
 		}
 	}
 
