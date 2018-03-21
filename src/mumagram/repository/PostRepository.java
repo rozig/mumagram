@@ -85,8 +85,6 @@ public class PostRepository {
 			result = preparedStatement.execute();
 		} catch(SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		
 		return result;
@@ -150,8 +148,6 @@ public class PostRepository {
 			result = preparedStatement.execute();
 		} catch(SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		
 		return result;
