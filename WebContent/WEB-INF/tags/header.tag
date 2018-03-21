@@ -6,7 +6,7 @@
 
     <nav class="main-nav uk-navbar uk-navbar-container uk-margin">
       <div class="uk-navbar-left">
-        <a class="uk-navbar-item uk-logo main-logo" href="#">Mumagram</a>
+        <a class="uk-navbar-item uk-logo main-logo" href="${baseUrl}">Mumagram</a>
 
         <div class="uk-navbar-toggle">
           <form class="uk-search uk-search-default">
@@ -29,7 +29,7 @@
               <ul class="uk-nav uk-dropdown-nav">
                 <li><a href="#">View profile</a></li>
                 <li><a href="#">Edit profile</a></li>
-                <li><a href="/mumagram/logout?logout=true">Log out</a></li>
+                <li><a href="${baseUrl}/logout?logout=true">Log out</a></li>
               </ul>
             </div>
           </li>
