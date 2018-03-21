@@ -27,8 +27,8 @@
             <a href="#"><span uk-icon="user"></span></a>
             <div uk-dropdown="mode: click; pos: bottom-right">
               <ul class="uk-nav uk-dropdown-nav">
-                <li><a href="#">View profile</a></li>
-                <li><a href="#">Edit profile</a></li>
+                <li><a href="/mumagram/profile">View profile</a></li>
+                <li><a href="/mumagram/profile/edit">Edit profile</a></li>
                 <li><a href="/mumagram/logout?logout=true">Log out</a></li>
               </ul>
             </div>
