@@ -27,7 +27,7 @@
             <a href="#"><span uk-icon="user"></span></a>
             <div uk-dropdown="mode: click; pos: bottom-right">
               <ul class="uk-nav uk-dropdown-nav">
-                <li><a href="${baseUrl}/profile">View profile</a></li>
+                <li><a href="${baseUrl}/profile/@${user.username}">View profile</a></li>
                 <li><a href="${baseUrl}/profile/edit">Edit profile</a></li>
                 <li><a href="${baseUrl}/logout?logout=true">Log out</a></li>
               </ul>
