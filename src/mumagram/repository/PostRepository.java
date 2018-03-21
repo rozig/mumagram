@@ -33,8 +33,13 @@ public class PostRepository {
 				post.setDescription(rs.getString("description"));
 				post.setUser(user);
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return post;
 	}
@@ -59,8 +64,13 @@ public class PostRepository {
 				user.setProfilePicture(rs.getString("profile_picture"));
 				user.setPrivate(rs.getBoolean("is_private"));
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return user;
 	}
@@ -85,8 +95,13 @@ public class PostRepository {
 				}
 				posts.add(post);
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 
 		return posts;

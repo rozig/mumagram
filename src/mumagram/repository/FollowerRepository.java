@@ -39,8 +39,13 @@ public class FollowerRepository {
 				follower.setCreatedDate(rs.getDate("created_date").toLocalDate());
 				follower.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return follower;
 	}
@@ -66,8 +71,13 @@ public class FollowerRepository {
 				result.setCreatedDate(rs.getDate("created_date").toLocalDate());
 				result.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return result;
 	}
@@ -85,8 +95,12 @@ public class FollowerRepository {
 			preparedStatement.setString(3, follower.getStatus());
 			preparedStatement.setDate(4, Date.valueOf(follower.getCreatedDate()));
 			result = preparedStatement.execute();
+
+			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return result;
 	}
@@ -104,8 +118,12 @@ public class FollowerRepository {
 			preparedStatement.setDate(4, Date.valueOf(follower.getUpdatedDate()));
 			preparedStatement.setInt(5, follower.getId());
 			result = preparedStatement.execute();
+
+			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return result;
 	}
@@ -118,8 +136,12 @@ public class FollowerRepository {
 			);
 			preparedStatement.setInt(1, follower.getId());
 			result = preparedStatement.execute();
+
+			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return result;
 	}

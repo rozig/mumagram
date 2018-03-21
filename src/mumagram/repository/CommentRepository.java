@@ -43,8 +43,13 @@ public class CommentRepository {
 				comment.setCreatedDate(rs.getDate("created_date").toLocalDate());
 				comment.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return comment;
 	}
@@ -71,8 +76,13 @@ public class CommentRepository {
 				}
 				comments.add(comment);
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 
 		return comments;
@@ -89,8 +99,12 @@ public class CommentRepository {
 			preparedStatement.setInt(3, comment.getUser().getId());
 			preparedStatement.setDate(4, Date.valueOf(comment.getCreatedDate()));
 			result = preparedStatement.execute();
+
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return result;
 	}
@@ -108,8 +122,12 @@ public class CommentRepository {
 			preparedStatement.setDate(4, Date.valueOf(comment.getUpdatedDate()));
 			preparedStatement.setInt(5, comment.getId());
 			result = preparedStatement.execute();
+
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return result;
 	}
@@ -122,8 +140,12 @@ public class CommentRepository {
 			);
 			preparedStatement.setInt(1, comment.getId());
 			result = preparedStatement.execute();
+
+			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return result;
 	}

@@ -39,8 +39,13 @@ public class UserRepository {
 				user.setProfilePicture(rs.getString("profile_picture"));
 				user.setPrivate(rs.getBoolean("is_private"));
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return user;
 	}
@@ -64,8 +69,12 @@ public class UserRepository {
 				user.setProfilePicture(rs.getString("profile_picture"));
 				user.setPrivate(rs.getBoolean("is_private"));
 			}
+			rs.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return user;
 	}
@@ -91,8 +100,13 @@ public class UserRepository {
 				user.setProfilePicture(rs.getString("profile_picture"));
 				user.setPrivate(rs.getBoolean("is_private"));
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return user;
 	}
@@ -118,8 +132,13 @@ public class UserRepository {
 				user.setProfilePicture(rs.getString("profile_picture"));
 				user.setPrivate(rs.getBoolean("is_private"));
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return user;
 	}
@@ -146,8 +165,13 @@ public class UserRepository {
 				user.setProfilePicture(rs.getString("profile_picture"));
 				user.setPrivate(rs.getBoolean("is_private"));
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return user;
 	}
@@ -169,8 +193,12 @@ public class UserRepository {
 			preparedStatement.setBoolean(9, user.isPrivate());
 			preparedStatement.setDate(10, Date.valueOf(user.getCreatedDate()));
 			result = preparedStatement.execute();
+
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return result;
 	}
@@ -194,8 +222,12 @@ public class UserRepository {
 			preparedStatement.setDate(10, Date.valueOf(user.getUpdatedDate()));
 			preparedStatement.setInt(11, user.getId());
 			result = preparedStatement.execute();
+
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return result;
 	}
@@ -225,8 +257,13 @@ public class UserRepository {
 
 				users.add(user);
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return users;
 	}
@@ -241,8 +278,13 @@ public class UserRepository {
 			if (rs.next()) {
 				count = rs.getInt("count");
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return count;
 	}
@@ -257,8 +299,13 @@ public class UserRepository {
 			if (rs.next()) {
 				count = rs.getInt("count");
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return count;
 	}
@@ -273,11 +320,14 @@ public class UserRepository {
 			if (rs.next()) {
 				count = rs.getInt("count");
 			}
+
+			rs.close();
+			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
 		}
 		return count;
 	}
-
-
 }
