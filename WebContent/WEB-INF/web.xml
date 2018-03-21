@@ -35,6 +35,7 @@
     <servlet-name>Logout</servlet-name>
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
+
   <servlet>
     <servlet-name>ViewProfile</servlet-name>
     <servlet-class>mumagram.controller.ViewProfileServlet</servlet-class>
@@ -107,6 +108,15 @@
 	<servlet-name>DeleteComment</servlet-name>
 	<url-pattern>/comment/delete</url-pattern>
   </servlet-mapping>
+  <servlet>
+  	<servlet-name>Like</servlet-name>
+  	<servlet-class>mumagram.controller.LikeServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>Like</servlet-name>
+	<url-pattern>/like</url-pattern>
+  </servlet-mapping>
+  
   <session-config>
     <session-timeout>60</session-timeout>
   </session-config>
