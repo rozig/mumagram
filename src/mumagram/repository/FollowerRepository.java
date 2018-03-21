@@ -11,17 +11,15 @@ import mumagram.model.User;
 import mumagram.util.DbUtil;
 
 public class FollowerRepository {
-	private Connection connection;
 	private UserRepository userRepository;
 
 	public FollowerRepository() {
-		connection = DbUtil.getConnection();
 		userRepository = new UserRepository();
 	}
 
 	public Follower findOneById(int id) {
 		Follower follower = null;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"SELECT id, user_id, follower_id, status, created_date, updated_date FROM user_followers WHERE id = ?"
 			);
@@ -44,15 +42,13 @@ public class FollowerRepository {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return follower;
 	}
 	
 	public Follower isFollower(User user, User follower) {
 		Follower result = null;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"SELECT id, user_id, follower_id, status, created_date, updated_date FROM user_followers WHERE user_id = ? AND follower_id = ?"
 			);
@@ -76,15 +72,13 @@ public class FollowerRepository {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return result;
 	}
 	
 	public boolean save(Follower follower) {
 		boolean result = false;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"INSERT INTO user_followers(user_id, follower_id, status, created_date)"
 				+ "VALUES"
@@ -99,15 +93,13 @@ public class FollowerRepository {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return result;
 	}
 	
 	public boolean update(Follower follower) {
 		boolean result = false;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"UPDATE user_followers SET user_id = ?, follower_id = ?, status = ?, updated_date = ?"
 				+ "WHERE id = ?"
@@ -122,15 +114,13 @@ public class FollowerRepository {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return result;
 	}
 	
 	public boolean delete(Follower follower) {
 		boolean result = false;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"DELETE FROM user_followers WHERE id = ?"
 			);
@@ -140,8 +130,6 @@ public class FollowerRepository {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return result;
 	}

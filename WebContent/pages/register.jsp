@@ -82,7 +82,7 @@
           </div>
         </div>
       </div>
-	<div>${ errorMessage }</div>
+	<div>${ error }</div>
 
       <div class="empty-content">
         <p class="empty-info">Have an account? <a href="${baseUrl}/login">Log in</a>

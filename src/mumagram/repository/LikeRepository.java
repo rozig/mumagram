@@ -12,19 +12,17 @@ import mumagram.model.User;
 import mumagram.util.DbUtil;
 
 public class LikeRepository {
-	private Connection connection;
 	private UserRepository userRepository;
 	private PostRepository postRepository;
 
 	public LikeRepository() {
-		connection = DbUtil.getConnection();
 		userRepository = new UserRepository();
 		postRepository = new PostRepository();
 	}
 
 	public Like findOneById(int id) {
 		Like like = null;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"SELECT id, user_id, post_id, created_date, updated_date FROM like WHERE id = ?"
 			);
@@ -46,15 +44,13 @@ public class LikeRepository {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return like;
 	}
 	
 	public Like isLiked(Post post, User user) {
 		Like result = null;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"SELECT id, user_id, post_id, created_date, updated_date FROM like WHERE user_id = ? AND post_id = ?"
 			);
@@ -77,15 +73,13 @@ public class LikeRepository {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return result;
 	}
 	
 	public boolean save(Like like) {
 		boolean result = false;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"INSERT INTO like(user_id, post_id, created_date)"
 				+ "VALUES"
@@ -99,15 +93,13 @@ public class LikeRepository {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return result;
 	}
 	
 	public boolean update(Like like) {
 		boolean result = false;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"UPDATE like SET user_id = ?, post_id = ?, updated_date = ?"
 				+ "WHERE id = ?"
@@ -121,15 +113,13 @@ public class LikeRepository {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return result;
 	}
 	
 	public boolean delete(Like like) {
 		boolean result = false;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"DELETE FROM like WHERE id = ?"
 			);
@@ -139,8 +129,6 @@ public class LikeRepository {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return result;
 	}

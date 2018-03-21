@@ -12,15 +12,9 @@ import mumagram.model.User;
 import mumagram.util.DbUtil;
 
 public class UserRepository {
-	private Connection connection;
-
-	public UserRepository() {
-		connection = DbUtil.getConnection();
-	}
-
 	public User findOneById(int id) {
 		User user = null;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"SELECT id, firstname, lastname, email, username, password, salt, bio, profile_picture, is_private FROM user WHERE id = ?");
 			preparedStatement.setInt(1, id);
@@ -44,15 +38,13 @@ public class UserRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return user;
 	}
 
 	public User findOneByUsername(String username) {
 		User user = null;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"SELECT id, firstname, lastname, email, username, password, salt, bio, profile_picture, is_private FROM user WHERE username = ?");
 			preparedStatement.setString(1, username);
@@ -76,15 +68,13 @@ public class UserRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return user;
 	}
 
 	public User findOneByEmail(String email) {
 		User user = null;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"SELECT id, firstname, lastname, email, username, password, salt, bio, profile_picture, is_private FROM user WHERE email = ?");
 			preparedStatement.setString(1, email);
@@ -108,15 +98,13 @@ public class UserRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return user;
 	}
 
 	public User isUserExists(String email, String username) {
 		User user = null;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"SELECT id, firstname, lastname, email, username, password, salt, bio, profile_picture, is_private FROM user WHERE email = ? OR username = ?");
 			preparedStatement.setString(1, email);
@@ -141,15 +129,13 @@ public class UserRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return user;
 	}
 
 	public List<User> search(String query) {
 		List<User> users = new ArrayList<User>();
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"SELECT id, firstname, lastname, email, username, profile_picture FROM user WHERE username LIKE ? OR firstname LIKE ? OR lastname LIKE ?");
 			preparedStatement.setString(1, "%" + query + "%");
@@ -177,15 +163,13 @@ public class UserRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return users;
 	}
 
 	public int countPost(int userid) {
 		int count = 0;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"SELECT count(1) AS count FROM post WHERE user_id = ?"
 			);
@@ -199,15 +183,13 @@ public class UserRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return count;
 	}
 
 	public int countFollower(int userid) {
 		int count = 0;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"SELECT count(1) AS count FROM user_followers WHERE user_id = ?"
 			);
@@ -221,15 +203,13 @@ public class UserRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return count;
 	}
 
 	public int countFollowing(int userid) {
 		int count = 0;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"SELECT count(1) as count FROM user_followers WHERE follower_id = ?"
 			);
@@ -243,15 +223,13 @@ public class UserRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return count;
 	}
 
 	public boolean save(User user) {
 		boolean result = false;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"INSERT INTO user(firstname, lastname, email, username, password, salt, bio, profile_picture, is_private, created_date)"
 							+ "VALUES" + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
@@ -270,15 +248,13 @@ public class UserRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return result;
 	}
 
 	public boolean update(User user) {
 		boolean result = false;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"UPDATE user SET firstname = ?, lastname = ?, email = ?, username = ?, password = ?, salt = ?, bio = ?, profile_picture = ?, is_private = ?, updated_date = ?"
 				+ "WHERE id = ?"
@@ -299,8 +275,6 @@ public class UserRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return result;
 	}

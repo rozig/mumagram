@@ -14,18 +14,16 @@ import mumagram.model.User;
 import mumagram.util.DbUtil;
 
 public class CommentRepository {
-	private Connection connection;
 	private PostRepository postRepository;
 	private UserRepository userRepository;
 
 	public CommentRepository() {
-		connection = DbUtil.getConnection();
 		postRepository = new PostRepository();
 		userRepository = new UserRepository();
 	}
 	public Comment findOneById(int id) {
 		Comment comment = null;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"SELECT id, comment, user_id, post_id, created_date, updated_date FROM comment WHERE id = ?");
 			preparedStatement.setInt(1, id);
@@ -48,8 +46,6 @@ public class CommentRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return comment;
 	}
@@ -57,7 +53,7 @@ public class CommentRepository {
 	public List<Comment> getCommentsByPost(Post post) {
 		List<Comment> comments = new ArrayList<Comment>();
 
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"SELECT id,comment,post_id,user_id,created_date,updated_date FROM comment WHERE post_id = ? ORDER BY created_date DESC,id DESC");
 			preparedStatement.setInt(1, post.getId());
@@ -81,8 +77,6 @@ public class CommentRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 
 		return comments;
@@ -90,7 +84,7 @@ public class CommentRepository {
 
 	public boolean save(Comment comment) {
 		boolean result = false;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 					"INSERT INTO comment(comment, post_id, user_id, created_date)"
 							+ "VALUES" + "(?, ?, ?, ?)");
@@ -103,15 +97,13 @@ public class CommentRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return result;
 	}
 
 	public boolean update(Comment comment) {
 		boolean result = false;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"UPDATE comment SET comment = ?, post_id = ?, user_id = ?, updated_date = ?"
 				+ "WHERE id = ?"
@@ -126,15 +118,13 @@ public class CommentRepository {
 			preparedStatement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return result;
 	}
 	
 	public boolean delete(Comment comment) {
 		boolean result = false;
-		try {
+		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"DELETE FROM comment WHERE id = ?"
 			);
@@ -144,8 +134,6 @@ public class CommentRepository {
 			preparedStatement.close();
 		} catch(SQLException e) {
 			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
 		}
 		return result;
 	}
