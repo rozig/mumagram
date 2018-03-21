@@ -15,9 +15,11 @@ import mumagram.util.DbUtil;
 
 public class PostRepository {
 	private Connection connection;
+	private UserRepository userRepository;
 
 	public PostRepository() {
 		connection = DbUtil.getConnection();
+		userRepository = new UserRepository();
 	}
 
 	public Post findOneById(int id) {
@@ -30,7 +32,7 @@ public class PostRepository {
 			ResultSet rs = preparedStatement.executeQuery();
 
 			if (rs.next()) {
-				User user = getUser(rs.getInt("user_id"));
+				User user = userRepository.findOneById(rs.getInt("user_id"));
 				post.setId(rs.getInt("id"));
 				post.setPicture(rs.getString("picture"));
 				post.setDescription(rs.getString("description"));
@@ -49,57 +51,6 @@ public class PostRepository {
 		return post;
 	}
 	
-	public boolean save(Post post) {
-		boolean result = false;
-		try {
-			PreparedStatement preparedStatement = connection.prepareStatement(
-				"INSERT INTO `post` (`picture`,`description`,`filter`,`user_id`,`created_date`)"
-				+ "VALUES"
-				+ "(?, ?, ?, ?, ?)"
-			);
-			preparedStatement.setString(1, post.getPicture());
-			preparedStatement.setString(2, post.getDescription());
-			preparedStatement.setString(3, post.getFilter());
-			preparedStatement.setInt(4, post.getUser().getId());
-			preparedStatement.setDate(5, Date.valueOf(post.getCreatedDate()));
-			result = preparedStatement.execute();
-		} catch(SQLException e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
-	
-	private User getUser(int id) {
-		User user = new User();
-		try {
-			PreparedStatement preparedStatement = connection.prepareStatement(
-					"SELECT id, firstname, lastname, email, username, password, salt, bio, profile_picture, is_private FROM user WHERE id = ?");
-			preparedStatement.setInt(1, id);
-			ResultSet rs = preparedStatement.executeQuery();
-
-			if (rs.next()) {
-				user.setId(rs.getInt("id"));
-				user.setFirstname(rs.getString("firstname"));
-				user.setLastname(rs.getString("lastname"));
-				user.setEmail(rs.getString("email"));
-				user.setUsername(rs.getString("username"));
-				user.setPassword(rs.getString("password"));
-				user.setSalt(rs.getString("salt"));
-				user.setBio(rs.getString("bio"));
-				user.setProfilePicture(rs.getString("profile_picture"));
-				user.setPrivate(rs.getBoolean("is_private"));
-			}
-
-			rs.close();
-			preparedStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
-		}
-		return user;
-	}
-
 	public List<Post> getPostsByUser(User user) {
 		List<Post> posts = new ArrayList<Post>();
 
@@ -130,5 +81,71 @@ public class PostRepository {
 		}
 
 		return posts;
+	}
+	
+	public int getLikeCount(Post post) {
+		int result = 0;
+		
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"SELECT count(1) AS `count` FROM post p INNER JOIN like l ON p.id = l.post_id WHERE p.id = ?");
+			preparedStatement.setInt(1, post.getId());
+			ResultSet rs = preparedStatement.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt("count");
+			}
+
+			rs.close();
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
+		}
+		
+		return result;
+	}
+	
+	public int getCommentCount(Post post) {
+		int result = 0;
+		
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"SELECT count(1) AS `count` FROM post p INNER JOIN comment c ON p.id = c.post_id WHERE p.id = ?");
+			preparedStatement.setInt(1, post.getId());
+			ResultSet rs = preparedStatement.executeQuery();
+			if(rs.next()) {
+				result = rs.getInt("count");
+			}
+
+			rs.close();
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
+		}
+		
+		return result;
+	}
+
+	public boolean save(Post post) {
+		boolean result = false;
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"INSERT INTO `post` (`picture`,`description`,`filter`,`user_id`,`created_date`)"
+				+ "VALUES"
+				+ "(?, ?, ?, ?, ?)"
+			);
+			preparedStatement.setString(1, post.getPicture());
+			preparedStatement.setString(2, post.getDescription());
+			preparedStatement.setString(3, post.getFilter());
+			preparedStatement.setInt(4, post.getUser().getId());
+			preparedStatement.setDate(5, Date.valueOf(post.getCreatedDate()));
+			result = preparedStatement.execute();
+		} catch(SQLException e) {
+			e.printStackTrace();
+		}
+		return result;
 	}
 }

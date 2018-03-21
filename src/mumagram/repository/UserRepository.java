@@ -50,35 +50,6 @@ public class UserRepository {
 		return user;
 	}
 
-	public User findOneBy(String[] fields) {
-		User user = new User();
-		try {
-			PreparedStatement preparedStatement = connection.prepareStatement(
-					"SELECT id, firstname, lastname, email, username, password, salt, bio, profile_picture, is_private FROM user WHERE id = ?");
-			ResultSet rs = preparedStatement.executeQuery();
-
-			if (rs.next()) {
-				user.setId(rs.getInt("id"));
-				user.setFirstname(rs.getString("firstname"));
-				user.setLastname(rs.getString("lastname"));
-				user.setEmail(rs.getString("email"));
-				user.setUsername(rs.getString("username"));
-				user.setPassword(rs.getString("password"));
-				user.setSalt(rs.getString("salt"));
-				user.setBio(rs.getString("bio"));
-				user.setProfilePicture(rs.getString("profile_picture"));
-				user.setPrivate(rs.getBoolean("is_private"));
-			}
-			rs.close();
-			preparedStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
-		}
-		return user;
-	}
-
 	public User findOneByUsername(String username) {
 		User user = null;
 		try {
@@ -176,6 +147,108 @@ public class UserRepository {
 		return user;
 	}
 
+	public List<User> search(String query) {
+		List<User> users = new ArrayList<User>();
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"SELECT id, firstname, lastname, email, username, profile_picture FROM user WHERE username LIKE ? OR firstname LIKE ? OR lastname LIKE ?");
+			preparedStatement.setString(1, "%" + query + "%");
+			preparedStatement.setString(2, "%" + query + "%");
+			preparedStatement.setString(3, "%" + query + "%");
+			ResultSet rs = preparedStatement.executeQuery();
+
+			while (rs.next()) {
+				User user = new User();
+				user.setId(rs.getInt("id"));
+				user.setFirstname(rs.getString("firstname"));
+				user.setLastname(rs.getString("lastname"));
+				user.setEmail(rs.getString("email"));
+				user.setUsername(rs.getString("username"));
+				user.setPassword(null);
+				user.setSalt(null);
+				user.setBio(null);
+				user.setProfilePicture(rs.getString("profile_picture"));
+				user.setPrivate(false);
+
+				users.add(user);
+			}
+
+			rs.close();
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
+		}
+		return users;
+	}
+
+	public int countPost(int userid) {
+		int count = 0;
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"SELECT count(1) AS count FROM post WHERE user_id = ?"
+			);
+			preparedStatement.setInt(1, userid);
+			ResultSet rs = preparedStatement.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt("count");
+			}
+
+			rs.close();
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
+		}
+		return count;
+	}
+
+	public int countFollower(int userid) {
+		int count = 0;
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"SELECT count(1) AS count FROM user_followers WHERE user_id = ?"
+			);
+			preparedStatement.setInt(1, userid);
+			ResultSet rs = preparedStatement.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt("count");
+			}
+
+			rs.close();
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
+		}
+		return count;
+	}
+
+	public int countFollowing(int userid) {
+		int count = 0;
+		try {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+				"SELECT count(1) as count FROM user_followers WHERE follower_id = ?"
+			);
+			preparedStatement.setInt(1, userid);
+			ResultSet rs = preparedStatement.executeQuery();
+			if(rs.next()) {
+				count = rs.getInt("count");
+			}
+
+			rs.close();
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			DbUtil.closeConnection();
+		}
+		return count;
+	}
+
 	public boolean save(User user) {
 		boolean result = false;
 		try {
@@ -230,104 +303,5 @@ public class UserRepository {
 			DbUtil.closeConnection();
 		}
 		return result;
-	}
-
-	public List<User> search(String query) {
-		List<User> users = new ArrayList<User>();
-		try {
-			PreparedStatement preparedStatement = connection.prepareStatement(
-					"SELECT id, firstname, lastname, email, username, profile_picture FROM user WHERE username LIKE ? OR firstname LIKE ? OR lastname LIKE ?");
-			preparedStatement.setString(1, "%" + query + "%");
-			preparedStatement.setString(2, "%" + query + "%");
-			preparedStatement.setString(3, "%" + query + "%");
-			ResultSet rs = preparedStatement.executeQuery();
-
-			while (rs.next()) {
-				User user = new User();
-				user.setId(rs.getInt("id"));
-				user.setFirstname(rs.getString("firstname"));
-				user.setLastname(rs.getString("lastname"));
-				user.setEmail(rs.getString("email"));
-				user.setUsername(rs.getString("username"));
-				user.setPassword(null);
-				user.setSalt(null);
-				user.setBio(null);
-				user.setProfilePicture(rs.getString("profile_picture"));
-				user.setPrivate(false);
-
-				users.add(user);
-			}
-
-			rs.close();
-			preparedStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
-		}
-		return users;
-	}
-
-	public int countPost(int userid) {
-		int count = 0;
-		try {
-			PreparedStatement preparedStatement = connection
-					.prepareStatement("SELECT count(1) as count FROM post WHERE user_id = ?");
-			preparedStatement.setInt(1, userid);
-			ResultSet rs = preparedStatement.executeQuery();
-			if (rs.next()) {
-				count = rs.getInt("count");
-			}
-
-			rs.close();
-			preparedStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
-		}
-		return count;
-	}
-
-	public int countFollower(int userid) {
-		int count = 0;
-		try {
-			PreparedStatement preparedStatement = connection
-					.prepareStatement("SELECT count(1) as count FROM user_followers WHERE user_id = ?");
-			preparedStatement.setInt(1, userid);
-			ResultSet rs = preparedStatement.executeQuery();
-			if (rs.next()) {
-				count = rs.getInt("count");
-			}
-
-			rs.close();
-			preparedStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
-		}
-		return count;
-	}
-
-	public int countFollowing(int userid) {
-		int count = 0;
-		try {
-			PreparedStatement preparedStatement = connection
-					.prepareStatement("SELECT count(1) as count FROM user_followers WHERE follower_id = ?");
-			preparedStatement.setInt(1, userid);
-			ResultSet rs = preparedStatement.executeQuery();
-			if (rs.next()) {
-				count = rs.getInt("count");
-			}
-
-			rs.close();
-			preparedStatement.close();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			DbUtil.closeConnection();
-		}
-		return count;
 	}
 }
