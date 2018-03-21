@@ -82,6 +82,14 @@
 	<servlet-name>EditComment</servlet-name>
 	<url-pattern>/comment/edit</url-pattern>
   </servlet-mapping>
+  <servlet>
+	<servlet-name>DeleteComment</servlet-name>
+	<servlet-class>mumagram.controller.DeleteCommentServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+	<servlet-name>DeleteComment</servlet-name>
+	<url-pattern>/comment/delete</url-pattern>
+  </servlet-mapping>
   
   <session-config>
     <session-timeout>60</session-timeout>
