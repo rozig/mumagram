@@ -3,17 +3,17 @@
 
 <article class="post">
   <header class="post-header">
-    <a href="#" class="post-profile uk-flex link">
-      <span class="profile-img uk-border-circle"><img src="http://localhost:8080/mumagram/assets/images/profile.jpg" alt=""/></span>
-      <span class="profile-name">inkedmag</span>
+    <a href="${ baseUrl }/profile/@${ post.user.username }" class="post-profile uk-flex link">
+      <span class="profile-img uk-border-circle"><img src="${post.user.profilePicture }" alt=""/></span>
+      <span class="profile-name">${ post.user.username }</span>
     </a>
   </header>
 
   <div class="post-body-wrapper">
     <div class="post-media-wrapper">
       <div class="post-media">
-        <a href="#" class="post-media-link">
-          <img src="http://localhost:8080/mumagram/assets/images/post.jpg" alt="">
+        <a href="${ baseUrl }/post/@${ post.id }" class="post-media-link">
+          <img src="${post.picture }" alt="">
         </a>
       </div>
     </div>
@@ -31,16 +31,16 @@
     <div class="post-counter margin-small-bottom">
       <div class="counter">
         <a href="#" class="counter-link link">
-          <span>1233</span> likes
+          <span>${post.likeCount}</span> likes
         </a>
       </div>
     </div>
 
     <div class="post-description">
       <div class="post-desc">
-        <a href="#" class="link">sayadeni_</a>
+        <a href="#" class="link">${ post.user.username }</a>
         <span>
-          Bennerannn terbukkktii ka peleanggsiing dari@#@DOKTER.TUBUHIDEAL  ampuuhh bangeett proddukk
+          ${post.description }
         </span>
       </div>
     </div>
@@ -74,7 +74,7 @@
 
     <div class="post-date">
       <a class="date" href="/p/BgiIKxRH73g/">
-        <time class="time datetime" datetime="2018-03-20T05:27:04.000Z" title="Mar 20, 2018">9 hours ago</time> 
+        <time class="time datetime" datetime="2018-03-20T05:27:04.000Z" title="Mar 20, 2018">${ post.createdDate }</time> 
       </a>
     </div>
 

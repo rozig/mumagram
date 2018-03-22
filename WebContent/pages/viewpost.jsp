@@ -74,14 +74,14 @@
                   <div class="post-counter margin-small-bottom">
                     <div class="counter">
                       <a href="#" class="counter-link link">
-                        <span>1233</span> likes
+                        <span>${ post.likeCount }</span> likes
                       </a>
                     </div>
                   </div>
 
                   <div class="post-date">
-                    <a class="date" href="/p/BgiIKxRH73g/">
-                      <time class="time datetime" datetime="2018-03-20T05:27:04.000Z" title="Mar 20, 2018">9 hours ago</time> 
+                    <a class="date" href="${ baseUrl }/profile/@${ user.username }">
+                      <time class="time datetime" datetime="2018-03-20T05:27:04.000Z" title="Mar 20, 2018">${ post.createdDate }</time> 
                     </a>
                   </div>
 

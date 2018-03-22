@@ -51,6 +51,7 @@ public class GetPostsServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		if(service.validateSession(session)) {
 			String page = request.getParameter("page");
+			// Type: feed, profile
 			String type = request.getParameter("type");
 			if(page == null || page.isEmpty() || type == null || type.isEmpty()) {
 				JsonResponse jsonResponse = new JsonResponse();

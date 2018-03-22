@@ -9,10 +9,10 @@
 
   <jsp:body>
     <div class="main-content">
-      <c:forEach begin="0" end="3" varStatus="loop">
-        <t:post/>
-      </c:forEach>
-
+      <div id="feed-post-container"></div>
+	  
+	  <div id="ajax-loader"></div>
+	  
       <div class="uk-clearfix"></div>
     </div>
 

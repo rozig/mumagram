@@ -6,7 +6,7 @@
   </welcome-file-list>
   <listener>
     <listener-class>
-             mumagram.listener.MyAppServletContextListener 
+      mumagram.listener.MyAppServletContextListener 
     </listener-class>
   </listener>
   <servlet>

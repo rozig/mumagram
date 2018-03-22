@@ -13,8 +13,57 @@ $(function(){
   $inputfilter = $('#input-filter'),
   $searchresult = $('#search-result'),
   $follow = $('#follow'),
-  $searchinput = $('#search-input');
+  $searchinput = $('#search-input'),
+  $postwrapper = $('#feed-post-container'),
+  $ajaxloader = $('#ajax-loader');
   
+  // user feed section
+  if($postwrapper.length){
+	  var page_counter = 1;
+	  var load_posts = function(){
+		  // show ajax loader
+		  $ajaxloader.show();
+		  
+		  $.ajax({
+			  url: _base_url+'/get-posts',
+			  method: 'POST',
+			  data: {
+				  'page': page_counter,
+				  'type': 'feed'
+			  }
+		  }).done(function(data){
+			  
+			  if(data.code === 1000){
+	  			if(Object.keys(data.data).length>0){
+	  				// append posts
+	  				append_posts(data.data);
+	  			}else{
+	  				//doesn't exist
+	  				$follow.hide();
+	  			}
+		  	  }else{
+		  		//error exists
+		  		console.log(data.data);
+		  	  }
+			  
+			  // adding page number
+			  page_counter++;
+		  }).fail(function(e){
+			  console.log(e);
+		  }).always(function() {
+			  $ajaxloader.hide();
+		  });
+	  }
+	  
+	  // when page load, load posts
+	  load_posts();
+	  
+	  var append_posts = function(data){
+		  console.log(data);
+	  }
+  }
+  
+  // follow button section
   if($follow.length){
 	  var profile_id = $follow.attr('data-profile-id');
 	  var username = $follow.attr('data-username');
