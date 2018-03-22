@@ -15,7 +15,9 @@ $(function(){
   $follow = $('#follow'),
   $searchinput = $('#search-input'),
   $postwrapper = $('#feed-post-container'),
-  $ajaxloader = $('#ajax-loader');
+  $ajaxloader = $('#ajax-loader'),
+  $document = $('document'),
+  $window = $('window');
 
   // change password request start
   var $oldPassword = $('#oldpassword');
@@ -27,7 +29,9 @@ $(function(){
   
   // user feed section
   if($postwrapper.length){
-    var page_counter = 1;
+    var page_counter = 0;
+    var limit = false;
+    
     var load_posts = function(){
       // show ajax loader
       $ajaxloader.show();
@@ -40,7 +44,6 @@ $(function(){
           'type': 'feed'
         }
       }).done(function(data){
-
         if(data.code === 1000){
           if(Object.keys(data.data).length>0){
             // append posts
@@ -66,8 +69,127 @@ $(function(){
     // when page load, load posts
     load_posts();
     
-    var append_posts = function(data){
-      console.log(data);
+    // infinite scroll
+    $(window).on("scroll", function() {
+    	var scrollHeight = $(document).height();
+    	var scrollPosition = $(window).height() + $(window).scrollTop();
+    	if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+    		setTimeout(function() {
+    			load_posts();
+    			
+    		}, 300 );
+    	}
+    });
+    
+    var append_posts = function(data){    	
+    	if(data.length==0){
+
+    		var limit = true;
+    		
+    		if(page_counter<1 && limit){
+	    		$postwrapper.append(`<div class="mum-error" uk-height-viewport>
+					<div class="mum-error-container">
+						<h2>Please follow people.</h2>
+						<p>
+							Search people by username or first name or last name.
+						</p>
+					</div>
+				</div>`);
+	    		}
+    		return;
+    	}
+    	
+    	data.forEach(function(post){
+            var template = `<article class="post">
+  <header class="post-header">
+    <a href="${ _base_url }/profile/@${ post.user.username }" class="post-profile uk-flex link">
+      <span class="profile-img uk-border-circle"><img src="${post.user.profilePicture }" alt=""/></span>
+      <span class="profile-name">${ post.user.username }</span>
+    </a>
+  </header>
+
+  <div class="post-body-wrapper">
+    <div class="post-media-wrapper">
+      <div class="post-media ${ post.filter }">
+        <a href="${ _base_url }/post/${ post.id }" class="post-media-link">
+          <img src="${post.picture }" alt="">
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <footer class="post-footer">
+    <div class="post-buttons">
+      <a href="#" class="uk-icon-link uk-margin-small-right post-button">
+        <span uk-icon="heart"></span>
+      </a>
+      <a href="#" class="uk-icon-link uk-margin-small-right post-button">
+        <span uk-icon="comment"></span>
+      </a>
+    </div>
+    <div class="post-counter margin-small-bottom">
+      <div class="counter">
+        <a href="#" class="counter-link link">
+          <span>${post.likeCount}</span> likes
+        </a>
+      </div>
+    </div>
+
+    <div class="post-description">
+      <div class="post-desc">
+        <a href="#" class="link">${ post.user.username }</a>
+        <span>
+          ${post.description }
+        </span>
+      </div>
+    </div>
+
+    <div class="post-more-comments margin-small-bottom">
+      <a class="more-comments" href="#" role="button">View all <span>9</span> comments</a>
+    </div>
+
+    <div class="post-comments">
+      <ul id="post-comments-">
+        <li class="text-li">
+          <a href="#" class="link">sayadeni_</a>
+          <span>
+            Bennerannn terbukkktii ka peleanggsiing dari@#@DOKTER.TUBUHIDEAL  ampuuhh bangeett proddukk
+          </span>
+        </li>
+        <li class="text-li">
+          <a href="#" class="link">sayadeni_</a>
+          <span>
+            Bennerannn terbukkktii ka peleanggsiing dari@#@DOKTER.TUBUHIDEAL  ampuuhh bangeett proddukk
+          </span>
+        </li>
+        <li class="text-li">
+          <a href="#" class="link">sayadeni_</a>
+          <span>
+            Bennerannn terbukkktii ka peleanggsiing dari@#@DOKTER.TUBUHIDEAL  ampuuhh bangeett proddukk
+          </span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="post-date">
+      <a class="date" href="/p/BgiIKxRH73g/">
+        <time class="time datetime" datetime="2018-03-20T05:27:04.000Z" title="Mar 20, 2018">${ post.createdDate.dayOfMonth }.${ post.createdDate.monthValue }.${ post.createdDate.year }</time> 
+      </a>
+    </div>
+
+    <div class="post-comment-form">
+      <form class="post-comment">
+        <textarea name="comment" id="post-id" class="comment" placeholder="Add a comment" autocomplete="off" autocorrect="off"></textarea>
+      </form>
+    </div>
+  </footer>
+</article>`;
+            // setting timeout
+            setTimeout(function () {
+            	$postwrapper.append(template);
+            }, 50);
+          });
+      
     }
   }
   
@@ -109,9 +231,7 @@ $(function(){
       });
     };
     
-    var change_follow_button = function(data){
-      console.log(data);
-      
+    var change_follow_button = function(data){      
       if(data==="Follow"){
         $follow.addClass('uk-button-primary');
       }else{

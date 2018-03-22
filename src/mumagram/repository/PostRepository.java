@@ -55,7 +55,7 @@ public class PostRepository {
 
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT p.id,p.picture,p.description,p.user_id,p.created_date,p.updated_date,"
+				"SELECT p.id,p.picture,p.description,p.filter,p.user_id,p.created_date,p.updated_date,"
 				+ "(SELECT COUNT(1) FROM `like` l WHERE l.post_id = p.id) AS like_count,"
 				+ "(SELECT COUNT(id) FROM `comment` c WHERE c.post_id = p.id) AS comment_count"
 				+ " FROM post p WHERE p.user_id = ? "
@@ -68,6 +68,7 @@ public class PostRepository {
 				post.setId(rs.getInt("id"));
 				post.setPicture(rs.getString("picture"));
 				post.setDescription(rs.getString("description"));
+				post.setFilter(rs.getString("filter"));
 				
 				post.setUser(user);
 				post.setCreatedDate(rs.getDate("created_date").toLocalDate());
@@ -94,20 +95,21 @@ public class PostRepository {
 
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT p.id,p.picture,p.description,p.user_id,p.created_date,p.updated_date,"
+				"SELECT p.id,p.picture,p.description,p.filter,p.user_id,p.created_date,p.updated_date,"
 				+ "(SELECT COUNT(1) FROM `like` l WHERE l.post_id = p.id) AS like_count,"
 				+ "(SELECT COUNT(id) FROM `comment` c WHERE c.post_id = p.id) AS comment_count "
 				+ "FROM post p INNER JOIN user_followers uf ON p.user_id = uf.user_id "
-				+ "WHERE uf.follower_id = ? ORDER BY p.created_date DESC,p.id DESC LIMIT 10 OFFSET ?"
+				+ "WHERE uf.follower_id = ? ORDER BY p.created_date DESC,p.id DESC LIMIT 3 OFFSET ?"
 			);
 			preparedStatement.setInt(1, user.getId());
-			preparedStatement.setInt(2, page * 10);
+			preparedStatement.setInt(2, page * 3);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
 				Post post = new Post();
 				post.setId(rs.getInt("id"));
 				post.setPicture(rs.getString("picture"));
 				post.setDescription(rs.getString("description"));
+				post.setFilter(rs.getString("filter"));
 				
 				post.setUser(user);
 				post.setCreatedDate(rs.getDate("created_date").toLocalDate());
@@ -134,7 +136,7 @@ public class PostRepository {
 
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT p.id,p.picture,p.description,p.user_id,p.created_date,p.updated_date,"
+				"SELECT p.id,p.picture,p.description,p.filter,p.user_id,p.created_date,p.updated_date,"
 				+ "(SELECT COUNT(1) FROM `like` l WHERE l.post_id = p.id) AS like_count,"
 				+ "(SELECT COUNT(id) FROM `comment` c WHERE c.post_id = p.id) AS comment_count "
 				+ "FROM post p WHERE p.user_id = ? ORDER BY p.created_date DESC,p.id DESC LIMIT 10 OFFSET ?"
@@ -147,6 +149,7 @@ public class PostRepository {
 				post.setId(rs.getInt("id"));
 				post.setPicture(rs.getString("picture"));
 				post.setDescription(rs.getString("description"));
+				post.setFilter(rs.getString("filter"));
 				
 				post.setUser(user);
 				post.setCreatedDate(rs.getDate("created_date").toLocalDate());
