@@ -45,6 +45,12 @@ public class LoginServlet extends HttpServlet {
 
 		if (username != null && !username.isEmpty() && pass != null && !pass.isEmpty()) {
 			User existingUserByUsername = userRepository.findOneByUsername(username);
+			if(existingUserByUsername == null) {
+				request.setAttribute("error", "Sorry, your username or password was incorrect. Please check your username.");
+				RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
+				rd.forward(request, response);
+				return;
+			}
 			String existingpass = existingUserByUsername.getPassword();
 			String existingsalt = existingUserByUsername.getSalt();
 			if (service.checkPassword(existingpass, existingsalt, pass)) {// validating password and username

@@ -287,6 +287,12 @@ a:hover{
   height: 152px;
   overflow: hidden;
 }
+.profile-img-small{
+  display: inline-block;
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+}
 .profile-name{
   -webkit-box-flex: 0;
   -webkit-flex-grow: 0;
@@ -464,6 +470,15 @@ a:hover{
 .profile-big-img-content{
   display: inline-block;
 }
+.profile-small-img-content{
+  display: block;
+}
+.profile-small-img-wrapper{
+  width: 90px;
+  margin-right: 20px;
+  float:left;
+  text-align: center;
+}
 .profile-post-name{
   overflow: hidden;
   text-overflow: ellipsis;
@@ -538,6 +553,8 @@ a:hover{
 .posts-profile a:hover .posts-profile-overlay{
   opacity: 1;
 }
+
+
 .post-hidden-wrapper{
   position: relative;
 }
@@ -831,3 +848,18 @@ a:hover{
   padding: 15px;
   margin: 0px;
 }
+
+/*start eta css*/
+.edit-profile{
+  margin-bottom: 200px;
+  padding: 60px 20px;
+}
+
+.edit-profile-data{
+	padding-right: 120px;
+}
+.edit-profile-form-control
+{
+	position:relative;
+}
+/*end eta css*/

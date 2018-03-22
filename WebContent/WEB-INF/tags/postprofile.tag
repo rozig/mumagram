@@ -10,8 +10,8 @@
       </div>
       <div class="posts-profile-overlay uk-flex uk-flex-middle">
         <ul class="posts-profile-overlay-icons">
-          <li><span uk-icon="heart"></span> <span>${ post.like }</span></li>
-          <li><span uk-icon="comment"></span> <span>${ post.comment }</span></li>
+          <li><span uk-icon="heart"></span> <span>${ post.likeCount }</span></li>
+          <li><span uk-icon="comment"></span> <span>${ post.commentCount }</span></li>
         </ul>
       </div>
     </div>

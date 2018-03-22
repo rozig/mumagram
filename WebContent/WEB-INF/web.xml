@@ -42,7 +42,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>ViewProfile</servlet-name>
-    <url-pattern>/profile</url-pattern>
+    <url-pattern>/profile/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>EditProfile</servlet-name>
@@ -75,14 +75,6 @@
   <servlet-mapping>
     <servlet-name>Post</servlet-name>
     <url-pattern>/post/*</url-pattern>
-  </servlet-mapping>
-  <servlet>
-    <servlet-name>User</servlet-name>
-    <servlet-class>mumagram.controller.ViewUserServlet</servlet-class>
-  </servlet>
-  <servlet-mapping>
-    <servlet-name>User</servlet-name>
-    <url-pattern>/user/*</url-pattern>
   </servlet-mapping>
   <servlet>
     <servlet-name>Feed</servlet-name>

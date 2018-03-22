@@ -1,7 +1,6 @@
 package mumagram.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,9 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.Part;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import mumagram.model.JsonResponse;
 import mumagram.model.Post;
 import mumagram.model.User;
 import mumagram.repository.PostRepository;
