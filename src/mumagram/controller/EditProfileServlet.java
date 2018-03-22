@@ -57,7 +57,6 @@ public class EditProfileServlet extends HttpServlet {
 		else
 			isPrivate = "false";
 
-		
 			// Part profilePicturePart = request.getPart("profile-picture");
 
 			if (id < 0 || firstname == null || firstname.isEmpty() || lastname == null || lastname.isEmpty()

@@ -40,9 +40,11 @@ public class ChangePasswordServlet extends HttpServlet {
 		int id = Integer.parseInt(request.getParameter("id"));
 		String oldPassword = request.getParameter("oldpassword");
 		String newPassword = request.getParameter("newpassword");
-		String confirmNewPassword = request.getParameter("confirm-newpassword");
+		String confirmNewPassword = request.getParameter("confirmnewpassword");
 
-
+		System.out.println("oldpassword:"+request.getParameter("oldpassword"));
+		System.out.println("newpassword:"+request.getParameter("newpassword"));
+		System.out.println("confirmnewpassword:"+request.getParameter("confirmnewpassword"));
 
 		HttpSession session = request.getSession(false);
 		if (service.validateSession(session)) {

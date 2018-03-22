@@ -12,6 +12,12 @@ $(function(){
   $inputfilter = $('#input-filter'),
   $searchresult = $('#search-result'),
   $searchinput = $('#search-input');
+  // change password request start
+  var $oldPassword = $('#oldpassword');
+  var $newPassword = $('#newpassword');
+  var $confirmNewPassword = $('#confirm-newpassword');
+  var $buttonPass = $('#button-pass');
+  // change password request end
   
   if($searchinput.length){
 	  $searchinput.on('input', function(){
@@ -82,7 +88,8 @@ $(function(){
   if($drop){
     var droppedFiles = false;
 
-  // is draggable or not. from: (https://css-tricks.com/drag-and-drop-file-uploading/)
+  // is draggable or not. from:
+	// (https://css-tricks.com/drag-and-drop-file-uploading/)
   var isAdvancedUpload = function()
   {
     var div = document.createElement( 'div' );
@@ -144,7 +151,9 @@ $(function(){
   if( isAdvancedUpload )
   {
     $drop
-        .addClass( 'has-advanced-upload' ) // letting the CSS part to know drag&drop is supported by the browser
+        .addClass( 'has-advanced-upload' ) // letting the CSS part to know
+											// drag&drop is supported by the
+											// browser
         .on( 'drag dragstart dragend dragover dragenter dragleave drop', function( e )
         {
           // preventing the unwanted behaviours
@@ -161,8 +170,10 @@ $(function(){
         })
         .on( 'drop', function( e )
         {
-          droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
-          //console.log(droppedFiles);
+          droppedFiles = e.originalEvent.dataTransfer.files; // the files
+																// that were
+																// dropped
+          // console.log(droppedFiles);
           showFiles( droppedFiles );
         });
       }
@@ -202,5 +213,32 @@ $(function(){
 
     $instaimg.addClass(attr);
   });
+  
+  // change pass ajax request
+  
+  $buttonPass.on('click',function(e){
+	  e.preventDefault();
+	  if(!$oldPassword || !$newPassword || !$confirmNewPassword){
+		  return;
+	  };
+	  
+	  $.ajax({ 
+		  	url: _base_url+'/mumagram/change-password', 
+		  	type:'POST', 
+		  	data:{
+		  	oldpassword:$oldPassword.val(),
+		  	newpassword:$newPassword.val(),
+		  	confirmnewpassword:$confirmNewPassword.val()
+		  	},
+		  	success:function(resultData) {
+		  		alert("Password changed") 
+		  		}
+	  });
+	  
+	  
+
+  });
+  
+
 }
 });
