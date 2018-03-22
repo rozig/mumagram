@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -52,6 +51,7 @@ public class ChangePasswordServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.write(resultJson);
 		out.flush();
+		return;
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
