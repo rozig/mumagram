@@ -800,7 +800,10 @@ a:hover {
 	grid-gap: 20px;
 	grid-auto-rows: minmax(100px, auto);
 }
-
+.post-media img{
+	width: 100%;
+	height: auto;
+}
 .filter-aqua {
 	-webkit-filter: sepia(.5) hue-rotate(-30deg) saturate(1.4);
 	filter: sepia(.5) hue-rotate(-30deg) saturate(1.4);
