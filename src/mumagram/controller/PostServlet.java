@@ -88,7 +88,7 @@ public class PostServlet extends HttpServlet {
 			String description = request.getParameter("description");
 			Part postPic = request.getPart("file");
 			
-			if(filter == null || filter.isEmpty() || postPic == null) {
+			if(postPic == null) {
 				request.setAttribute("error", "Some fields are missing!");
 				RequestDispatcher rd = request.getRequestDispatcher("/pages/viewpost.jsp");
 				rd.forward(request, response);
