@@ -98,9 +98,11 @@ public class FollowServlet extends HttpServlet {
 			}
 			Follower existingFollowing = followerRepository.isFollower(followingUser, user);
 			String responseMessage;
+			String status;
 			if(existingFollowing != null && (existingFollowing.getStatus().equals("following") || existingFollowing.getStatus().equals("pending"))) {
 				followerRepository.delete(existingFollowing);
 				responseMessage = "You're unfollowed this user!";
+				status = "Follow";
 			} else {
 				Follower follower = new Follower();
 				follower.setUser(followingUser);
@@ -108,9 +110,11 @@ public class FollowServlet extends HttpServlet {
 				if(followingUser.isPrivate()) {
 					follower.setStatus("pending");
 					responseMessage = "Your follow request is sent!";
+					status = "Pending";
 				} else {
 					follower.setStatus("following");
 					responseMessage = "You're now following " + followingUser.getUsername();
+					status = "Following";
 				}
 				request.setAttribute("user", user);
 				request.setAttribute("userId", user.getId());
@@ -119,7 +123,7 @@ public class FollowServlet extends HttpServlet {
 
 			JsonResponse jsonResponse = new JsonResponse();
 			jsonResponse.setCode(1000);
-			jsonResponse.setStatus("success");
+			jsonResponse.setStatus(status);
 			jsonResponse.setData(responseMessage);
 
 			ObjectMapper mapper = new ObjectMapper();
