@@ -50,7 +50,19 @@ public class SearchUserServlet extends HttpServlet {
 			out.write(resultJson);
 			out.flush();
 		} else {
-			response.sendRedirect("/mumagram/login?error=Please login your username and password");
+			JsonResponse jsonResponse = new JsonResponse();
+			jsonResponse.setCode(3000);
+			jsonResponse.setStatus("denied");
+			jsonResponse.setData("You're not logged in!");
+
+			ObjectMapper mapper = new ObjectMapper();
+			String resultJson = mapper.writeValueAsString(jsonResponse);
+			
+			response.setContentType("application/json");
+			
+			PrintWriter out = response.getWriter();
+			out.write(resultJson);
+			out.flush();
 		}		
 	}
 

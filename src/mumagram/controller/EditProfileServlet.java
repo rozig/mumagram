@@ -39,7 +39,7 @@ public class EditProfileServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/pages/edit-profile.jsp");
 			rd.forward(request, response);
 		} else {
-			response.sendRedirect("/mumagram/login?error=Please login your username and password");
+			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login?error=Please login your username and password");
 		}
 	}
 
@@ -52,76 +52,73 @@ public class EditProfileServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		String bio = request.getParameter("bio");
 		String isPrivate = request.getParameter("is-private");
-		if (isPrivate != null)
-			isPrivate = "true";
-		else
-			isPrivate = "false";
-
 		
-			// Part profilePicturePart = request.getPart("profile-picture");
+		isPrivate = isPrivate != null ? "true" : "false";
 
-			if (id < 0 || firstname == null || firstname.isEmpty() || lastname == null || lastname.isEmpty()
-					|| username == null || username.isEmpty() || email == null || email.isEmpty() || bio == null
-					|| bio.isEmpty()) {
-				request.setAttribute("errorMessage", "You must fill all fields!");
+		Part profilePicturePart = request.getPart("profile-picture");
+
+		if (id < 0 || firstname == null || firstname.isEmpty() || lastname == null || lastname.isEmpty()
+				|| username == null || username.isEmpty() || email == null || email.isEmpty() || bio == null
+				|| bio.isEmpty()) {
+			request.setAttribute("errorMessage", "You must fill all fields!");
+			request.getRequestDispatcher("/pages/edit-profile.jsp").forward(request, response);
+			return;
+		}
+
+		Pattern usernamePattern = Pattern.compile("^[a-zA-Z0-9_-]{3,}$", Pattern.CASE_INSENSITIVE);
+		if (!usernamePattern.matcher(username).matches()) {
+			request.setAttribute("errorMessage", "Your username is incorrect!");
+			request.getRequestDispatcher("/pages/edit-profile.jsp").forward(request, response);
+			return;
+		}
+
+		User existingUserByEmail = userRepository.findOneByEmail(email);
+		if (existingUserByEmail != null && existingUserByEmail.getId() != id) {
+			request.setAttribute("errorMessage", "Email is in use!");
+			request.getRequestDispatcher("/pages/edit-profile.jsp").forward(request, response);
+			return;
+		}
+
+		User existingUserByUsername = userRepository.findOneByUsername(username);
+		if (existingUserByUsername != null && existingUserByUsername.getId() != id) {
+			request.setAttribute("errorMessage", "Username is in use!");
+			request.getRequestDispatcher("/pages/edit-profile.jsp").forward(request, response);
+			return;
+		}
+
+		 String profilePicture = service.imageUploader(username, profilePicturePart);
+		String oldEmail = null;
+
+		HttpSession session = request.getSession(false);
+		if (service.validateSession(session)) {
+			User user = (User) session.getAttribute("user");
+			if (user.getId() != id) {
+				request.setAttribute("errorMessage", "You can not modify other user's profile!!!");
 				request.getRequestDispatcher("/pages/edit-profile.jsp").forward(request, response);
 				return;
 			}
+			oldEmail = user.getEmail();
+			user.setFirstname(firstname);
+			user.setLastname(lastname);
+			user.setEmail(email);
+			user.setUsername(username);
+			user.setBio(bio);
+			user.setPrivate(Boolean.valueOf(isPrivate));
+			 user.setProfilePicture(profilePicture);
+			user.setUpdatedDate(LocalDate.now());
+			userRepository.update(user);
 
-			Pattern usernamePattern = Pattern.compile("^[a-zA-Z0-9_-]{3,}$", Pattern.CASE_INSENSITIVE);
-			if (!usernamePattern.matcher(username).matches()) {
-				request.setAttribute("errorMessage", "Your username is incorrect!");
-				request.getRequestDispatcher("/pages/edit-profile.jsp").forward(request, response);
-				return;
+			service.sendEmail(email, "Your information updated!", "Your information is updated!");
+			if (oldEmail != null && !oldEmail.isEmpty()) {
+				service.sendEmail(oldEmail, "Your information updated!", "Your information is updated!");
 			}
 
-			User existingUserByEmail = userRepository.findOneByEmail(email);
-			if (existingUserByEmail != null && existingUserByEmail.getId() != id) {
-				request.setAttribute("errorMessage", "Email is in use!");
-				request.getRequestDispatcher("/pages/edit-profile.jsp").forward(request, response);
-				return;
-			}
-
-			User existingUserByUsername = userRepository.findOneByUsername(username);
-			if (existingUserByUsername != null && existingUserByUsername.getId() != id) {
-				request.setAttribute("errorMessage", "Username is in use!");
-				request.getRequestDispatcher("/pages/edit-profile.jsp").forward(request, response);
-				return;
-			}
-
-			// String profilePicture = service.imageUploader(username, profilePicturePart);
-			String oldEmail = null;
-
-			HttpSession session = request.getSession(false);
-			if (service.validateSession(session)) {
-				User user = (User) session.getAttribute("user");
-				if (user.getId() != id) {
-					request.setAttribute("errorMessage", "You can not modify other user's profile!!!");
-					request.getRequestDispatcher("/pages/edit-profile.jsp").forward(request, response);
-					return;
-				}
-				oldEmail = user.getEmail();
-				user.setFirstname(firstname);
-				user.setLastname(lastname);
-				user.setEmail(email);
-				user.setUsername(username);
-				user.setBio(bio);
-				user.setPrivate(Boolean.valueOf(isPrivate));
-				// user.setProfilePicture(profilePicture);
-				user.setUpdatedDate(LocalDate.now());
-				userRepository.update(user);
-
-				service.sendEmail(email, "Your information updated!", "Your information is updated!");
-				if (oldEmail != null && !oldEmail.isEmpty()) {
-					service.sendEmail(oldEmail, "Your information updated!", "Your information is updated!");
-				}
-
-				request.setAttribute("user", user);
-				request.setAttribute("successMessage", "Your information saved successfully!");
-				RequestDispatcher rd = request.getRequestDispatcher("/pages/edit-profile.jsp");
-				rd.forward(request, response);
-			} else {
-				response.sendRedirect("/mumagram/login?error=Please login your username and password");
-			}
+			request.setAttribute("user", user);
+			request.setAttribute("successMessage", "Your information saved successfully!");
+			RequestDispatcher rd = request.getRequestDispatcher("/pages/edit-profile.jsp");
+			rd.forward(request, response);
+		} else {
+			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login?error=Please login your username and password");
+		}
 	}
 }

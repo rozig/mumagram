@@ -33,6 +33,7 @@ public class FollowServlet extends HttpServlet {
         followerRepository = new FollowerRepository();
     }
 
+    // username = Logged user's username. following_user_id = Profile ID
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if(service.validateSession(session)) {
