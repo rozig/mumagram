@@ -21,6 +21,10 @@ public class CommentRepository {
 		postRepository = new PostRepository();
 		userRepository = new UserRepository();
 	}
+	
+	/*
+	 * Receives an int value as parameter and read comment data from database. Then converting the data to the model object
+	 */
 	public Comment findOneById(int id) {
 		Comment comment = null;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -50,6 +54,9 @@ public class CommentRepository {
 		return comment;
 	}
 
+	/*
+	 * Receives an Post object as parameter and read comment list from database. Then converting the list to the model object list
+	 */
 	public List<Comment> getCommentsByPost(Post post) {
 		List<Comment> comments = new ArrayList<Comment>();
 
@@ -83,6 +90,9 @@ public class CommentRepository {
 		return comments;
 	}
 
+	/*
+	 * Receives comment object as parameter and insert comment data to the database table.
+	 */
 	public boolean save(Comment comment) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -102,6 +112,9 @@ public class CommentRepository {
 		return result;
 	}
 
+	/*
+	 * Receives comment object as parameter and update comment data in the database table.
+	 */
 	public boolean update(Comment comment) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -122,7 +135,10 @@ public class CommentRepository {
 		}
 		return result;
 	}
-	
+
+	/*
+	 * Receives comment object as parameter and delete comment data from the database table.
+	 */
 	public boolean delete(Comment comment) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
