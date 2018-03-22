@@ -95,8 +95,7 @@ public class PostServlet extends HttpServlet {
 			}
 			User user = (User) session.getAttribute("user");
 			String username = (user).getUsername();
-			long mil = System.currentTimeMillis();
-			String pic = service.imageUploader(username+mil, postPic);
+			String pic = service.imageUploader(username, postPic, "post");
 			Post post = new Post();
 			
 			post.setFilter(filter);

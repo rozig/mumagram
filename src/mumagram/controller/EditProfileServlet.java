@@ -86,7 +86,7 @@ public class EditProfileServlet extends HttpServlet {
 			return;
 		}
 
-		 String profilePicture = service.imageUploader(username, profilePicturePart);
+		 String profilePicture = service.imageUploader(username, profilePicturePart, "profile");
 		String oldEmail = null;
 
 		HttpSession session = request.getSession(false);
