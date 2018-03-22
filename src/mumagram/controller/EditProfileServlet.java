@@ -17,7 +17,7 @@ import javax.servlet.http.Part;
 import mumagram.model.User;
 import mumagram.repository.UserRepository;
 import mumagram.service.Service;
-
+//This class is used for editing profile informations
 @WebServlet("/EditProfileServlet")
 @MultipartConfig
 public class EditProfileServlet extends HttpServlet {
@@ -33,7 +33,7 @@ public class EditProfileServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
-		if (service.validateSession(session)) {
+		if (service.validateSession(session)) { // service will check session exist or not
 			User user = (User) session.getAttribute("user");
 			request.setAttribute("user", user);
 			RequestDispatcher rd = request.getRequestDispatcher("/pages/edit-profile.jsp");
@@ -64,7 +64,7 @@ public class EditProfileServlet extends HttpServlet {
 			request.getRequestDispatcher("/pages/edit-profile.jsp").forward(request, response);
 			return;
 		}
-
+		// Checking username if wrong username pattern
 		Pattern usernamePattern = Pattern.compile("^[a-zA-Z0-9_-]{3,}$", Pattern.CASE_INSENSITIVE);
 		if (!usernamePattern.matcher(username).matches()) {
 			request.setAttribute("errorMessage", "Your username is incorrect!");

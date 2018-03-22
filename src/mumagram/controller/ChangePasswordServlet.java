@@ -19,12 +19,14 @@ import mumagram.service.Service;
 import mumagram.model.JsonResponse;
 import mumagram.model.User;
 
+//This class is used for changing password of user
 @WebServlet("/change-password")
 public class ChangePasswordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	private Service service;
-	private UserRepository userRepository;
+	private Service service; // using for checking encrypted password and checking validation
+	private UserRepository userRepository; // it's DAO object and it's using for getting encrypted password and update
+											// user in database
 
 	public ChangePasswordServlet() {
 		super();
@@ -32,8 +34,11 @@ public class ChangePasswordServlet extends HttpServlet {
 		userRepository = new UserRepository();
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+
+		// returning json object for get request
+
 		JsonResponse jsonResponse = new JsonResponse();
 		jsonResponse.setCode(2000);
 		jsonResponse.setStatus("error");
@@ -49,27 +54,27 @@ public class ChangePasswordServlet extends HttpServlet {
 		out.flush();
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		HttpSession session = request.getSession(false);
-		if (service.validateSession(session)) {
+		if (service.validateSession(session)) { // service will check session exist or not
 
 			int id = Integer.parseInt(request.getParameter("id"));
 			String oldPassword = request.getParameter("oldpassword");
 			String newPassword = request.getParameter("newpassword");
 			String confirmNewPassword = request.getParameter("confirmnewpassword");
 
-			System.out.println("id:" + request.getParameter("id"));
-			System.out.println("oldpassword:" + request.getParameter("oldpassword"));
-			System.out.println("newpassword:" + request.getParameter("newpassword"));
-			System.out.println("confirmnewpassword:" + request.getParameter("confirmnewpassword"));
+			// System.out.println("id:" + request.getParameter("id"));
+			// System.out.println("oldpassword:" + request.getParameter("oldpassword"));
+			// System.out.println("newpassword:" + request.getParameter("newpassword"));
+			// System.out.println("confirmnewpassword:"
+			// +request.getParameter("confirmnewpassword"));
 
+			// returning error messages if some datas are missed
 			if (id < 0 || oldPassword == null || oldPassword.isEmpty() || newPassword == null || newPassword.isEmpty()
 					|| confirmNewPassword == null || confirmNewPassword.isEmpty()) {
-				// request.setAttribute("error", "You must fill all fields!");
-				// request.getRequestDispatcher("pages/register.jsp");
-				// return;
+
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(2000);
 				jsonResponse.setStatus("error");
@@ -85,11 +90,8 @@ public class ChangePasswordServlet extends HttpServlet {
 				out.flush();
 				return;
 			}
-
+			// returning error messages if new passwords are not equaled
 			if (!newPassword.equals(confirmNewPassword)) {
-				// request.setAttribute("error", "Your new passwords did not match");
-				// request.getRequestDispatcher("pages/register.jsp");
-				// return;
 
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(2000);
@@ -106,11 +108,9 @@ public class ChangePasswordServlet extends HttpServlet {
 				out.flush();
 				return;
 			}
-			
+
+			// returning error messages if old password is same as new password
 			if (newPassword.equals(oldPassword)) {
-				// request.setAttribute("error", "Your new passwords did not match");
-				// request.getRequestDispatcher("pages/register.jsp");
-				// return;
 
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(2000);
@@ -131,11 +131,6 @@ public class ChangePasswordServlet extends HttpServlet {
 			User user = (User) session.getAttribute("user");
 
 			if (user.getId() != id) {
-				// request.setAttribute("errorMessage", "You can not modify other user's
-				// profile!!!");
-				// request.getRequestDispatcher("/pages/edit-profile.jsp").forward(request,
-				// response);
-				// return;
 
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(2000);
@@ -156,6 +151,10 @@ public class ChangePasswordServlet extends HttpServlet {
 			String existingpass = user.getPassword();
 			String existingsalt = user.getSalt();
 
+			/*
+			 * password is saved with encrypted in database. So below service is used for
+			 * encrypt with saved salt (cryptography) and checking input password
+			 */
 			if (service.checkPassword(existingpass, existingsalt, oldPassword)) {
 
 				String newSalt = service.getNextSalt();
@@ -169,10 +168,6 @@ public class ChangePasswordServlet extends HttpServlet {
 
 				service.sendEmail(user.getEmail(), "Mumagram password changed ",
 						"Your password of " + user.getUsername() + " has changed in Mumagram. ");
-
-				// request.setAttribute("user", user);
-				// request.setAttribute("type", "changepass");
-				// request.setAttribute("successMessage", "Your password has changed");
 
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(1000);
@@ -188,13 +183,8 @@ public class ChangePasswordServlet extends HttpServlet {
 				out.flush();
 				return;
 
-				// RequestDispatcher rd =
-				// request.getRequestDispatcher("/pages/edit-profile.jsp");
-				// rd.forward(request, response);
 			} else {
-				// request.setAttribute("error", "Your old password is not correct");
-				// request.getRequestDispatcher("pages/register.jsp");
-				// return;
+
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(2000);
 				jsonResponse.setStatus("error");
@@ -212,7 +202,8 @@ public class ChangePasswordServlet extends HttpServlet {
 			}
 
 		} else {
-			response.sendRedirect(getServletContext().getAttribute("baseUrl")+"/login?error=Please login your username and password");
+			response.sendRedirect(getServletContext().getAttribute("baseUrl")
+					+ "/login?error=Please login your username and password");
 		}
 	}
 

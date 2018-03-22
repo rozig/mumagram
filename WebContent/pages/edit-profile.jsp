@@ -9,8 +9,6 @@
 
 	<jsp:body>
     
-
-
             <div class="edit-profile">
             <div class="empty-content">
             		<div class="uk-grid">
@@ -210,8 +208,8 @@
 									              <div class="profile-small-img-content">
 									              
 									                <span
-																class="profile-img-small uk-border-circle"><img
-																src="${user.profilePicture }" alt="" />
+															class="profile-img-small uk-border-circle"><img
+															src="${user.profilePicture }" alt="" />
 															
 									                </span>
 
@@ -237,11 +235,12 @@
 	            										</div>
 	            										<div class="uk-width-3-4">
 	            											<div
-														class="uk-form-controls edit-profile-form-control">	
+													class="uk-form-controls edit-profile-form-control">	
 	            												<span class="uk-form-icon" uk-icon="icon: lock"></span>
 						                  					<input class="uk-input" type="password"
-															id="oldpassword" name="oldpassword" required>
-															<input type="hidden" name="id" id="pass-user-id" value="${user.id}" />
+														id="oldpassword" name="oldpassword" required>
+															<input type="hidden" name="id" id="pass-user-id"
+														value="${user.id}" />
 	            											</div>
 	            										</div>
 	            						  </div>
@@ -253,10 +252,10 @@
 	            										</div>
 	            										<div class="uk-width-3-4">
 	            											<div
-														class="uk-form-controls edit-profile-form-control">	
+													class="uk-form-controls edit-profile-form-control">	
 	            												<span class="uk-form-icon" uk-icon="icon: lock"></span>
 						                  					<input class="uk-input" type="password"
-															id="newpassword" name="newpassword" required>
+														id="newpassword" name="newpassword" required>
 	            											</div>
 	            										</div>
 	            						  </div>
@@ -265,15 +264,14 @@
 						              <div uk-grid>
 	            										<div class="uk-width-1-4">
 	            											<label class="uk-form-label"
-														for="confirm-newpassword">Confirm new password</label>
+													for="confirm-newpassword">Confirm new password</label>
 	            										</div>
 	            										<div class="uk-width-3-4">
 	            											<div
-														class="uk-form-controls edit-profile-form-control">	
+													class="uk-form-controls edit-profile-form-control">	
 	            												<span class="uk-form-icon" uk-icon="icon: lock"></span>
 						                  					<input class="uk-input" type="password"
-															id="confirmnewpassword" name="confirmnewpassword"
-															required>
+														id="confirmnewpassword" name="confirmnewpassword" required>
 	            											</div>
 	            										</div>
 	            						  </div>
@@ -287,7 +285,7 @@
 					                </div>
 					                <div class="uk-width-3-4">
 					                		<button id="button-pass"
-														class="uk-input uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Change password</button>
+													class="uk-input uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Change password</button>
 					                </div>
 					                  
 					                </div>
