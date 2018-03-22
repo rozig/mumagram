@@ -15,7 +15,8 @@ $(function(){
   // change password request start
   var $oldPassword = $('#oldpassword');
   var $newPassword = $('#newpassword');
-  var $confirmNewPassword = $('#confirm-newpassword');
+  var $confirmNewPassword = $('#confirmnewpassword');
+  var $userIdPass = $('#pass-user-id');
   var $buttonPass = $('#button-pass');
   // change password request end
   
@@ -218,24 +219,43 @@ $(function(){
   
   $buttonPass.on('click',function(e){
 	  e.preventDefault();
-	  if(!$oldPassword || !$newPassword || !$confirmNewPassword){
-		  return;
-	  };
-	  
+	
 	  $.ajax({ 
-		  	url: _base_url+'/mumagram/change-password', 
+		  	url: 'http://localhost:8080'+'/mumagram/change-password', 
 		  	type:'POST', 
 		  	data:{
+		  	id:$userIdPass.val(),
 		  	oldpassword:$oldPassword.val(),
 		  	newpassword:$newPassword.val(),
 		  	confirmnewpassword:$confirmNewPassword.val()
 		  	},
 		  	success:function(resultData) {
-		  		alert("Password changed") 
+		  		$('#response-pass').empty();
+		  		if(resultData.code===1000 && resultData.status==="success"){
+		  			var div2 = $('<div>').addClass('uk-alert-success').attr("uk-alert","").append($('<p>').text(resultData.data));
+		  			var div1 = $('<div>').addClass('uk-margin empty-field').append(div2);
+		  			$('#response-pass').append(div1);
 		  		}
-	  });
+		  		else if(resultData.code===2000 && resultData.status==="error"){
+		  			var div2 = $('<div>').addClass('uk-alert-danger').attr("uk-alert","").append($('<p>').text(resultData.data));
+		  			var div1 = $('<div>').addClass('uk-margin empty-field').append(div2);
+		  			$('#response-pass').append(div1);
+		  		}
+		  		else
+		  		{
+		  			var div2 = $('<div>').addClass('uk-alert-danger').attr("uk-alert","").append($('<p>').text("Please check your internet!"));
+		  			var div1 = $('<div>').addClass('uk-margin empty-field').append(div2);
+		  			$('#response-pass').append(div1);
+		  		}
+		  	}
+	  }).fail(errorAjax);
 	  
-	  
+	  function errorAjax(error)
+	  {
+			var div2 = $('<div>').addClass('uk-alert-danger').attr("uk-alert","").append($('<p>').text("error"));
+  			var div1 = $('<div>').addClass('uk-margin empty-field').append(div2);
+  			$('#response-pass').append(div1);
+	  }
 
   });
   

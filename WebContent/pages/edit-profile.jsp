@@ -241,7 +241,7 @@
 	            												<span class="uk-form-icon" uk-icon="icon: lock"></span>
 						                  					<input class="uk-input" type="password"
 															id="oldpassword" name="oldpassword" required>
-															<input type="hidden" name="id" value="${user.id}" />
+															<input type="hidden" name="id" id="pass-user-id" value="${user.id}" />
 	            											</div>
 	            										</div>
 	            						  </div>
@@ -292,33 +292,7 @@
 					                  
 					                </div>
 					              </div>
-					            		<c:choose>
-									    <c:when test="${errorMessage != null }">
-						
-										 <div class="uk-margin empty-field">			 				
-											<div class="uk-alert-danger" uk-alert>
-									
-									    		<p> ${errorMessage }</p>
-										</div>
-										</div>
-									    </c:when>
-									    <c:otherwise>
-									    </c:otherwise>
-									</c:choose>
-									    
-									<c:choose>
-									    <c:when test="${successMessage != null }">
-						
-										 <div class="uk-margin empty-field">			 				
-										<div class="uk-alert-success" uk-alert>
-									
-									    <p> ${successMessage }</p>
-										</div>
-										</div>
-									    </c:when>
-									    <c:otherwise>
-									    </c:otherwise>
-								    </c:choose>
+					            		<div id="response-pass"></div>
 								</form>				          
 						</div>
 		              </li>
