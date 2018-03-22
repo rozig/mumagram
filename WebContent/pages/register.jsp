@@ -12,7 +12,7 @@
           <h1 class="logo-text">Mumagram</h1>
 
           <div class="empty-form">
-            <form method="post" action="/mumagram/register"
+            <form method="post" action="${baseUrl}/register"
 						enctype="multipart/form-data">
               <div class="uk-margin empty-field">
                 <div class="uk-inline">

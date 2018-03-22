@@ -34,7 +34,7 @@ public class FeedServlet extends HttpServlet {
 			rd.forward(request, response);
 			return;
 		} else {
-			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login?error=Please login your username and password");
+			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login");
 		}
 	}
 

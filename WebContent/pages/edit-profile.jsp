@@ -9,8 +9,6 @@
 
 	<jsp:body>
     
-
-
             <div class="edit-profile">
             <div class="empty-content">
             		<div class="uk-grid">
@@ -19,17 +17,17 @@
 							uk-tab="connect: #component-tab-left; animation: uk-animation-fade">
 					            <li class="uk-active"><a href="#">Edit Profile</a></li>
 					            <li id="cp"><a href="#">Change Password</a></li>
-					            <li><a href="#">Authorized Applications</a></li>
+<!-- 					            <li><a href="#">Authorized Applications</a></li>
 					            <li><a href="#">Comments</a></li>
 					            <li><a href="#">Email and SMS</a></li>
-					            <li><a href="#">Manage Contacts</a></li>
+					            <li><a href="#">Manage Contacts</a></li> -->
 					        </ul>
             		</div>
    				 <div class="uk-width-3-4 edit-profile-form-divider">
 					<ul id="component-tab-left" class="uk-switcher">
 		                    <li>
 							 <div class="empty-form edit-profile-data">
-					            <form method="post" action="/mumagram/profile/edit"
+					            <form method="post" action="${ baseUrl}/profile/edit"
 										enctype="multipart/form-data">
 								 <div class="uk-margin empty-field">
 								 	<div uk-grid>
@@ -202,7 +200,7 @@
 		              </li>
 		              <li>
 		                    <div class="empty-form edit-profile-data">
-					            <form id="changepass_form" method="post" >
+					       
 								 <div class="uk-margin empty-field">
 								 	<div uk-grid>
 								 		<div class="uk-width-1-4">
@@ -210,8 +208,8 @@
 									              <div class="profile-small-img-content">
 									              
 									                <span
-																class="profile-img-small uk-border-circle"><img
-																src="${user.profilePicture }" alt="" />
+															class="profile-img-small uk-border-circle"><img
+															src="${user.profilePicture }" alt="" />
 															
 									                </span>
 
@@ -237,11 +235,12 @@
 	            										</div>
 	            										<div class="uk-width-3-4">
 	            											<div
-														class="uk-form-controls edit-profile-form-control">	
+													class="uk-form-controls edit-profile-form-control">	
 	            												<span class="uk-form-icon" uk-icon="icon: lock"></span>
 						                  					<input class="uk-input" type="password"
-															id="oldpassword" name="oldpassword" required>
-															<input type="hidden" name="id" id="pass-user-id" value="${user.id}" />
+														id="oldpassword" name="oldpassword" required>
+															<input type="hidden" name="id" id="pass-user-id"
+														value="${user.id}" />
 	            											</div>
 	            										</div>
 	            						  </div>
@@ -253,10 +252,10 @@
 	            										</div>
 	            										<div class="uk-width-3-4">
 	            											<div
-														class="uk-form-controls edit-profile-form-control">	
+													class="uk-form-controls edit-profile-form-control">	
 	            												<span class="uk-form-icon" uk-icon="icon: lock"></span>
 						                  					<input class="uk-input" type="password"
-															id="newpassword" name="newpassword" required>
+														id="newpassword" name="newpassword" required>
 	            											</div>
 	            										</div>
 	            						  </div>
@@ -265,15 +264,14 @@
 						              <div uk-grid>
 	            										<div class="uk-width-1-4">
 	            											<label class="uk-form-label"
-														for="confirm-newpassword">Confirm new password</label>
+													for="confirm-newpassword">Confirm new password</label>
 	            										</div>
 	            										<div class="uk-width-3-4">
 	            											<div
-														class="uk-form-controls edit-profile-form-control">	
+													class="uk-form-controls edit-profile-form-control">	
 	            												<span class="uk-form-icon" uk-icon="icon: lock"></span>
 						                  					<input class="uk-input" type="password"
-															id="confirmnewpassword" name="confirmnewpassword"
-															required>
+														id="confirmnewpassword" name="confirmnewpassword" required>
 	            											</div>
 	            										</div>
 	            						  </div>
@@ -287,16 +285,16 @@
 					                </div>
 					                <div class="uk-width-3-4">
 					                		<button id="button-pass"
-														class="uk-input uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Change password</button>
+													class="uk-input uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Change password</button>
 					                </div>
 					                  
 					                </div>
 					              </div>
-					            		<div id="response-pass"></div>
-								</form>				          
+					            		<div id="response-pass"></div>			          
 						</div>
 		              </li>
-		              <li>
+		              
+<!-- 		              <li>
 		                   <div class="empty-form edit-profile-data">
 		                   	<p>You have not authorized any applications to access your Instagram account.</p>
 		                   </div>
@@ -309,7 +307,8 @@
 		              </li>
 		              <li>
 		                    4
-		              </li>
+		              </li> -->
+		              
                 		</ul>
 				</div>
 				</div>
