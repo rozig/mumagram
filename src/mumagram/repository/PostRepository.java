@@ -26,8 +26,8 @@ public class PostRepository {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"SELECT p.id, p.picture, p.description, p.filter, p.user_id, p.created_date, p.updated_date,"
 				+ "(SELECT COUNT(1) FROM `like` l WHERE l.post_id = p.id) AS like_count,"
-				+ "(SELECT COUNT(id) FROM `comment` c WHERE c.post_id = p.id) AS comment_count "
-				+ "FROM post p WHERE p.id = ?"
+				+ "(SELECT COUNT(id) FROM `comment` c WHERE c.post_id = p.id) AS comment_count, COALESCE(l.id, 0) AS `liked` "
+				+ "FROM post p LEFT JOIN `like` l ON p.id = l.post_id WHERE p.id = ?"
 			);
 			preparedStatement.setInt(1, id);
 			ResultSet rs = preparedStatement.executeQuery();
@@ -41,6 +41,11 @@ public class PostRepository {
 				post.setCommentCount(rs.getInt("comment_count"));
 				post.setLikeCount(rs.getInt("like_count"));
 				post.setCreatedDate( rs.getDate("created_date").toLocalDate());
+				if(rs.getInt("liked") > 0) {
+					post.setLiked(true);
+				} else {
+					post.setLiked(false);
+				}
 				post.setUser(user);
 			}
 

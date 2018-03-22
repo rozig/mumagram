@@ -61,13 +61,11 @@ public class AddCommentServlet extends HttpServlet {
 		if(service.validateSession(session)) {
 			String comment = request.getParameter("comment");
 			String postId = request.getParameter("post_id");
-			String userId = request.getParameter("user_id");
 			User user = null;
 			
 			// returning error messages if some datas are missed
 			if(comment == null || comment.isEmpty() ||
-			   postId == null || postId.isEmpty() ||
-			   userId == null || userId.isEmpty()) {
+			   postId == null || postId.isEmpty()) {
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(2000);
 				jsonResponse.setStatus("error");
@@ -85,24 +83,6 @@ public class AddCommentServlet extends HttpServlet {
 			}
 			
 			user = (User) session.getAttribute("user");
-			
-			//it will check if uses session is correct
-			if(Integer.parseInt(userId) != user.getId()) {
-				JsonResponse jsonResponse = new JsonResponse();
-				jsonResponse.setCode(3000);
-				jsonResponse.setStatus("denied");
-				jsonResponse.setData("Your user id doesn't match with session user id!");
-
-				ObjectMapper mapper = new ObjectMapper();
-				String resultJson = mapper.writeValueAsString(jsonResponse);
-				
-				response.setContentType("application/json");
-				
-				PrintWriter out = response.getWriter();
-				out.write(resultJson);
-				out.flush();
-				return;
-			}
 			
 			//it checks if post exists or not
 			Post post = postRepository.findOneById(Integer.parseInt(postId));
