@@ -17,6 +17,7 @@ $(function(){
   $postwrapper = $('#feed-post-container'),
   $ajaxloader = $('#ajax-loader'),
   $document = $('document'),
+  $postprofileposts = $('#posts-profile-wrapper'),
   $window = $('window');
 
   // change password request start
@@ -62,13 +63,27 @@ $(function(){
 	}
 	// Like button end
 	
-	
+
+    // infinite scroll
+    $(window).on("scroll", function() {
+    	var scrollHeight = $(document).height();
+    	var scrollPosition = $(window).height() + $(window).scrollTop();
+    	
+    	if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+    		setTimeout(function() {
+    			load_posts();
+    			load_profile_posts();
+    		}, 300 );
+    	}
+    });
+    
   // user feed section
-  if($postwrapper.length){
     var page_counter = 0;
+    var profile_page_counter = 1;
     var limit = false;
     
     var load_posts = function(){
+      if(!$postwrapper.length){ return false; };
       // show ajax loader
       $ajaxloader.show();
       
@@ -86,7 +101,6 @@ $(function(){
             append_posts(data.data);
           }else{
             //doesn't exist
-            $follow.hide();
           }
         }else{
           //error exists
@@ -94,7 +108,7 @@ $(function(){
         }
         
         // adding page number
-        page_counter++;
+        profile_page_counter++;
       }).fail(function(e){
         console.log(e);
       }).always(function() {
@@ -102,22 +116,88 @@ $(function(){
       });
     }
     
+    var load_profile_posts = function(){
+	    if(!$postprofileposts.length){ return false; };
+	    // show ajax loader
+	    $ajaxloader.show();
+	    
+	    $.ajax({
+	      url: _base_url+'/get-posts',
+	      method: 'POST',
+	      data: {
+	        'page': page_counter,
+	        'type': 'profile'
+	      }
+	    }).done(function(data){
+	      if(data.code === 1000){
+	        if(Object.keys(data.data).length>0){
+	          // append posts
+	          append_profile_posts(data.data);
+	        }else{
+	          //doesn't exist
+	          console.log('post doesnt exist');
+	        }
+	      }else{
+	        //error exists
+	        console.log(data.data);
+	      }
+	      
+	      // adding page number
+	      page_counter++;
+	    }).fail(function(e){
+	      console.log(e);
+	    }).always(function() {
+	      $ajaxloader.hide();
+	    });
+	  }
+    
     // when page load, load posts
     load_posts();
     
-    // infinite scroll
-    $(window).on("scroll", function() {
-    	var scrollHeight = $(document).height();
-    	var scrollPosition = $(window).height() + $(window).scrollTop();
-    	if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-    		setTimeout(function() {
-    			load_posts();
-    			
-    		}, 300 );
+    var append_profile_posts = function(data){
+    	if(data.length==0){
+
+    		var limit = true;
+    		
+    		if(profile_page_counter<1 && limit){
+	    		$postwrapper.append(`<div class="mum-error" uk-height-viewport>
+					<div class="mum-error-container">
+						<h2>Please follow people.</h2>
+						<p>
+							Search people by username or first name or last name.
+						</p>
+					</div>
+				</div>`);
+	    		}
+    		return;
     	}
-    });
+    	
+    	for(var post of data){
+    		var template = `
+    			<div class="posts-profile">
+				  <a href="${ _base_url }/post/${ post.id }">
+				    <div class="posts-profile-container">
+				      <div class="posts-profile-content ${ post.filter }" style="background-image: url(${post.picture})">
+				      </div>
+				      <div class="posts-profile-overlay uk-flex uk-flex-middle">
+				        <ul class="posts-profile-overlay-icons">
+				          <li><span uk-icon="heart"></span> <span>${ post.likeCount }</span></li>
+				          <li><span uk-icon="comment"></span> <span>${ post.commentCount }</span></li>
+				        </ul>
+				      </div>
+				    </div>
+				  </a>
+				</div>
+    		`;
+    	
+            // setting timeout
+            setTimeout(function () {
+            	$postprofileposts.append(template);
+            }, 50);
+    	  }
+    	}
     
-    var append_posts = function(data){    	
+    var append_posts = function(data){
     	if(data.length==0){
 
     		var limit = true;
@@ -156,7 +236,9 @@ $(function(){
 
   <footer class="post-footer">
     <div class="post-buttons">
-      <a href="#" data-id="${ post.id }" class="uk-icon-link uk-margin-small-right post-button like-button">
+      <a href="#" data-id="${ post.id }" class="uk-icon-link uk-margin-small-right post-button like-button `;
+          template += (post['liked']===true)?'nice-liked':'';
+          template += `">
         <span uk-icon="heart"></span>
       </a>
       <a href="#" class="uk-icon-link uk-margin-small-right post-button">
@@ -181,25 +263,18 @@ $(function(){
     </div>
 
     <div class="post-comments">
-      <ul id="post-comments-">
+      <ul id="post-comments-">`;
+        for(var comment of post.comments){
+        	template += `
         <li class="text-li">
-          <a href="#" class="link">sayadeni_</a>
+          <a href="${ _base_url }/profile/@${ post.user.username }" class="link">${ post.user.username }</a>
           <span>
-            Bennerannn terbukkktii ka peleanggsiing dari@#@DOKTER.TUBUHIDEAL  ampuuhh bangeett proddukk
+            ${comment.comment}
           </span>
-        </li>
-        <li class="text-li">
-          <a href="#" class="link">sayadeni_</a>
-          <span>
-            Bennerannn terbukkktii ka peleanggsiing dari@#@DOKTER.TUBUHIDEAL  ampuuhh bangeett proddukk
-          </span>
-        </li>
-        <li class="text-li">
-          <a href="#" class="link">sayadeni_</a>
-          <span>
-            Bennerannn terbukkktii ka peleanggsiing dari@#@DOKTER.TUBUHIDEAL  ampuuhh bangeett proddukk
-          </span>
-        </li>
+        </li>`;
+        }
+        
+        template += `
       </ul>
     </div>
 
@@ -210,9 +285,7 @@ $(function(){
     </div>
 
     <div class="post-comment-form">
-      <form class="post-comment">
-        <textarea name="comment" id="post-id" class="comment" placeholder="Add a comment" autocomplete="off" autocorrect="off"></textarea>
-      </form>
+        <textarea name="comment" id="comment-${post.id}" data-post-id="${post.id}" class="comment comment-textarea" data-user-id="${post.user.id}" class="comment" placeholder="Add a comment" autocomplete="off" autocorrect="off"></textarea>
     </div>
   </footer>
 </article>`;
@@ -223,7 +296,6 @@ $(function(){
           });
       
     }
-  }
   
   // follow button section
   if($follow.length){
@@ -458,7 +530,7 @@ $(function(){
   $buttonPass.on('click',function(e){
 
     $.ajax({ 
-      url: 'http://localhost:8080'+'/mumagram/change-password', 
+      url: _base_url+'/change-password', 
       type:'POST', 
       data:{
         id:$userIdPass.val(),
@@ -494,6 +566,43 @@ $(function(){
     }
 
   });
+  
+  $(document).on('keyup', '.comment-textarea', function(e){
+      var sellf = $(this);
+	  
+	  if(e.keyCode === 13) {
+		  $.ajax({
+			  url: _base_url + "/comment/add",
+			  type: "POST",
+			  data: {
+				  comment: sellf.val(),
+				  post_id: sellf.attr('data-post-id'),
+				  user_id: sellf.attr('data-user-id')
+			  },
+			  success: function(response) {
+				  if(response.code === 1000) {
+					  var li = $("<li>").addClass("text-li");
+					  $("<a>").attr("href", _base_url + "/profile/@" + response.data.user.username)
+					  		.addClass("link").text(response.data.user.username).appendTo(li);
+					  $("<span>").text(' '+response.data.comment).appendTo(li);
+					  li.appendTo("#post-comments-");
+					  
+					  sellf.val('');
+					  var $commentScroll = sellf.parent().parent().parent().find('.post-comments');
+					  $commentScroll.animate({ scrollTop: $commentScroll[0].scrollHeight}, 1000);
+					  
+				  } else {
+					  
+				  }
+			  },
+			  error: function(err) {
+				  console.log(err);
+			  }
+		  });
+	  }
+  });
+  
+  if($addCommentOnViewPost.length){
   $addCommentOnViewPost.keyup(function(evt) {
 
 	  var sellf = $(this);
@@ -517,9 +626,8 @@ $(function(){
 					  
 					  sellf.val('');
 					  var $commentScroll = sellf.parent().parent().parent().find('.viewpost-comment-container');
-					  if($commentScroll.length){
-						  $commentScroll.animate({ scrollTop: $commentScroll[0].scrollHeight}, 1000);
-					  }
+					  $commentScroll.animate({ scrollTop: $commentScroll[0].scrollHeight}, 1000);
+					  
 				  } else {
 					  
 				  }
@@ -531,5 +639,6 @@ $(function(){
 		  
 	  }
   });
+  }
   }
 });

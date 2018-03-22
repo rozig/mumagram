@@ -344,7 +344,7 @@ a:hover {
 .post-footer {
 	padding: 0 16px;
 }
-.post-comments{
+#feed-post-container .post-comments{
 	max-height: 160px;
 	overflow-y: scroll;
 }
@@ -972,6 +972,13 @@ a:hover {
 .result-error {
 	padding: 15px;
 	margin: 0px;
+}
+#main-description{
+    position: absolute;
+    left: 200px;
+    color: black;
+    width: 500px;
+    top: 14px;
 }
 
 /*start eta css*/
