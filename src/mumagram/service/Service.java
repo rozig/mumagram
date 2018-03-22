@@ -41,6 +41,9 @@ import mumagram.model.User;
 public class Service {
 	private static final Random RANDOM = new SecureRandom();
 
+	/*
+	 *  Getting a new salt value for encoding password.
+	 */
 	public String getNextSalt() {
 		byte[] salt = new byte[16];
 	    RANDOM.nextBytes(salt);
@@ -51,6 +54,9 @@ public class Service {
         return sb.toString();
     }
 	
+	/*
+	 * Receives 2 string value by parameter and encrypt user password using SHA-512 algorithm.
+	 */
 	public String encodePassword(String password, String salt) {
 		final String SERVER_KEY = "8WD2c48373XJ";
 		String encodedPassword = null;
@@ -70,10 +76,16 @@ public class Service {
 		return encodedPassword;
 	}
 	
+	/*
+	 * Receives 3 string value as parameter and validates non-encrypted password with encrypted password
+	 */
 	public boolean checkPassword(String preEncodedPassword, String salt, String plainPassword) {
 		return preEncodedPassword.equals(encodePassword(plainPassword, salt));
 	}
 	
+	/*
+	 * Receives a Part object as parameter and get file name from Part object
+	 */
 	public String getFileName(Part part) {
 	    for(String content: part.getHeader("content-disposition").split(";")) {
 	        if(content.trim().startsWith("filename")) {
@@ -83,6 +95,9 @@ public class Service {
 	    return null;
 	}
 	
+	/*
+	 * Receives 3 value as a parameter and uploads any file to the AWS S3 Bucket. Path depends on the type parameter.
+	 */
 	public String imageUploader(String name, Part profilePicturePart, String type) throws IOException {
 		String resultStr = null;
 		try {
@@ -128,6 +143,9 @@ public class Service {
 		return resultStr;
     }
 	
+	/*
+	 * Receives 3 string value as a parameter and sends an email using mailtrap service.
+	 */
 	public void sendEmail(String recipient, String subject, String content) {
 		String username = "60593ce370128e";
 		String password = "02074b42b9b08f";
@@ -157,7 +175,9 @@ public class Service {
 		}
 	}
 
-	// Check session if exist
+	/*
+	 * Validates session if exist and is User logged in.
+	 */
 	public boolean validateSession(HttpSession session) {
 		if(session != null) {
 			User user = (User) session.getAttribute("user");

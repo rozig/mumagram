@@ -12,6 +12,9 @@ import mumagram.model.User;
 import mumagram.util.DbUtil;
 
 public class UserRepository {
+	/*
+	 * Receives an int value as parameter and read user data from database. Then converting the data to the model object
+	 */
 	public User findOneById(int id) {
 		User user = null;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -41,7 +44,10 @@ public class UserRepository {
 		}
 		return user;
 	}
-
+	
+	/*
+	 * Receives an username string value as parameter and read user data from database. Then converting the data to the model object
+	 */
 	public User findOneByUsername(String username) {
 		User user = null;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -72,6 +78,9 @@ public class UserRepository {
 		return user;
 	}
 
+	/*
+	 * Receives an email string value as parameter and read user data from database. Then converting the data to the model object
+	 */
 	public User findOneByEmail(String email) {
 		User user = null;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -102,6 +111,11 @@ public class UserRepository {
 		return user;
 	}
 
+	/*
+	 * Receives couple of string values as parameter and read User data from database. Then converting the data to the model object
+	 * If User data found in database it will return User object.
+	 * If nothing found it will return null.
+	 */
 	public User isUserExists(String email, String username) {
 		User user = null;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -133,6 +147,9 @@ public class UserRepository {
 		return user;
 	}
 
+	/*
+	 * Receives query string value and User object as parameter and search user by username query from database. Then converting the users to the model object list
+	 */
 	public List<User> search(String query, User sessionUser) {
 		List<User> users = new ArrayList<User>();
 		try(Connection connection = DbUtil.getConnection()) {
@@ -169,6 +186,9 @@ public class UserRepository {
 		return users;
 	}
 
+	/*
+	 * Receives a userid int value as  parameter and returns post count from database.
+	 */
 	public int countPost(int userid) {
 		int count = 0;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -189,6 +209,9 @@ public class UserRepository {
 		return count;
 	}
 
+	/*
+	 * Receives a userid int value as parameter and returns follower count from database.
+	 */
 	public int countFollower(int userid) {
 		int count = 0;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -209,6 +232,9 @@ public class UserRepository {
 		return count;
 	}
 
+	/*
+	 * Receives a userid int value as parameter and returns following user count from database.
+	 */
 	public int countFollowing(int userid) {
 		int count = 0;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -229,6 +255,9 @@ public class UserRepository {
 		return count;
 	}
 
+	/*
+	 * Receives User object as parameter and insert User data to the database table.
+	 */
 	public boolean save(User user) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -254,6 +283,9 @@ public class UserRepository {
 		return result;
 	}
 
+	/*
+	 * Receives User object as parameter and update User data in the database table.
+	 */
 	public boolean update(User user) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
