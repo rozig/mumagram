@@ -12,7 +12,7 @@
   <div class="post-body-wrapper">
     <div class="post-media-wrapper">
       <div class="post-media">
-        <a href="${ baseUrl }/post/@${ post.id }" class="post-media-link">
+        <a href="${ baseUrl }/post/${ post.id }" class="post-media-link">
           <img src="${post.picture }" alt="">
         </a>
       </div>

@@ -13,7 +13,7 @@
             <div class="viewpost-container">
               <div class="viewpost-inner">
                 <header class="viewpost-header">
-                  <a href="#" class="post-profile uk-flex link">
+                  <a href="${ baseUrl }/profile/@${ user.username }" class="post-profile uk-flex link">
                     <span class="profile-img uk-border-circle profile-img-medium"><img src="${ user.profilePicture }" alt=""></span>
                     <span class="profile-name">${ user.username }</span>
                   </a>
