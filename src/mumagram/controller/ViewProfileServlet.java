@@ -12,8 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import mumagram.model.User;
+import mumagram.model.Follower;
 import mumagram.model.Post;
 import mumagram.repository.UserRepository;
+import mumagram.repository.FollowerRepository;
 import mumagram.repository.PostRepository;
 import mumagram.service.Service;
 
@@ -23,6 +25,7 @@ public class ViewProfileServlet extends HttpServlet {
 	private Service service;
 	private UserRepository userRepository;
 	private PostRepository postRepository;
+	private FollowerRepository followerRepository;
 	private String pathInfo;
 
 	public ViewProfileServlet() {
@@ -30,6 +33,7 @@ public class ViewProfileServlet extends HttpServlet {
 		service = new Service();
 		userRepository = new UserRepository();
 		postRepository = new PostRepository();
+		followerRepository = new FollowerRepository();
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -46,13 +50,31 @@ public class ViewProfileServlet extends HttpServlet {
 				return;
 			}
 			String usernameWithoutAt = username.split("@")[1];
-			User user = null;
-			List<Post> posts = null;
-			if(username == null || username.isEmpty()) {
-				user = (User) session.getAttribute("user");
-			} else {
-				user = userRepository.findOneByUsername(usernameWithoutAt);
+			User user = userRepository.findOneByUsername(usernameWithoutAt);
+			String userStatus = null;
+			
+			if(user == null) {
+				response.sendRedirect("/mumagram/");
+				return;
 			}
+			
+			System.out.println(usernameWithoutAt + ", " + user.getUsername());
+			if(usernameWithoutAt.equals(((User) session.getAttribute("user")).getUsername())) {
+				userStatus = "self";
+			} else {
+				Follower follow = followerRepository.isFollower(user, (User) session.getAttribute("user"));
+				if(follow == null) {
+					userStatus = "not-following";
+				} else if(follow.getStatus().equals("following")) {
+					userStatus = "following";
+				} else if(follow.getStatus().equals("pending")) {
+					userStatus = "pending";
+				} else {
+					userStatus = "following";
+				}
+			}
+
+			List<Post> posts = null;
 			int countPost = userRepository.countPost(user.getId());
 			request.setAttribute("countPost", countPost);
 			int countFollower = userRepository.countFollower(user.getId());
@@ -66,6 +88,7 @@ public class ViewProfileServlet extends HttpServlet {
 			
 			request.setAttribute("posts", posts);
 			request.setAttribute("profile", user);
+			request.setAttribute("followStatus", userStatus);
 
 			RequestDispatcher rd = request.getRequestDispatcher("/pages/view-profile.jsp");
 			rd.forward(request, response);
