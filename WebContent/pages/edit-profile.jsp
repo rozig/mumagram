@@ -38,9 +38,9 @@
 																class="profile-img-small uk-border-circle">
 															   <label for="profile-picture">
 															      <input type="file" name="profile-picture"
-																	id="profile-picture" style="display: none;" />
+																	id="profile-picture" style="visibility: hidden;position:absolute;top:0;left:0;" value="${ user.profilePicture }" />
 															     <img
-																	src="${user.profilePicture != null  ?  user.profilePicture : baseUrl.concat('/assets/images/profile-new.jpg') }"
+																	src="${user.profilePicture != null ? user.profilePicture : baseUrl.concat('/assets/images/profile-new.jpg') }"
 																	alt="" />
 															   </label>
 	

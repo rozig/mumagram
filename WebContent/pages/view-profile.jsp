@@ -12,8 +12,8 @@
 	<header class="profile-header">
             <div class="profile-big-img-wrapper">
               <div class="profile-big-img-content">
-                <span class="profile-img-big uk-border-circle"><img
-						src="${profile.profilePicture }" alt="" />
+                <span class="profile-img-big uk-border-circle">
+                <img src="${profile.profilePicture }" alt="" />
                 <img src="/mumagram/assets/images/profile.jpg" alt=""
 						class="profile-big-img">
                 </span>

@@ -89,8 +89,12 @@ public class EditProfileServlet extends HttpServlet {
 			request.getRequestDispatcher("/pages/edit-profile.jsp").forward(request, response);
 			return;
 		}
-
-		 String profilePicture = service.imageUploader(username, profilePicturePart, "profile");
+		String profilePicture = null;
+		if(profilePicturePart != null) {
+			profilePicture = service.imageUploader(username, profilePicturePart, "profile");
+		} else {
+			profilePicture = request.getParameter("profile-picture");
+		}
 		String oldEmail = null;
 
 		HttpSession session = request.getSession(false);
