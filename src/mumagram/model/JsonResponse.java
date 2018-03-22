@@ -3,7 +3,9 @@ package mumagram.model;
 public class JsonResponse {
 	// 1000 - success, 2000 - error, 3000 - access
 	private int code;
+	// success - Successful, error - Any internal error, denied - Authentication error
 	private String status;
+	// any type of data
 	private Object data;
 
 	public int getCode() {

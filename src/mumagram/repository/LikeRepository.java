@@ -20,6 +20,9 @@ public class LikeRepository {
 		postRepository = new PostRepository();
 	}
 
+	/*
+	 * Receives an int value as parameter and read like data from database. Then converting the data to the model object
+	 */
 	public Like findOneById(int id) {
 		Like like = null;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -50,6 +53,11 @@ public class LikeRepository {
 		return like;
 	}
 	
+	/*
+	 * Receives Post and User object as parameter and read like data from database. Then converting the data to the model object
+	 * If Like data found in database it will return Like object.
+	 * If nothing found it will return null.
+	 */
 	public Like isLiked(Post post, User user) {
 		Like result = null;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -81,6 +89,9 @@ public class LikeRepository {
 		return result;
 	}
 	
+	/*
+	 * Receives Like object as parameter and insert Like data to the database table.
+	 */
 	public boolean save(Like like) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -101,6 +112,9 @@ public class LikeRepository {
 		return result;
 	}
 	
+	/*
+	 * Receives Like object as parameter and update Like data in the database table.
+	 */
 	public boolean update(Like like) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -121,6 +135,9 @@ public class LikeRepository {
 		return result;
 	}
 	
+	/*
+	 * Receives Like object as parameter and delet Like data from the database table.
+	 */
 	public boolean delete(Like like) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {

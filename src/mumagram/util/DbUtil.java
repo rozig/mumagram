@@ -9,6 +9,9 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DbUtil {
+	/*
+	 * Reading credentials from db.properties file and creating connection for MySQL Database.
+	 */
 	public static Connection getConnection() {
 		Connection connection = null;
 		try {

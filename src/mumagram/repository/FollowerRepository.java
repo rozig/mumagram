@@ -17,6 +17,9 @@ public class FollowerRepository {
 		userRepository = new UserRepository();
 	}
 
+	/*
+	 * Receives an int value as parameter and read follower data from database. Then converting the data to the model object
+	 */
 	public Follower findOneById(int id) {
 		Follower follower = null;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -49,6 +52,11 @@ public class FollowerRepository {
 		return follower;
 	}
 	
+	/*
+	 * Receives couple of User object as parameter and read follower data from database. Then converting the data to the model object
+	 * If Follower data found in database it will return Follower object.
+	 * If nothing found it will return null.
+	 */
 	public Follower isFollower(User user, User follower) {
 		Follower result = null;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -81,6 +89,9 @@ public class FollowerRepository {
 		return result;
 	}
 	
+	/*
+	 * Receives Follower object as parameter and insert Follower data to the database table.
+	 */
 	public boolean save(Follower follower) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -102,6 +113,9 @@ public class FollowerRepository {
 		return result;
 	}
 	
+	/*
+	 * Receives Follower object as parameter and update Follower data in the database table.
+	 */
 	public boolean update(Follower follower) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -123,6 +137,9 @@ public class FollowerRepository {
 		return result;
 	}
 	
+	/*
+	 * Receives Follower object as parameter and delete Follower data from the database table.
+	 */
 	public boolean delete(Follower follower) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {

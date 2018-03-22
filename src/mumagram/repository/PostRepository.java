@@ -20,6 +20,9 @@ public class PostRepository {
 		userRepository = new UserRepository();
 	}
 
+	/*
+	 * Receives an int value as parameter and read Post data from database. Then converting the data to the model object
+	 */
 	public Post findOneById(int id) {
 		Post post = new Post();
 		try(Connection connection = DbUtil.getConnection()) {
@@ -57,6 +60,9 @@ public class PostRepository {
 		return post;
 	}
 	
+	/*
+	 * Receives an User object as parameter and read user's posts from database. Then converting the posts to the model object list
+	 */
 	public List<Post> getPostsByUser(User user) {
 		List<Post> posts = new ArrayList<Post>();
 
@@ -102,7 +108,10 @@ public class PostRepository {
 
 		return posts;
 	}
-	
+
+	/*
+	 * Receives an User object and page value as parameter and read following user's posts from database. Then converting the posts to the model object list
+	 */
 	public List<Post> getFollowingUserPosts(User user, int page) {
 		List<Post> posts = new ArrayList<Post>();
 
@@ -160,6 +169,9 @@ public class PostRepository {
 		return posts;
 	}
 
+	/*
+	 * Receives a Post object as parameter and read comments of the post from database. Then converting the comments to the model object list
+	 */
 	public List<Comment> getCommentsByPost(Post post) {
 		List<Comment> comments = new ArrayList<Comment>();
 
@@ -192,7 +204,10 @@ public class PostRepository {
 
 		return comments;
 	}
-	
+
+	/*
+	 * Receives an User object and page value as parameter and read posts by user from database. Then converting the posts to the model object list
+	 */
 	public List<Post> getPostsByProfile(User user, int page) {
 		List<Post> posts = new ArrayList<Post>();
 
@@ -238,7 +253,10 @@ public class PostRepository {
 
 		return posts;
 	}
-	
+
+	/*
+	 * Receives a Post object as parameter and delete post data from database
+	 */
 	public boolean delete(Post post) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
@@ -254,6 +272,9 @@ public class PostRepository {
 		return result;
 	}
 
+	/*
+	 * Receives a Post object and counts like from database.
+	 */
 	public int getLikeCount(Post post) {
 		int result = 0;
 		
@@ -274,7 +295,10 @@ public class PostRepository {
 		
 		return result;
 	}
-	
+
+	/*
+	 * Receives a Post object and counts comment from database.
+	 */
 	public int getCommentCount(Post post) {
 		int result = 0;
 		
@@ -296,6 +320,9 @@ public class PostRepository {
 		return result;
 	}
 
+	/*
+	 * Receives Post object as parameter and insert Post data to the database table.
+	 */
 	public boolean save(Post post) {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
