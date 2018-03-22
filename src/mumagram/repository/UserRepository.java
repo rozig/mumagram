@@ -133,7 +133,7 @@ public class UserRepository {
 		return user;
 	}
 
-	public List<User> search(String query) {
+	public List<User> search(String query, User sessionUser) {
 		List<User> users = new ArrayList<User>();
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
@@ -144,19 +144,21 @@ public class UserRepository {
 			ResultSet rs = preparedStatement.executeQuery();
 
 			while (rs.next()) {
-				User user = new User();
-				user.setId(rs.getInt("id"));
-				user.setFirstname(rs.getString("firstname"));
-				user.setLastname(rs.getString("lastname"));
-				user.setEmail(rs.getString("email"));
-				user.setUsername(rs.getString("username"));
-				user.setPassword(null);
-				user.setSalt(null);
-				user.setBio(null);
-				user.setProfilePicture(rs.getString("profile_picture"));
-				user.setPrivate(false);
+				if(rs.getInt("id") != sessionUser.getId()) {
+					User user = new User();
+					user.setId(rs.getInt("id"));
+					user.setFirstname(rs.getString("firstname"));
+					user.setLastname(rs.getString("lastname"));
+					user.setEmail(rs.getString("email"));
+					user.setUsername(rs.getString("username"));
+					user.setPassword(null);
+					user.setSalt(null);
+					user.setBio(null);
+					user.setProfilePicture(rs.getString("profile_picture"));
+					user.setPrivate(false);
 
-				users.add(user);
+					users.add(user);
+				}
 			}
 
 			rs.close();

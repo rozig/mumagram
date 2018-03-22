@@ -34,7 +34,10 @@ public class SearchUserServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		if(service.validateSession(session)) {
 			String query = request.getParameter("query");
-			List<User> users = userRepository.search(query);
+			List<User> users = null;
+			if(!query.isEmpty()) {
+				users = userRepository.search(query, (User) session.getAttribute("user"));
+			}
 
 			JsonResponse jsonResponse = new JsonResponse();
 			jsonResponse.setCode(1000);

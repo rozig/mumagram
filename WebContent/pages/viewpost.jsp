@@ -28,35 +28,23 @@
                 <div class="viewpost-comment-wrapper">
                   <div class="viewpost-comment-container">
 
-                    <div class="post-description">
-                      <div class="post-desc">
-                        <a href="#" class="link">sayadeni_</a>
-                        <span>
-                          Bennerannn terbukkktii ka peleanggsiing dari@#@DOKTER.TUBUHIDEAL  ampuuhh bangeett proddukk
-                        </span>
-                      </div>
-                    </div>
+                    <c:if test="${ post.description != null }">
+                    	<div class="post-description">
+	                      <div class="post-desc">
+	                        <a href="${ baseUrl }/profile/@${ user.username }" class="link">${ user.username }</a>
+	                        <span>${ post.description }</span>
+	                      </div>
+	                    </div>
+                    </c:if>
 
                     <div class="post-comments">
                       <ul id="post-comments-">
-                        <li class="text-li">
-                          <a href="#" class="link">sayadeni_</a>
-                          <span>
-                            Bennerannn terbukkktii ka peleanggsiing dari@#@DOKTER.TUBUHIDEAL  ampuuhh bangeett proddukk
-                          </span>
-                        </li>
-                        <li class="text-li">
-                          <a href="#" class="link">sayadeni_</a>
-                          <span>
-                            Bennerannn terbukkktii ka peleanggsiing dari@#@DOKTER.TUBUHIDEAL  ampuuhh bangeett proddukk
-                          </span>
-                        </li>
-                        <li class="text-li">
-                          <a href="#" class="link">sayadeni_</a>
-                          <span>
-                            Bennerannn terbukkktii ka peleanggsiing dari@#@DOKTER.TUBUHIDEAL  ampuuhh bangeett proddukk
-                          </span>
-                        </li>
+                      	<c:forEach var="comment" items="${ comments }">
+                      		<li class="text-li">
+	                          <a href="${ baseUrl }/profile/@${ comment.user.username }" class="link">${ comment.user.username }</a>
+	                          <span>${ comment.comment }</span>
+	                        </li>
+                      	</c:forEach>
                       </ul>
                     </div>
                   </div>
@@ -71,24 +59,26 @@
                       <span uk-icon="comment" class="uk-icon"><svg width="20" height="20" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" ratio="1"> <path d="M6,18.71 L6,14 L1,14 L1,1 L19,1 L19,14 L10.71,14 L6,18.71 L6,18.71 Z M2,13 L7,13 L7,16.29 L10.29,13 L18,13 L18,2 L2,2 L2,13 L2,13 Z"></path></svg></span>
                     </a>
                   </div>
-                  <div class="post-counter margin-small-bottom">
-                    <div class="counter">
-                      <a href="#" class="counter-link link">
-                        <span>${ post.likeCount }</span> likes
-                      </a>
-                    </div>
-                  </div>
+                  <c:if test="${ post.likeCount > 0 }">
+	                  <div class="post-counter margin-small-bottom">
+	                    <div class="counter">
+	                      <a href="#" class="counter-link link">
+	                        <span>${ post.likeCount }</span> ${ post.likeCount > 1 ? 'likes' : 'like' }
+	                      </a>
+	                    </div>
+	                  </div>
+                  </c:if>
 
                   <div class="post-date">
                     <a class="date" href="${ baseUrl }/profile/@${ user.username }">
-                      <time class="time datetime" datetime="2018-03-20T05:27:04.000Z" title="Mar 20, 2018">${ post.createdDate }</time> 
+                      <time class="time datetime" datetime="${ post.createdDate }" title="${ post.createdDate }">${ post.createdDate }</time> 
                     </a>
                   </div>
 
                   <div class="post-comment-form">
-                    <form class="post-comment">
-                      <textarea name="comment" id="post-id" class="comment" placeholder="Add a comment" autocomplete="off" autocorrect="off"></textarea>
-                    </form>
+                     <textarea name="comment" id="add-comment-on-view-post" class="comment" placeholder="Add a comment" autocomplete="off" autocorrect="off"></textarea>
+                     <input type="hidden" id="post-id" value="${ post.id }"/>
+                     <input type="hidden" id="user-id" value="${ user.id }"/>
                   </div>
                 </footer>
               </div>
