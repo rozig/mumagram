@@ -92,6 +92,7 @@ public class ViewProfileServlet extends HttpServlet {
 
 			RequestDispatcher rd = request.getRequestDispatcher("/pages/view-profile.jsp");
 			rd.forward(request, response);
+			return;
 		} else {
 			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login");
 		}

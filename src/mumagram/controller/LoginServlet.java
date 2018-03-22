@@ -36,6 +36,7 @@ public class LoginServlet extends HttpServlet {
 			}
 			RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
 			rd.forward(request, response);
+			return;
 		}
 	}
 
@@ -61,6 +62,7 @@ public class LoginServlet extends HttpServlet {
 				request.setAttribute("error", "Sorry, your password was incorrect. Please double-check your password.");
 				RequestDispatcher rd = request.getRequestDispatcher("/pages/login.jsp");
 				rd.forward(request, response);
+				return;
 			}
 		} else {
 			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login?error=Please login your username and password");

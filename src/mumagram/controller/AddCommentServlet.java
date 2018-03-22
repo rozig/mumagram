@@ -48,6 +48,7 @@ public class AddCommentServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.write(resultJson);
 		out.flush();
+		return;
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -73,6 +74,7 @@ public class AddCommentServlet extends HttpServlet {
 				PrintWriter out = response.getWriter();
 				out.write(resultJson);
 				out.flush();
+				return;
 			}
 			
 			user = (User) session.getAttribute("user");
@@ -90,6 +92,7 @@ public class AddCommentServlet extends HttpServlet {
 				PrintWriter out = response.getWriter();
 				out.write(resultJson);
 				out.flush();
+				return;
 			}
 			
 			Post post = postRepository.findOneById(Integer.parseInt(postId));
@@ -107,6 +110,7 @@ public class AddCommentServlet extends HttpServlet {
 				PrintWriter out = response.getWriter();
 				out.write(resultJson);
 				out.flush();
+				return;
 			}
 
 			Comment commentObject = new Comment();
@@ -128,6 +132,7 @@ public class AddCommentServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			out.write(resultJson);
 			out.flush();
+			return;
 		} else {
 			JsonResponse jsonResponse = new JsonResponse();
 			jsonResponse.setCode(3000);
@@ -142,6 +147,7 @@ public class AddCommentServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			out.write(resultJson);
 			out.flush();
+			return;
 		}
 	}
 }
