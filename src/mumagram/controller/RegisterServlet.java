@@ -89,7 +89,7 @@ public class RegisterServlet extends HttpServlet {
 			return;
 		}
 		
-		String salt = service.getNextSalt();
+		String salt = service.getNextSalt(); //saving password with salt crypto and encryption
 		String encodedPassword = service.encodePassword(password, salt);
 
 		User user = new User();

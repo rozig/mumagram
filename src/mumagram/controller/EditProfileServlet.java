@@ -104,7 +104,7 @@ public class EditProfileServlet extends HttpServlet {
 			user.setUsername(username);
 			user.setBio(bio);
 			user.setPrivate(Boolean.valueOf(isPrivate));
-			 user.setProfilePicture(profilePicture);
+			user.setProfilePicture(profilePicture);
 			user.setUpdatedDate(LocalDate.now());
 			userRepository.update(user);
 
