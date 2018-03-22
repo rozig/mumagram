@@ -264,6 +264,7 @@ a:hover {
 	margin-right: 28px;
 	max-width: 614px;
 	width: 100%;
+	min-height: 500px;
 }
 
 .post {

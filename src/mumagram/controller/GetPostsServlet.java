@@ -95,7 +95,6 @@ public class GetPostsServlet extends HttpServlet {
 				out.flush();
 				return;
 			}
-
 			JsonResponse jsonResponse = new JsonResponse();
 			jsonResponse.setCode(1000);
 			jsonResponse.setStatus("success");
