@@ -1,5 +1,6 @@
 $(function(){
   'use strict'
+  var _base_url = $('body').data('url');
   var $instapic = $('#insta-pic'),
   $instaoption = $('.insta-pic-href'),
   $insta = $('#instagram'),
@@ -11,6 +12,7 @@ $(function(){
   $form = $('#post-form'),
   $inputfilter = $('#input-filter'),
   $searchresult = $('#search-result'),
+  $follow = $('#follow'),
   $searchinput = $('#search-input');
   // change password request start
   var $oldPassword = $('#oldpassword');
@@ -20,6 +22,56 @@ $(function(){
   var $buttonPass = $('#button-pass');
   // change password request end
   
+  if($follow.length){
+	  var profile_id = $follow.attr('data-profile-id');
+	  var username = $follow.attr('data-username');
+	  
+	  $follow.on('click',function(){
+		 get_status(); 
+	  });
+	  
+	  var get_status = function(){
+		  $follow.attr('disabled', 'disabled');
+		  $.ajax({
+			  url: _base_url+'/follow',
+			  method: 'POST',
+			  data: {
+				  'username': username,
+				  'following_user_id': profile_id
+			  }
+		  }).done(function(data){
+			  
+			  if(data.code === 1000){
+	  			if(Object.keys(data.data).length>0){
+	  				change_follow_button(data.status);
+	  			}else{
+	  				//doesn't exist
+	  				$follow.hide();
+	  			}
+		  	  }else{
+		  		//error exists
+		  		console.log(data.data);
+		  	  }
+		  }).fail(function(e){
+			  console.log(e);
+		  }).always(function() {
+			  $follow.removeAttr('disabled');
+		  });
+	  };
+	  
+	  var change_follow_button = function(data){
+		  console.log(data);
+		  
+		  if(data==="Follow"){
+			  $follow.addClass('uk-button-primary');
+		  }else{
+			  $follow.removeClass('uk-button-primary');
+		  }
+
+		  $follow.html(data);
+	  }
+  }
+  
   if($searchinput.length){
 	  $searchinput.on('input', function(){
 		  var a = setTimeout(work, 10);
@@ -27,7 +79,7 @@ $(function(){
 		  
 		  function work(){
 			  $.ajax({
-				  url: 'search',
+				  url: _base_url+'/search',
 			      method: 'GET',
 			      data: {
 			    	  'query': self.val()

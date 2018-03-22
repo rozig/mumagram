@@ -13,7 +13,7 @@
 		    <h1 class="logo-text">Mumagram</h1>
 		
 		    <div class="empty-form">
-		      <form action="/mumagram/login" method="POST">
+		      <form action="${ baseUrl }/login" method="POST">
 		        <div class="uk-margin empty-field">
 		          <div class="uk-inline">
 		            <span class="uk-form-icon" uk-icon="icon: user"></span>

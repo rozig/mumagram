@@ -45,6 +45,7 @@ public class PostServlet extends HttpServlet {
 			if(postId == null ) {
 				RequestDispatcher rd = request.getRequestDispatcher("/pages/post.jsp");
 				rd.forward(request, response);
+				return;
 			}else {
 				if(postId.length>=2 && !postId[1].isEmpty()) {
 					int id = Integer.parseInt(postId[1]);
@@ -54,13 +55,15 @@ public class PostServlet extends HttpServlet {
 					
 					RequestDispatcher rd = request.getRequestDispatcher("/pages/viewpost.jsp");
 					rd.forward(request, response);
+					return;
 				}else {
 					RequestDispatcher rd = request.getRequestDispatcher("/pages/post.jsp");
 					rd.forward(request, response);
+					return;
 				}
 			}
 		} else {
-			response.sendRedirect("/mumagram/login?error=Please login your username and password");
+			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login?error=Please login your username and password");
 		}
 	}
 
@@ -83,9 +86,9 @@ public class PostServlet extends HttpServlet {
 			
 			postRepository.save(post);
 			
-			response.sendRedirect("/mumagram");
+			response.sendRedirect(String.valueOf(getServletContext().getAttribute("baseUrl")));
 		}else {
-			response.sendRedirect("/mumagram/login?error=Please login your username and password");
+			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login?error=Please login your username and password");
 		}
 		
 		

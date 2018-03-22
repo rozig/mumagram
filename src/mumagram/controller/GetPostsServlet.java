@@ -2,6 +2,7 @@ package mumagram.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,26 +13,22 @@ import javax.servlet.http.HttpSession;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import mumagram.model.Comment;
 import mumagram.model.JsonResponse;
 import mumagram.model.Post;
 import mumagram.model.User;
-import mumagram.repository.CommentRepository;
 import mumagram.repository.PostRepository;
 import mumagram.service.Service;
 
-@WebServlet("/AddCommentServlet")
-public class AddCommentServlet extends HttpServlet {
+@WebServlet("/GetPostsServlet")
+public class GetPostsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Service service;
 	private PostRepository postRepository;
-	private CommentRepository commentRepository;
-
-    public AddCommentServlet() {
+       
+    public GetPostsServlet() {
         super();
         service = new Service();
         postRepository = new PostRepository();
-        commentRepository = new CommentRepository();
     }
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -54,13 +51,9 @@ public class AddCommentServlet extends HttpServlet {
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if(service.validateSession(session)) {
-			String comment = request.getParameter("comment");
-			String postId = request.getParameter("post_id");
-			String userId = request.getParameter("user_id");
-			User user = null;
-			if(comment == null || comment.isEmpty() ||
-			   postId == null || postId.isEmpty() ||
-			   userId == null || userId.isEmpty()) {
+			String page = request.getParameter("page");
+			String type = request.getParameter("type");
+			if(page == null || page.isEmpty() || type == null || type.isEmpty()) {
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(2000);
 				jsonResponse.setStatus("error");
@@ -77,30 +70,19 @@ public class AddCommentServlet extends HttpServlet {
 				return;
 			}
 			
-			user = (User) session.getAttribute("user");
-			if(Integer.parseInt(userId) != user.getId()) {
-				JsonResponse jsonResponse = new JsonResponse();
-				jsonResponse.setCode(3000);
-				jsonResponse.setStatus("denied");
-				jsonResponse.setData("Your user id doesn't match with session user id!");
+			User user = (User) session.getAttribute("user");
 
-				ObjectMapper mapper = new ObjectMapper();
-				String resultJson = mapper.writeValueAsString(jsonResponse);
-				
-				response.setContentType("application/json");
-				
-				PrintWriter out = response.getWriter();
-				out.write(resultJson);
-				out.flush();
-				return;
-			}
+			List<Post> posts = null;
 			
-			Post post = postRepository.findOneById(Integer.parseInt(postId));
-			if(post == null) {
+			if(type.equals("feed")) {
+				posts = postRepository.getFollowingUserPosts(user, Integer.parseInt(page));
+			} else if(type.equals("profile")) {
+				posts = postRepository.getPostsByProfile(user, Integer.parseInt(page));
+			} else {
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(2000);
 				jsonResponse.setStatus("error");
-				jsonResponse.setData("Post with id " + postId + " doesn't exist!");
+				jsonResponse.setData("Type doesn't match!");
 
 				ObjectMapper mapper = new ObjectMapper();
 				String resultJson = mapper.writeValueAsString(jsonResponse);
@@ -113,16 +95,10 @@ public class AddCommentServlet extends HttpServlet {
 				return;
 			}
 
-			Comment commentObject = new Comment();
-			commentObject.setComment(comment);
-			commentObject.setPost(post);
-			commentObject.setUser(user);
-			commentRepository.save(commentObject);
-		
 			JsonResponse jsonResponse = new JsonResponse();
 			jsonResponse.setCode(1000);
 			jsonResponse.setStatus("success");
-			jsonResponse.setData(commentObject);
+			jsonResponse.setData(posts);
 
 			ObjectMapper mapper = new ObjectMapper();
 			String resultJson = mapper.writeValueAsString(jsonResponse);

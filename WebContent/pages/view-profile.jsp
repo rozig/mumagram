@@ -23,20 +23,21 @@
             <section class="profile-header-body">
               <div class="profile-header-top uk-flex uk-flex-middle">
                 <h1 class="profile-post-name">${profile.username }</h1>
+                
                 <c:choose>
-  				<c:when test="${not empty profile_user}">
-	                <a href="#" class="follow-button">
-	                  <button
-								class="uk-button uk-button-default uk-button-small">Follow</button>
-	                </a>
-	            </c:when>
+	  				<c:when test="${followStatus ne 'self'}">
+		                <span class="follow-button">
+		                  <button id="follow" data-username="${ user.username }" data-profile-id="${ profile.id }" class="uk-button uk-button-default uk-button-small ${ followStatus eq 'Follow' ? ('uk-button-primary') : ('') }">${ followStatus }</button>
+		                </span>
+		            </c:when>
               		<c:otherwise>
-               		<a href="${ baseUrl }/profile/edit" class="profile-button">
-	                  <button
-								class="uk-button uk-button-default uk-button-small">Edit profile</button>
-	                </a>
+	               		<a href="${ baseUrl }/profile/edit" class="profile-button">
+		                  <button
+									class="uk-button uk-button-default uk-button-small">Edit profile</button>
+		                </a>
               		</c:otherwise>
 				</c:choose>
+				
               </div>
               <div class="profile-header-middle">
                 <ul class="profile-middle-ul">
@@ -63,7 +64,7 @@
             <c:forEach var="post" items="${posts }">
 			  <t:postprofile post="${post}" />
 			</c:forEach>
+			
           </div>
-
   </jsp:body>
 </t:wrapper>

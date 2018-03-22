@@ -9,7 +9,7 @@
     <%@include file="../html/head.html" %>
   </head>
   
-  <body>
+  <body data-url="${ baseUrl }">
 	<div class="main-wrapper">
 	
     <t:header></t:header>
@@ -19,6 +19,8 @@
 
         <div class="main-body">
         	<jsp:doBody/>
+        	
+        	<div class="uk-clearfix"></div>
         </div>
       </div>
     </div>
