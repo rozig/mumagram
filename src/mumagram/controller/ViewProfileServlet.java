@@ -58,19 +58,18 @@ public class ViewProfileServlet extends HttpServlet {
 				return;
 			}
 			
-			System.out.println(usernameWithoutAt + ", " + user.getUsername());
 			if(usernameWithoutAt.equals(((User) session.getAttribute("user")).getUsername())) {
 				userStatus = "self";
 			} else {
 				Follower follow = followerRepository.isFollower(user, (User) session.getAttribute("user"));
 				if(follow == null) {
-					userStatus = "not-following";
+					userStatus = "Follow";
 				} else if(follow.getStatus().equals("following")) {
-					userStatus = "following";
+					userStatus = "Following";
 				} else if(follow.getStatus().equals("pending")) {
-					userStatus = "pending";
+					userStatus = "Pending";
 				} else {
-					userStatus = "following";
+					userStatus = "Following";
 				}
 			}
 

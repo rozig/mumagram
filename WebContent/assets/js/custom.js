@@ -1,7 +1,6 @@
 $(function(){
   'use strict'
-	var _base_url = $('body').data('url');
-	console.log(_base_url+":baseUrl");
+  var _base_url = $('body').data('url');
   var $instapic = $('#insta-pic'),
   $instaoption = $('.insta-pic-href'),
   $insta = $('#instagram'),
@@ -18,21 +17,26 @@ $(function(){
   
   if($follow.length){
 	  var profile_id = $follow.attr('data-profile-id');
-	  var user_id = $follow.attr('data-user-id');
+	  var username = $follow.attr('data-username');
+	  
+	  $follow.on('click',function(){
+		 get_status(); 
+	  });
 	  
 	  var get_status = function(){
+		  $follow.attr('disabled', 'disabled');
 		  $.ajax({
 			  url: _base_url+'/follow',
-			  method: 'GET',
+			  method: 'POST',
 			  data: {
-				  'profile_id': profile_id
+				  'username': username,
+				  'following_user_id': profile_id
 			  }
 		  }).done(function(data){
-			  console.log(data);
 			  
 			  if(data.code === 1000){
 	  			if(Object.keys(data.data).length>0){
-	  				
+	  				change_follow_button(data.status);
 	  			}else{
 	  				//doesn't exist
 	  				$follow.hide();
@@ -43,10 +47,22 @@ $(function(){
 		  	  }
 		  }).fail(function(e){
 			  console.log(e);
+		  }).always(function() {
+			  $follow.removeAttr('disabled');
 		  });
 	  };
 	  
-	  get_status();
+	  var change_follow_button = function(data){
+		  console.log(data);
+		  
+		  if(data==="Follow"){
+			  $follow.addClass('uk-button-primary');
+		  }else{
+			  $follow.removeClass('uk-button-primary');
+		  }
+
+		  $follow.html(data);
+	  }
   }
   
   if($searchinput.length){

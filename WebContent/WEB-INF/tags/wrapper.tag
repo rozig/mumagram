@@ -19,6 +19,8 @@
 
         <div class="main-body">
         	<jsp:doBody/>
+        	
+        	<div class="uk-clearfix"></div>
         </div>
       </div>
     </div>
