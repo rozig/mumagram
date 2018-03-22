@@ -18,7 +18,7 @@
 					        <ul class="uk-tab-right"
 							uk-tab="connect: #component-tab-left; animation: uk-animation-fade">
 					            <li class="uk-active"><a href="#">Edit Profile</a></li>
-					            <li><a href="#">Change Password</a></li>
+					            <li id="cp"><a href="#">Change Password</a></li>
 					            <li><a href="#">Authorized Applications</a></li>
 					        </ul>
             		</div>
@@ -196,8 +196,8 @@
 		              </li>
 		              <li>
 		                    <div class="empty-form edit-profile-data">
-					            <form method="post" action="/mumagram/profile/edit"
-										enctype="multipart/form-data">
+					            <form method="post" action="/mumagram/change-password"
+										>
 								 <div class="uk-margin empty-field">
 								 	<div uk-grid>
 								 		<div class="uk-width-1-4">
@@ -232,7 +232,7 @@
 														class="uk-form-controls edit-profile-form-control">	
 	            												<span class="uk-form-icon" uk-icon="icon: lock"></span>
 						                  					<input class="uk-input" type="password"
-															id="oldpassword" name="oldpass">
+															id="oldpassword" name="oldpassword">
 															<input type="hidden" name="id" value="${user.id}" />
 	            											</div>
 	            										</div>
@@ -322,7 +322,15 @@
 				</div>
 			</div>	
 			
-			
+			<script>
+			    $(function() {
+			    		var type = '${type}';
+			    		if(type === "changepass")
+			    		{
+			    			$("#cp").trigger("click");
+			    		}
+			    });
+			</script>
 			
 
   </jsp:body>
