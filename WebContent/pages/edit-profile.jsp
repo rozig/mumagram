@@ -33,12 +33,17 @@
 								 	<div uk-grid>
 								 		<div class="uk-width-1-4">
 								 			<div class="profile-small-img-wrapper">
-									              <div class="profile-small-img-content">
-									              
+									              <div class="profile-small-img-content">									        
 									                <span
-																class="profile-img-small uk-border-circle"><img
-																src="${user.profilePicture }" alt="" />
-															
+																class="profile-img-small uk-border-circle">
+															   <label for="profile-picture">
+															      <input type="file" name="profile-picture"
+																	id="profile-picture" style="display: none;" />
+															     <img
+																	src="${user.profilePicture != null  ?  user.profilePicture : baseUrl.concat('/assets/images/profile-new.jpg') }"
+																	alt="" />
+															   </label>
+	
 									                </span>
 
 									               
@@ -51,8 +56,7 @@
 													</h3>
 								 		 ${user.firstname } ${user.lastname }
 								 		</div>
-									  </div>
-									    
+									  </div>	    
 								 </div>
 								 <div class="uk-clearfix"></div>		
 
@@ -209,7 +213,7 @@
 									              
 									                <span
 															class="profile-img-small uk-border-circle"><img
-															src="${user.profilePicture }" alt="" />
+															src="${user.profilePicture != null  ?  user.profilePicture : baseUrl.concat('/assets/images/profile-new.jpg') }" alt="" />
 															
 									                </span>
 
