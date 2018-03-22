@@ -12,6 +12,7 @@ public class Post {
 	private String filter;
 	private LocalDate createdDate;
 	private LocalDate updatedDate = null;
+	private boolean isLiked = false;
 	private int commentCount = 0;
 	private int likeCount = 0;
 
@@ -63,6 +64,13 @@ public class Post {
 	}
 	public void setFilter(String filter) {
 		this.filter = filter;
+	}
+	public boolean isLiked() {
+		return isLiked;
+	}
+
+	public void setLiked(boolean isLiked) {
+		this.isLiked = isLiked;
 	}
 
 	public int getCommentCount() {
