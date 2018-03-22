@@ -973,6 +973,13 @@ a:hover {
 	padding: 15px;
 	margin: 0px;
 }
+#main-description{
+    position: absolute;
+    left: 200px;
+    color: black;
+    width: 500px;
+    top: 14px;
+}
 
 /*start eta css*/
 .edit-profile {

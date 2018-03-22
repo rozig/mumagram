@@ -156,7 +156,7 @@ $(function(){
 
   <footer class="post-footer">
     <div class="post-buttons">
-      <a href="#" data-id="${ post.id }" class="uk-icon-link uk-margin-small-right post-button like-button">
+      <a href="#" data-id="${ post.id }" class="uk-icon-link uk-margin-small-right post-button like-button ${post.isLiked == true?'nice-liked':''}">
         <span uk-icon="heart"></span>
       </a>
       <a href="#" class="uk-icon-link uk-margin-small-right post-button">
@@ -458,7 +458,7 @@ $(function(){
   $buttonPass.on('click',function(e){
 
     $.ajax({ 
-      url: 'http://localhost:8080'+'/mumagram/change-password', 
+      url: _base_url+'/change-password', 
       type:'POST', 
       data:{
         id:$userIdPass.val(),

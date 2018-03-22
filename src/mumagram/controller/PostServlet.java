@@ -85,6 +85,7 @@ public class PostServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		if(service.validateSession(session)) {
 			String filter = request.getParameter("filter");
+			String description = request.getParameter("description");
 			Part postPic = request.getPart("file");
 			
 			if(filter == null || filter.isEmpty() || postPic == null) {
@@ -98,15 +99,16 @@ public class PostServlet extends HttpServlet {
 			String pic = service.imageUploader(username, postPic, "post");
 			Post post = new Post();
 			
+			post.setDescription(description);
 			post.setFilter(filter);
 			post.setPicture(pic);
 			post.setUser(user);
 			
 			postRepository.save(post);
 			
-			response.sendRedirect(String.valueOf(getServletContext().getAttribute("baseUrl")));
+			response.sendRedirect("/");
 		}else {
-			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login?error=Please login your username and password");
+			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login");
 		}
 		
 		
