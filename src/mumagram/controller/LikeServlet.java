@@ -34,7 +34,7 @@ public class LikeServlet extends HttpServlet {
         likeRepository = new LikeRepository();
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JsonResponse jsonResponse = new JsonResponse();
 		jsonResponse.setCode(2000);
 		jsonResponse.setStatus("error");
@@ -51,7 +51,7 @@ public class LikeServlet extends HttpServlet {
 		return;
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if(service.validateSession(session)) {
 			String postId = request.getParameter("post_id");
