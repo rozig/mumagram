@@ -19,17 +19,17 @@
 							uk-tab="connect: #component-tab-left; animation: uk-animation-fade">
 					            <li class="uk-active"><a href="#">Edit Profile</a></li>
 					            <li id="cp"><a href="#">Change Password</a></li>
-					            <li><a href="#">Authorized Applications</a></li>
+<!-- 					            <li><a href="#">Authorized Applications</a></li>
 					            <li><a href="#">Comments</a></li>
 					            <li><a href="#">Email and SMS</a></li>
-					            <li><a href="#">Manage Contacts</a></li>
+					            <li><a href="#">Manage Contacts</a></li> -->
 					        </ul>
             		</div>
    				 <div class="uk-width-3-4 edit-profile-form-divider">
 					<ul id="component-tab-left" class="uk-switcher">
 		                    <li>
 							 <div class="empty-form edit-profile-data">
-					            <form method="post" action="/mumagram/profile/edit"
+					            <form method="post" action="${ baseUrl}/profile/edit"
 										enctype="multipart/form-data">
 								 <div class="uk-margin empty-field">
 								 	<div uk-grid>
@@ -202,7 +202,7 @@
 		              </li>
 		              <li>
 		                    <div class="empty-form edit-profile-data">
-					            <form id="changepass_form" method="post" >
+					       
 								 <div class="uk-margin empty-field">
 								 	<div uk-grid>
 								 		<div class="uk-width-1-4">
@@ -292,11 +292,11 @@
 					                  
 					                </div>
 					              </div>
-					            		<div id="response-pass"></div>
-								</form>				          
+					            		<div id="response-pass"></div>			          
 						</div>
 		              </li>
-		              <li>
+		              
+<!-- 		              <li>
 		                   <div class="empty-form edit-profile-data">
 		                   	<p>You have not authorized any applications to access your Instagram account.</p>
 		                   </div>
@@ -309,7 +309,8 @@
 		              </li>
 		              <li>
 		                    4
-		              </li>
+		              </li> -->
+		              
                 		</ul>
 				</div>
 				</div>

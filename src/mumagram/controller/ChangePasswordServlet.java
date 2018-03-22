@@ -212,7 +212,7 @@ public class ChangePasswordServlet extends HttpServlet {
 			}
 
 		} else {
-			response.sendRedirect("/mumagram/login?error=Please login your username and password");
+			response.sendRedirect(getServletContext().getAttribute("baseUrl")+"/login?error=Please login your username and password");
 		}
 	}
 

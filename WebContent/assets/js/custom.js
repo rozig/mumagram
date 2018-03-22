@@ -304,7 +304,6 @@ $(function(){
   // change pass ajax request
   
   $buttonPass.on('click',function(e){
-    e.preventDefault();
 
     $.ajax({ 
       url: 'http://localhost:8080'+'/mumagram/change-password', 
