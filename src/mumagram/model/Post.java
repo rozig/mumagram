@@ -1,6 +1,8 @@
 package mumagram.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -13,11 +15,13 @@ public class Post {
 	private LocalDate createdDate;
 	private LocalDate updatedDate = null;
 	private boolean isLiked = false;
+	private List<Comment> comments;
 	private int commentCount = 0;
 	private int likeCount = 0;
 
 	public Post() {
 		createdDate = LocalDate.now();
+		comments = new ArrayList<Comment>();
 	}
 	
 	public int getId() {
@@ -84,8 +88,13 @@ public class Post {
 	public int getLikeCount() {
 		return likeCount;
 	}
-
 	public void setLikeCount(int likeCount) {
 		this.likeCount = likeCount;
+	}
+	public List<Comment> getComments() {
+		return comments;
+	}
+	public void setComments(List<Comment> comments) {
+		this.comments = comments;
 	}
 }

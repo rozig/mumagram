@@ -7,15 +7,19 @@ import java.sql.SQLException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
+import mumagram.model.Comment;
 import mumagram.model.Post;
 import mumagram.model.User;
 import mumagram.util.DbUtil;
 
 public class PostRepository {
 	private UserRepository userRepository;
+	private CommentRepository commentRepository;
 
 	public PostRepository() {
 		userRepository = new UserRepository();
+		commentRepository = new CommentRepository();
 	}
 
 	public Post findOneById(int id) {
@@ -135,6 +139,8 @@ public class PostRepository {
 				post.setCreatedDate(rs.getDate("created_date").toLocalDate());
 				post.setCommentCount(rs.getInt("comment_count"));
 				post.setLikeCount(rs.getInt("like_count"));
+				List<Comment> comments = commentRepository.getCommentsByPost(post);
+				post.setComments(comments);
 				if(rs.getDate("updated_date")!= null) {
 					post.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
 				}
