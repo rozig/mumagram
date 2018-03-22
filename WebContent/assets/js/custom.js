@@ -81,6 +81,10 @@ $(function(){
     	}
     });
     
+    $(document).on('click', '.like-button', function(){
+    	
+    });
+    
     var append_posts = function(data){    	
     	if(data.length==0){
 
@@ -120,7 +124,7 @@ $(function(){
 
   <footer class="post-footer">
     <div class="post-buttons">
-      <a href="#" class="uk-icon-link uk-margin-small-right post-button">
+      <a href="#" data-id="${ post.id }" class="uk-icon-link uk-margin-small-right post-button like-button">
         <span uk-icon="heart"></span>
       </a>
       <a href="#" class="uk-icon-link uk-margin-small-right post-button">
@@ -137,7 +141,7 @@ $(function(){
 
     <div class="post-description">
       <div class="post-desc">
-        <a href="#" class="link">${ post.user.username }</a>
+        <a href="${ _base_url }/profile/@${ post.user.username }" class="link">${ post.user.username }</a>
         <span>
           ${post.description }
         </span>
@@ -172,8 +176,8 @@ $(function(){
     </div>
 
     <div class="post-date">
-      <a class="date" href="/p/BgiIKxRH73g/">
-        <time class="time datetime" datetime="2018-03-20T05:27:04.000Z" title="Mar 20, 2018">${ post.createdDate.dayOfMonth }.${ post.createdDate.monthValue }.${ post.createdDate.year }</time> 
+      <a class="date" href="${ _base_url }/post/${ post.id }">
+        <time class="time datetime" title="${ post.createdDate.dayOfMonth }.${ post.createdDate.monthValue }.${ post.createdDate.year }">${ post.createdDate.dayOfMonth }.${ post.createdDate.monthValue }.${ post.createdDate.year }</time> 
       </a>
     </div>
 
