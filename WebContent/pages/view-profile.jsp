@@ -60,11 +60,10 @@
             <div class="uk-clearfix"></div>
           </header>
 
-          <div class="posts-profile-wrapper">
+          <div class="posts-profile-wrapper" id="posts-profile-wrapper">
             <c:forEach var="post" items="${posts }">
 			  <t:postprofile post="${post}" />
 			</c:forEach>
-			
           </div>
   </jsp:body>
 </t:wrapper>
