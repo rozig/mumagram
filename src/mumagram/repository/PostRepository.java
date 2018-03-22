@@ -99,11 +99,10 @@ public class PostRepository {
 				+ "(SELECT COUNT(1) FROM `like` l WHERE l.post_id = p.id) AS like_count,"
 				+ "(SELECT COUNT(id) FROM `comment` c WHERE c.post_id = p.id) AS comment_count "
 				+ "FROM post p INNER JOIN user_followers uf ON p.user_id = uf.user_id "
-				+ "WHERE uf.follower_id = ? OR p.user_id = ? ORDER BY p.created_date DESC,p.id DESC LIMIT 3 OFFSET ?"
+				+ "WHERE uf.follower_id = ? ORDER BY p.created_date DESC,p.id DESC LIMIT 3 OFFSET ?"
 			);
 			preparedStatement.setInt(1, user.getId());
-			preparedStatement.setInt(2, user.getId());
-			preparedStatement.setInt(3, page * 3);
+			preparedStatement.setInt(2, page * 3);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
 				Post post = new Post();

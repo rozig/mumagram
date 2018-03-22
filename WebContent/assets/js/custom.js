@@ -27,6 +27,9 @@ $(function(){
   var $buttonPass = $('#button-pass');
   // change password request end
   
+  // add comment on view post
+  var $addCommentOnViewPost = $('#add-comment-on-view-post');
+  
   // user feed section
   if($postwrapper.length){
     var page_counter = 0;
@@ -461,6 +464,33 @@ $(function(){
       $('#response-pass').append(div1);
     }
 
+  });
+  $addCommentOnViewPost.keyup(function(evt) {
+	  if(evt.keyCode === 13) {
+		  $.ajax({
+			  url: _base_url + "/comment/add",
+			  type: "POST",
+			  data: {
+				  comment: $(this).val(),
+				  post_id: $("#post-id").val(),
+				  user_id: $("#user-id").val()
+			  },
+			  success: function(response) {
+				  if(response.code === 1000) {
+					  var li = $("<li>").addClass("text-li");
+					  $("<a>").attr("href", _base_url + "/profile/@" + response.data.user.username)
+					  		.addClass("link").text(response.data.user.username).appendTo(li);
+					  $("<span>").text(response.data.comment).appendTo(li);
+					  li.appendTo("#post-comments-");
+				  } else {
+					  
+				  }
+			  },
+			  error: function(err) {
+				  console.log(err);
+			  }
+		  });
+	  }
   });
   }
 });
