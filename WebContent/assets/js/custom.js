@@ -154,7 +154,7 @@ $(function(){
     // when page load, load posts
     load_posts();
     
-    var append_profile_posts = function(data){    	
+    var append_profile_posts = function(data){
     	if(data.length==0){
 
     		var limit = true;
@@ -189,17 +189,15 @@ $(function(){
 				  </a>
 				</div>
     		`;
-    	}
     	
             // setting timeout
             setTimeout(function () {
             	$postprofileposts.append(template);
             }, 50);
-
-    	});
-    }
+    	  }
+    	}
     
-    var append_posts = function(data){    	
+    var append_posts = function(data){
     	if(data.length==0){
 
     		var limit = true;
