@@ -12,6 +12,8 @@ public class Post {
 	private String filter;
 	private LocalDate createdDate;
 	private LocalDate updatedDate = null;
+	private int commentCount = 0;
+	private int likeCount = 0;
 
 	public Post() {
 		createdDate = LocalDate.now();
@@ -61,5 +63,21 @@ public class Post {
 	}
 	public void setFilter(String filter) {
 		this.filter = filter;
+	}
+
+	public int getCommentCount() {
+		return commentCount;
+	}
+
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
+	}
+
+	public int getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(int likeCount) {
+		this.likeCount = likeCount;
 	}
 }

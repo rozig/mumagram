@@ -22,7 +22,10 @@ public class PostRepository {
 		Post post = new Post();
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT id, picture, description, filter, user_id, created_date, updated_date FROM post WHERE id = ?"
+				"SELECT p.id, p.picture, p.description, p.filter, p.user_id, p.created_date, p.updated_date,"
+				+ "(SELECT COUNT(1) FROM `like` l WHERE l.post_id = p.id) AS like_count,"
+				+ "(SELECT COUNT(id) FROM `comment` c WHERE c.post_id = p.id) AS comment_count "
+				+ "FROM post p WHERE p.id = ?"
 			);
 			preparedStatement.setInt(1, id);
 			ResultSet rs = preparedStatement.executeQuery();
@@ -33,7 +36,9 @@ public class PostRepository {
 				post.setPicture(rs.getString("picture"));
 				post.setDescription(rs.getString("description"));
 				post.setFilter(rs.getString("filter"));
-				post.setCreatedDate( rs.getDate("created_date").toLocalDate() );
+				post.setCommentCount(rs.getInt("comment_count"));
+				post.setLikeCount(rs.getInt("like_count"));
+				post.setCreatedDate( rs.getDate("created_date").toLocalDate());
 				post.setUser(user);
 			}
 
@@ -50,7 +55,12 @@ public class PostRepository {
 
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-					"SELECT id,picture,description,user_id,created_date, updated_date FROM post WHERE user_id = ? ORDER BY created_date DESC ,id DESC LIMIT 9");
+				"SELECT p.id,p.picture,p.description,p.user_id,p.created_date,p.updated_date,"
+				+ "(SELECT COUNT(1) FROM `like` l WHERE l.post_id = p.id) AS like_count,"
+				+ "(SELECT COUNT(id) FROM `comment` c WHERE c.post_id = p.id) AS comment_count"
+				+ " FROM post p WHERE p.user_id = ? "
+				+ "ORDER BY p.created_date DESC,p.id DESC LIMIT 9"
+			);
 			preparedStatement.setInt(1, user.getId());
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
@@ -60,6 +70,8 @@ public class PostRepository {
 				post.setDescription(rs.getString("description"));
 				post.setUser(user);
 				post.setCreatedDate(rs.getDate("created_date").toLocalDate());
+				post.setCommentCount(rs.getInt("comment_count"));
+				post.setLikeCount(rs.getInt("like_count"));
 				if(rs.getDate("updated_date")!= null) {
 					post.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
 				}
