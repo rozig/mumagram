@@ -494,6 +494,7 @@ $(function(){
     }
 
   });
+  if($addCommentOnViewPost.length){
   $addCommentOnViewPost.keyup(function(evt) {
 
 	  var sellf = $(this);
@@ -517,9 +518,8 @@ $(function(){
 					  
 					  sellf.val('');
 					  var $commentScroll = sellf.parent().parent().parent().find('.viewpost-comment-container');
-					  if($commentScroll.length){
-						  $commentScroll.animate({ scrollTop: $commentScroll[0].scrollHeight}, 1000);
-					  }
+					  $commentScroll.animate({ scrollTop: $commentScroll[0].scrollHeight}, 1000);
+					  
 				  } else {
 					  
 				  }
@@ -531,5 +531,6 @@ $(function(){
 		  
 	  }
   });
+  }
   }
 });

@@ -344,7 +344,7 @@ a:hover {
 .post-footer {
 	padding: 0 16px;
 }
-.post-comments{
+#feed-post-container .post-comments{
 	max-height: 160px;
 	overflow-y: scroll;
 }
