@@ -18,11 +18,14 @@
 					        <ul class="uk-tab-right"
 							uk-tab="connect: #component-tab-left; animation: uk-animation-fade">
 					            <li class="uk-active"><a href="#">Edit Profile</a></li>
-					            <li><a href="#">Change Password</a></li>
+					            <li id="cp"><a href="#">Change Password</a></li>
 					            <li><a href="#">Authorized Applications</a></li>
+					            <li><a href="#">Comments</a></li>
+					            <li><a href="#">Email and SMS</a></li>
+					            <li><a href="#">Manage Contacts</a></li>
 					        </ul>
             		</div>
-   				 <div class="uk-width-3-4">
+   				 <div class="uk-width-3-4 edit-profile-form-divider">
 					<ul id="component-tab-left" class="uk-switcher">
 		                    <li>
 							 <div class="empty-form edit-profile-data">
@@ -45,7 +48,10 @@
 									        </div>
 								 		</div>
 								 		<div class="uk-width-3-4">
-								 		 <h1 class="profile-post-name">${user.username }</h1>
+								 		 <h3 class="profile-post-name">
+														<strong>${user.username }</strong>
+													</h3>
+								 		 ${user.firstname } ${user.lastname }
 								 		</div>
 									  </div>
 									    
@@ -196,8 +202,7 @@
 		              </li>
 		              <li>
 		                    <div class="empty-form edit-profile-data">
-					            <form method="post" action="/mumagram/profile/edit"
-										enctype="multipart/form-data">
+					            <form id="changepass_form" method="post" >
 								 <div class="uk-margin empty-field">
 								 	<div uk-grid>
 								 		<div class="uk-width-1-4">
@@ -215,7 +220,10 @@
 									        </div>
 								 		</div>
 								 		<div class="uk-width-3-4">
-								 		 <h1 class="profile-post-name">${user.username }</h1>
+								 		 <h3 class="profile-post-name">
+														<strong>${user.username }</strong>
+													</h3>
+								 		${user.firstname } ${user.lastname }
 								 		</div>
 									  </div>
 								 </div>
@@ -232,8 +240,8 @@
 														class="uk-form-controls edit-profile-form-control">	
 	            												<span class="uk-form-icon" uk-icon="icon: lock"></span>
 						                  					<input class="uk-input" type="password"
-															id="oldpassword" name="oldpass">
-															<input type="hidden" name="id" value="${user.id}" />
+															id="oldpassword" name="oldpassword" required>
+															<input type="hidden" name="id" id="pass-user-id" value="${user.id}" />
 	            											</div>
 	            										</div>
 	            						  </div>
@@ -248,7 +256,7 @@
 														class="uk-form-controls edit-profile-form-control">	
 	            												<span class="uk-form-icon" uk-icon="icon: lock"></span>
 						                  					<input class="uk-input" type="password"
-															id="newpassword" name="newpassword">
+															id="newpassword" name="newpassword" required>
 	            											</div>
 	            										</div>
 	            						  </div>
@@ -264,7 +272,8 @@
 														class="uk-form-controls edit-profile-form-control">	
 	            												<span class="uk-form-icon" uk-icon="icon: lock"></span>
 						                  					<input class="uk-input" type="password"
-															id="confirm-newpassword" name="confirm-newpassword">
+															id="confirmnewpassword" name="confirmnewpassword"
+															required>
 	            											</div>
 	            										</div>
 	            						  </div>
@@ -277,51 +286,35 @@
 					                &ensp;
 					                </div>
 					                <div class="uk-width-3-4">
-					                		<button class="uk-input uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Change password</button>
+					                		<button id="button-pass"
+														class="uk-input uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Change password</button>
 					                </div>
 					                  
 					                </div>
 					              </div>
-					            		<c:choose>
-									    <c:when test="${errorMessage != null }">
-						
-										 <div class="uk-margin empty-field">			 				
-											<div class="uk-alert-danger" uk-alert>
-									
-									    		<p> ${errorMessage }</p>
-										</div>
-										</div>
-									    </c:when>
-									    <c:otherwise>
-									    </c:otherwise>
-									</c:choose>
-									    
-									<c:choose>
-									    <c:when test="${successMessage != null }">
-						
-										 <div class="uk-margin empty-field">			 				
-										<div class="uk-alert-success" uk-alert>
-									
-									    <p> ${successMessage }</p>
-										</div>
-										</div>
-									    </c:when>
-									    <c:otherwise>
-									    </c:otherwise>
-								    </c:choose>
+					            		<div id="response-pass"></div>
 								</form>				          
 						</div>
 		              </li>
 		              <li>
-		                    Duis aute irure dolor in reprehenderit in voluptate velit 
-		                    esse cillum dolore eu fugiat nulla pariatur, sed do eiusmod.
+		                   <div class="empty-form edit-profile-data">
+		                   	<p>You have not authorized any applications to access your Instagram account.</p>
+		                   </div>
+		              </li>
+		              <li>
+		                    2
+		              </li>
+		              <li>
+		                    3
+		              </li>
+		              <li>
+		                    4
 		              </li>
                 		</ul>
 				</div>
 				</div>
 				</div>
 			</div>	
-			
 			
 			
 

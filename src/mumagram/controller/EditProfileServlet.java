@@ -38,6 +38,7 @@ public class EditProfileServlet extends HttpServlet {
 			request.setAttribute("user", user);
 			RequestDispatcher rd = request.getRequestDispatcher("/pages/edit-profile.jsp");
 			rd.forward(request, response);
+			return;
 		} else {
 			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login?error=Please login your username and password");
 		}
@@ -52,7 +53,6 @@ public class EditProfileServlet extends HttpServlet {
 		String username = request.getParameter("username");
 		String bio = request.getParameter("bio");
 		String isPrivate = request.getParameter("is-private");
-		
 		isPrivate = isPrivate != null ? "true" : "false";
 
 		Part profilePicturePart = request.getPart("profile-picture");
@@ -117,6 +117,7 @@ public class EditProfileServlet extends HttpServlet {
 			request.setAttribute("successMessage", "Your information saved successfully!");
 			RequestDispatcher rd = request.getRequestDispatcher("/pages/edit-profile.jsp");
 			rd.forward(request, response);
+			return;
 		} else {
 			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login?error=Please login your username and password");
 		}

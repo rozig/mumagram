@@ -50,6 +50,7 @@ public class DeleteCommentServlet extends HttpServlet {
 				PrintWriter out = response.getWriter();
 				out.write(resultJson);
 				out.flush();
+				return;
 			}
 			
 			user = (User) session.getAttribute("user");
@@ -67,6 +68,7 @@ public class DeleteCommentServlet extends HttpServlet {
 				PrintWriter out = response.getWriter();
 				out.write(resultJson);
 				out.flush();
+				return;
 			}
 			
 			Comment comment = commentRepository.findOneById(Integer.parseInt(commentId));
@@ -84,6 +86,7 @@ public class DeleteCommentServlet extends HttpServlet {
 				PrintWriter out = response.getWriter();
 				out.write(resultJson);
 				out.flush();
+				return;
 			}
 			
 			commentRepository.delete(comment);
@@ -101,6 +104,7 @@ public class DeleteCommentServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			out.write(resultJson);
 			out.flush();
+			return;
 		} else {
 			JsonResponse jsonResponse = new JsonResponse();
 			jsonResponse.setCode(3000);
@@ -115,6 +119,7 @@ public class DeleteCommentServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			out.write(resultJson);
 			out.flush();
+			return;
 		}
 	}
 
@@ -132,5 +137,6 @@ public class DeleteCommentServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		out.write(resultJson);
 		out.flush();
+		return;
 	}
 }

@@ -49,6 +49,7 @@ public class SearchUserServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			out.write(resultJson);
 			out.flush();
+			return;
 		} else {
 			JsonResponse jsonResponse = new JsonResponse();
 			jsonResponse.setCode(3000);
@@ -63,6 +64,7 @@ public class SearchUserServlet extends HttpServlet {
 			PrintWriter out = response.getWriter();
 			out.write(resultJson);
 			out.flush();
+			return;
 		}		
 	}
 

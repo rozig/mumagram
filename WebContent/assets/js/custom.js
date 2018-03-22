@@ -16,166 +16,174 @@ $(function(){
   $searchinput = $('#search-input'),
   $postwrapper = $('#feed-post-container'),
   $ajaxloader = $('#ajax-loader');
+
+  // change password request start
+  var $oldPassword = $('#oldpassword');
+  var $newPassword = $('#newpassword');
+  var $confirmNewPassword = $('#confirmnewpassword');
+  var $userIdPass = $('#pass-user-id');
+  var $buttonPass = $('#button-pass');
+  // change password request end
   
   // user feed section
   if($postwrapper.length){
-	  var page_counter = 1;
-	  var load_posts = function(){
-		  // show ajax loader
-		  $ajaxloader.show();
-		  
-		  $.ajax({
-			  url: _base_url+'/get-posts',
-			  method: 'POST',
-			  data: {
-				  'page': page_counter,
-				  'type': 'feed'
-			  }
-		  }).done(function(data){
-			  
-			  if(data.code === 1000){
-	  			if(Object.keys(data.data).length>0){
-	  				// append posts
-	  				append_posts(data.data);
-	  			}else{
-	  				//doesn't exist
-	  				$follow.hide();
-	  			}
-		  	  }else{
-		  		//error exists
-		  		console.log(data.data);
-		  	  }
-			  
-			  // adding page number
-			  page_counter++;
-		  }).fail(function(e){
-			  console.log(e);
-		  }).always(function() {
-			  $ajaxloader.hide();
-		  });
-	  }
-	  
-	  // when page load, load posts
-	  load_posts();
-	  
-	  var append_posts = function(data){
-		  console.log(data);
-	  }
+    var page_counter = 1;
+    var load_posts = function(){
+      // show ajax loader
+      $ajaxloader.show();
+      
+      $.ajax({
+        url: _base_url+'/get-posts',
+        method: 'POST',
+        data: {
+          'page': page_counter,
+          'type': 'feed'
+        }
+      }).done(function(data){
+
+        if(data.code === 1000){
+          if(Object.keys(data.data).length>0){
+            // append posts
+            append_posts(data.data);
+          }else{
+            //doesn't exist
+            $follow.hide();
+          }
+        }else{
+          //error exists
+          console.log(data.data);
+        }
+        
+        // adding page number
+        page_counter++;
+      }).fail(function(e){
+        console.log(e);
+      }).always(function() {
+        $ajaxloader.hide();
+      });
+    }
+    
+    // when page load, load posts
+    load_posts();
+    
+    var append_posts = function(data){
+      console.log(data);
+    }
   }
   
   // follow button section
   if($follow.length){
-	  var profile_id = $follow.attr('data-profile-id');
-	  var username = $follow.attr('data-username');
-	  
-	  $follow.on('click',function(){
-		 get_status(); 
-	  });
-	  
-	  var get_status = function(){
-		  $follow.attr('disabled', 'disabled');
-		  $.ajax({
-			  url: _base_url+'/follow',
-			  method: 'POST',
-			  data: {
-				  'username': username,
-				  'following_user_id': profile_id
-			  }
-		  }).done(function(data){
-			  
-			  if(data.code === 1000){
-	  			if(Object.keys(data.data).length>0){
-	  				change_follow_button(data.status);
-	  			}else{
-	  				//doesn't exist
-	  				$follow.hide();
-	  			}
-		  	  }else{
-		  		//error exists
-		  		console.log(data.data);
-		  	  }
-		  }).fail(function(e){
-			  console.log(e);
-		  }).always(function() {
-			  $follow.removeAttr('disabled');
-		  });
-	  };
-	  
-	  var change_follow_button = function(data){
-		  console.log(data);
-		  
-		  if(data==="Follow"){
-			  $follow.addClass('uk-button-primary');
-		  }else{
-			  $follow.removeClass('uk-button-primary');
-		  }
+    var profile_id = $follow.attr('data-profile-id');
+    var username = $follow.attr('data-username');
+    
+    $follow.on('click',function(){
+     get_status(); 
+   });
+    
+    var get_status = function(){
+      $follow.attr('disabled', 'disabled');
+      $.ajax({
+        url: _base_url+'/follow',
+        method: 'POST',
+        data: {
+          'username': username,
+          'following_user_id': profile_id
+        }
+      }).done(function(data){
 
-		  $follow.html(data);
-	  }
+        if(data.code === 1000){
+          if(Object.keys(data.data).length>0){
+            change_follow_button(data.status);
+          }else{
+            //doesn't exist
+            $follow.hide();
+          }
+        }else{
+          //error exists
+          console.log(data.data);
+        }
+      }).fail(function(e){
+        console.log(e);
+      }).always(function() {
+        $follow.removeAttr('disabled');
+      });
+    };
+    
+    var change_follow_button = function(data){
+      console.log(data);
+      
+      if(data==="Follow"){
+        $follow.addClass('uk-button-primary');
+      }else{
+        $follow.removeClass('uk-button-primary');
+      }
+
+      $follow.html(data);
+    }
   }
   
   if($searchinput.length){
-	  $searchinput.on('input', function(){
-		  var a = setTimeout(work, 10);
-		  var self = $(this);
-		  
-		  function work(){
-			  $.ajax({
-				  url: _base_url+'/search',
-			      method: 'GET',
-			      data: {
-			    	  'query': self.val()
-			      }
-		  	  }).done(function(data){
-		  		  $searchresult.html('');
-		  		  if(data.code === 1000){
-		  			
-		  			if(Object.keys(data.data).length>0){
-		  				data.data.forEach(function(t){
-				  	    	var template = `<div class="sidebar-profile-wrapper">
-						        <div class="sidebar-profile-pic-wrapper">
-						          <a href="/mumagram/profile/@${t.username}" class="sidebar-pic uk-border-circle">
-						            <img src="${t.profilePicture}" alt="">
-						          </a>
-						        </div>
-						        <div class="sidebar-profile-text">
-						          <div class="sidebar-profile-username">
-						            <a href="/mumagram/profile/@${t.username}" class="sidebar-username link">
-						              ${t.username}
-						            </a>
-						          </div>
-						          <div class="sidebar-profile-name">
-						            ${t.fullname}
-						          </div>
-						        </div>
-						      </div>`;
-				  	    	
-				  	    	$searchresult.append(template);
-				  	      });
-			  		  
-		  			}else{
-		  				$searchresult.append( $('<p class="result-error"></p>').text('Not found') );
-		  			}
-		  			
-		  		  }else{
-		  			  $searchresult.append( $('<p class="result-error"></p>').text(data.data) );
-		  		  }
-		  	  }).fail(function(e){
-		  		  console.log(e);
-		  	  });
-			  $searchresult.show();  
-		  }
-	  });
-	  
-	  $(document).on("click", function(event){
-	        var $trigger1 = $searchresult;
-	        var $trigger2 = $searchinput;
-	        if($trigger1 !== event.target && !$trigger1.has(event.target).length &&
-	        		$trigger2 !== event.target && !$trigger2.has(event.target).length
-	        ){
-	        	$searchresult.hide();
-	        }
-	    });
+    $searchinput.on('input', function(){
+      var a = setTimeout(work, 10);
+      var self = $(this);
+      
+      function work(){
+        $.ajax({
+          url: _base_url+'/search',
+          method: 'GET',
+          data: {
+            'query': self.val()
+          }
+        }).done(function(data){
+          $searchresult.html('');
+          if(data.code === 1000){
+
+            if(Object.keys(data.data).length>0){
+              data.data.forEach(function(t){
+                var template = `<div class="sidebar-profile-wrapper">
+                <div class="sidebar-profile-pic-wrapper">
+                <a href="/mumagram/profile/@${t.username}" class="sidebar-pic uk-border-circle">
+                <img src="${t.profilePicture}" alt="">
+                </a>
+                </div>
+                <div class="sidebar-profile-text">
+                <div class="sidebar-profile-username">
+                <a href="/mumagram/profile/@${t.username}" class="sidebar-username link">
+                ${t.username}
+                </a>
+                </div>
+                <div class="sidebar-profile-name">
+                ${t.fullname}
+                </div>
+                </div>
+                </div>`;
+
+                $searchresult.append(template);
+              });
+              
+            }else{
+              $searchresult.append( $('<p class="result-error"></p>').text('Not found') );
+            }
+            
+          }else{
+            $searchresult.append( $('<p class="result-error"></p>').text(data.data) );
+          }
+        }).fail(function(e){
+          console.log(e);
+        });
+        $searchresult.show();  
+      }
+    });
+    
+    $(document).on("click", function(event){
+      var $trigger1 = $searchresult;
+      var $trigger2 = $searchinput;
+      if($trigger1 !== event.target && !$trigger1.has(event.target).length &&
+        $trigger2 !== event.target && !$trigger2.has(event.target).length
+        ){
+        $searchresult.hide();
+    }
+  });
   }
 
   var image = false;
@@ -183,15 +191,15 @@ $(function(){
   if($drop){
     var droppedFiles = false;
 
-  // is draggable or not. from: (https://css-tricks.com/drag-and-drop-file-uploading/)
-  var isAdvancedUpload = function()
-  {
+  // is draggable or not. from:
+  // (https://css-tricks.com/drag-and-drop-file-uploading/)
+  var isAdvancedUpload = function(){
     var div = document.createElement( 'div' );
     return ( ( 'draggable' in div ) || ( 'ondragstart' in div && 'ondrop' in div ) ) && 'FormData' in window && 'FileReader' in window;
   }();
   
   $inputbutton.on('click', function(){
-	  $form.submit();
+    $form.submit();
   });
 
   // show insta options
@@ -237,36 +245,24 @@ $(function(){
   };
 
   // when file select
-  $input.on( 'change', function( e )
-  {
+  $input.on( 'change', function( e ){
     showFiles( e.target.files );
   });
 
-  if( isAdvancedUpload )
-  {
-    $drop
-        .addClass( 'has-advanced-upload' ) // letting the CSS part to know drag&drop is supported by the browser
-        .on( 'drag dragstart dragend dragover dragenter dragleave drop', function( e )
-        {
-          // preventing the unwanted behaviours
-          e.preventDefault();
-          e.stopPropagation();
-        })
-        .on( 'dragover dragenter', function() //
-        {
-          $drop.addClass( 'is-dragover' );
-        })
-        .on( 'dragleave dragend drop', function()
-        {
-          $drop.removeClass( 'is-dragover' );
-        })
-        .on( 'drop', function( e )
-        {
-          droppedFiles = e.originalEvent.dataTransfer.files; // the files that were dropped
-          //console.log(droppedFiles);
-          showFiles( droppedFiles );
-        });
-      }
+  if( isAdvancedUpload ){
+    $drop.addClass( 'has-advanced-upload' ).on( 'drag dragstart dragend dragover dragenter dragleave drop', function( e ){
+        // preventing the unwanted behaviours
+        e.preventDefault();
+        e.stopPropagation();
+      }).on( 'dragover dragenter', function(){
+        $drop.addClass( 'is-dragover' );
+      }).on( 'dragleave dragend drop', function(){
+        $drop.removeClass( 'is-dragover' );
+      }).on( 'drop', function( e ){
+        droppedFiles = e.originalEvent.dataTransfer.files;
+        showFiles( droppedFiles );
+      });
+    }
 
   // show insta options
   function insta_show(b){
@@ -303,5 +299,48 @@ $(function(){
 
     $instaimg.addClass(attr);
   });
-}
+  
+  // change pass ajax request
+  
+  $buttonPass.on('click',function(e){
+    e.preventDefault();
+
+    $.ajax({ 
+      url: 'http://localhost:8080'+'/mumagram/change-password', 
+      type:'POST', 
+      data:{
+        id:$userIdPass.val(),
+        oldpassword:$oldPassword.val(),
+        newpassword:$newPassword.val(),
+        confirmnewpassword:$confirmNewPassword.val()
+      },
+      success:function(resultData) {
+        $('#response-pass').empty();
+        if(resultData.code===1000 && resultData.status==="success"){
+          var div2 = $('<div>').addClass('uk-alert-success').attr("uk-alert","").append($('<p>').text(resultData.data));
+          var div1 = $('<div>').addClass('uk-margin empty-field').append(div2);
+          $('#response-pass').append(div1);
+        }
+        else if(resultData.code===2000 && resultData.status==="error"){
+          var div2 = $('<div>').addClass('uk-alert-danger').attr("uk-alert","").append($('<p>').text(resultData.data));
+          var div1 = $('<div>').addClass('uk-margin empty-field').append(div2);
+          $('#response-pass').append(div1);
+        }
+        else
+        {
+          var div2 = $('<div>').addClass('uk-alert-danger').attr("uk-alert","").append($('<p>').text("Please check your internet!"));
+          var div1 = $('<div>').addClass('uk-margin empty-field').append(div2);
+          $('#response-pass').append(div1);
+        }
+      }
+    }).fail(errorAjax);
+    
+    function errorAjax(error){
+      var div2 = $('<div>').addClass('uk-alert-danger').attr("uk-alert","").append($('<p>').text("error"));
+      var div1 = $('<div>').addClass('uk-margin empty-field').append(div2);
+      $('#response-pass').append(div1);
+    }
+
+  });
+  }
 });

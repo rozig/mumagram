@@ -45,6 +45,7 @@ public class PostServlet extends HttpServlet {
 			if(postId == null ) {
 				RequestDispatcher rd = request.getRequestDispatcher("/pages/post.jsp");
 				rd.forward(request, response);
+				return;
 			}else {
 				if(postId.length>=2 && !postId[1].isEmpty()) {
 					int id = Integer.parseInt(postId[1]);
@@ -54,9 +55,11 @@ public class PostServlet extends HttpServlet {
 					
 					RequestDispatcher rd = request.getRequestDispatcher("/pages/viewpost.jsp");
 					rd.forward(request, response);
+					return;
 				}else {
 					RequestDispatcher rd = request.getRequestDispatcher("/pages/post.jsp");
 					rd.forward(request, response);
+					return;
 				}
 			}
 		} else {
