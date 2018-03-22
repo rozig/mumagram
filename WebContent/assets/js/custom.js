@@ -30,6 +30,39 @@ $(function(){
   // add comment on view post
   var $addCommentOnViewPost = $('#add-comment-on-view-post');
   
+  // Like button
+  $(document).on('click', '.like-button', function(e){
+	  e.preventDefault(e);
+	  var self = $(this);
+  	$.ajax({
+  		url: _base_url+'/like',
+  		method: 'POST',
+  		data: {
+  			user_id: $(this).attr('data-user-id'),
+  			post_id: $(this).attr('data-id')
+  		}
+  	}).done(function(data){
+  		change_like(self, data.status);
+  	});
+  	
+  });
+
+	var change_like = function(button, status){
+      var $counter = button.parent().parent().find('.counter-link span');
+	    console.log($counter);
+	  var likes = parseInt( $counter.text() );
+	  if(status === 'liked'){
+	    button.addClass('nice-liked');
+	    likes++;
+	  }else{
+		button.removeClass('nice-liked');
+		likes--;
+	  }
+	  $counter.text(likes);
+	}
+	// Like button end
+	
+	
   // user feed section
   if($postwrapper.length){
     var page_counter = 0;
@@ -82,10 +115,6 @@ $(function(){
     			
     		}, 300 );
     	}
-    });
-    
-    $(document).on('click', '.like-button', function(){
-    	
     });
     
     var append_posts = function(data){    	

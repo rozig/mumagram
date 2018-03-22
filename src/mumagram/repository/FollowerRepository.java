@@ -35,7 +35,10 @@ public class FollowerRepository {
 				follower.setFollower(followerUser);
 				follower.setStatus(rs.getString("status"));
 				follower.setCreatedDate(rs.getDate("created_date").toLocalDate());
-				follower.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
+				
+				if(rs.getDate("updated_date") != null) {
+					follower.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
+				}
 			}
 
 			rs.close();

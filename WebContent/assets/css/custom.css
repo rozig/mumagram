@@ -936,7 +936,9 @@ a:hover {
 .mum-error {
 	text-align: center;
 }
-
+.nice-liked span{
+	color: red !important;
+}
 .search-result .search-dropdown {
 	display: none;
 	padding: 0px;
