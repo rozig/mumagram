@@ -53,7 +53,6 @@ public class ViewProfileServlet extends HttpServlet {
 			} else {
 				user = userRepository.findOneByUsername(usernameWithoutAt);
 			}
-			request.setAttribute("user", user);
 			int countPost = userRepository.countPost(user.getId());
 			request.setAttribute("countPost", countPost);
 			int countFollower = userRepository.countFollower(user.getId());
@@ -66,7 +65,7 @@ public class ViewProfileServlet extends HttpServlet {
 			}
 			
 			request.setAttribute("posts", posts);
-			request.setAttribute("profile",  user);
+			request.setAttribute("profile", user);
 
 			RequestDispatcher rd = request.getRequestDispatcher("/pages/view-profile.jsp");
 			rd.forward(request, response);
