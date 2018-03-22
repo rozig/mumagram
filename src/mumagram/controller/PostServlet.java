@@ -60,7 +60,7 @@ public class PostServlet extends HttpServlet {
 				}
 			}
 		} else {
-			response.sendRedirect("/mumagram/login?error=Please login your username and password");
+			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login?error=Please login your username and password");
 		}
 	}
 
@@ -83,9 +83,9 @@ public class PostServlet extends HttpServlet {
 			
 			postRepository.save(post);
 			
-			response.sendRedirect("/mumagram");
+			response.sendRedirect(String.valueOf(getServletContext().getAttribute("baseUrl")));
 		}else {
-			response.sendRedirect("/mumagram/login?error=Please login your username and password");
+			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login?error=Please login your username and password");
 		}
 		
 		

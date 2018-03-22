@@ -25,7 +25,7 @@ public class LogoutServlet extends HttpServlet {
 			HttpSession session = request.getSession(false);
 			if (session != null) {
 				session.invalidate();
-				response.sendRedirect("/mumagram/login");
+				response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login");
 			}
 		}
 	}

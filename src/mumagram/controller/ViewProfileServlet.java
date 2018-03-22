@@ -41,12 +41,12 @@ public class ViewProfileServlet extends HttpServlet {
 		if (service.validateSession(session)) {
 			pathInfo = request.getPathInfo();
 			if(pathInfo == null || pathInfo.isEmpty() || pathInfo.split("/").length <= 1) {
-				response.sendRedirect("/mumagram/");
+				response.sendRedirect(String.valueOf(getServletContext().getAttribute("baseUrl")));
 				return;
 			}
 			String username = pathInfo.split("/")[1];
 			if(username.split("@").length <= 1) {
-				response.sendRedirect("/mumagram/");
+				response.sendRedirect(String.valueOf(getServletContext().getAttribute("baseUrl")));
 				return;
 			}
 			String usernameWithoutAt = username.split("@")[1];
@@ -54,7 +54,7 @@ public class ViewProfileServlet extends HttpServlet {
 			String userStatus = null;
 			
 			if(user == null) {
-				response.sendRedirect("/mumagram/");
+				response.sendRedirect(String.valueOf(getServletContext().getAttribute("baseUrl")));
 				return;
 			}
 			
@@ -93,7 +93,7 @@ public class ViewProfileServlet extends HttpServlet {
 			RequestDispatcher rd = request.getRequestDispatcher("/pages/view-profile.jsp");
 			rd.forward(request, response);
 		} else {
-			response.sendRedirect("/mumagram/login");
+			response.sendRedirect(getServletContext().getAttribute("baseUrl") + "/login");
 		}
 	}
 
