@@ -6,6 +6,9 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 import java.util.Random;
@@ -34,7 +37,6 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 
 import mumagram.model.User;
-
 
 public class Service {
 	private static final Random RANDOM = new SecureRandom();
@@ -81,11 +83,18 @@ public class Service {
 	    return null;
 	}
 	
-	public String imageUploader(String name, Part profilePicturePart) throws IOException {
+	public String imageUploader(String name, Part profilePicturePart, String type) throws IOException {
 		String resultStr = null;
 		try {
 			String[] filExt = getFileName(profilePicturePart).split("\\.");
 			String filename = name + "." + filExt[1];
+			if(type.equals("profile")) {
+				filename = "profile/" + filename;
+			} else {
+				Date now = new Date();
+				DateFormat df = new SimpleDateFormat("MMddyyyy_HHmmss");
+				filename = "posts/" + name + "/" + df.format(now) + "." + filExt[1];
+			}
 			String contentType = profilePicturePart.getContentType();
 			AWSCredentials credentials = new BasicAWSCredentials(
 			  "AKIAIJ5FTHNX4GMTKJJQ", 
