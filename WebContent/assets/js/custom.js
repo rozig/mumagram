@@ -27,6 +27,42 @@ $(function(){
   var $buttonPass = $('#button-pass');
   // change password request end
   
+  // add comment on view post
+  var $addCommentOnViewPost = $('#add-comment-on-view-post');
+  
+  // Like button
+  $(document).on('click', '.like-button', function(e){
+	  e.preventDefault(e);
+	  var self = $(this);
+  	$.ajax({
+  		url: _base_url+'/like',
+  		method: 'POST',
+  		data: {
+  			user_id: $(this).attr('data-user-id'),
+  			post_id: $(this).attr('data-id')
+  		}
+  	}).done(function(data){
+  		change_like(self, data.status);
+  	});
+  	
+  });
+
+	var change_like = function(button, status){
+      var $counter = button.parent().parent().find('.counter-link span');
+	    console.log($counter);
+	  var likes = parseInt( $counter.text() );
+	  if(status === 'liked'){
+	    button.addClass('nice-liked');
+	    likes++;
+	  }else{
+		button.removeClass('nice-liked');
+		likes--;
+	  }
+	  $counter.text(likes);
+	}
+	// Like button end
+	
+	
   // user feed section
   if($postwrapper.length){
     var page_counter = 0;
@@ -120,7 +156,7 @@ $(function(){
 
   <footer class="post-footer">
     <div class="post-buttons">
-      <a href="#" class="uk-icon-link uk-margin-small-right post-button">
+      <a href="#" data-id="${ post.id }" class="uk-icon-link uk-margin-small-right post-button like-button">
         <span uk-icon="heart"></span>
       </a>
       <a href="#" class="uk-icon-link uk-margin-small-right post-button">
@@ -137,15 +173,11 @@ $(function(){
 
     <div class="post-description">
       <div class="post-desc">
-        <a href="#" class="link">${ post.user.username }</a>
+        <a href="${ _base_url }/profile/@${ post.user.username }" class="link">${ post.user.username }</a>
         <span>
-          ${post.description }
+          ${post.description ? post.description : ''}
         </span>
       </div>
-    </div>
-
-    <div class="post-more-comments margin-small-bottom">
-      <a class="more-comments" href="#" role="button">View all <span>9</span> comments</a>
     </div>
 
     <div class="post-comments">
@@ -172,8 +204,8 @@ $(function(){
     </div>
 
     <div class="post-date">
-      <a class="date" href="/p/BgiIKxRH73g/">
-        <time class="time datetime" datetime="2018-03-20T05:27:04.000Z" title="Mar 20, 2018">${ post.createdDate.dayOfMonth }.${ post.createdDate.monthValue }.${ post.createdDate.year }</time> 
+      <a class="date" href="${ _base_url }/post/${ post.id }">
+        <time class="time datetime" title="${ post.createdDate.dayOfMonth }.${ post.createdDate.monthValue }.${ post.createdDate.year }">${ post.createdDate.dayOfMonth }.${ post.createdDate.monthValue }.${ post.createdDate.year }</time> 
       </a>
     </div>
 
@@ -461,6 +493,43 @@ $(function(){
       $('#response-pass').append(div1);
     }
 
+  });
+  $addCommentOnViewPost.keyup(function(evt) {
+
+	  var sellf = $(this);
+	  
+	  if(evt.keyCode === 13) {
+		  $.ajax({
+			  url: _base_url + "/comment/add",
+			  type: "POST",
+			  data: {
+				  comment: $(this).val(),
+				  post_id: $("#post-id").val(),
+				  user_id: $("#user-id").val()
+			  },
+			  success: function(response) {
+				  if(response.code === 1000) {
+					  var li = $("<li>").addClass("text-li");
+					  $("<a>").attr("href", _base_url + "/profile/@" + response.data.user.username)
+					  		.addClass("link").text(response.data.user.username).appendTo(li);
+					  $("<span>").text(' '+response.data.comment).appendTo(li);
+					  li.appendTo("#post-comments-");
+					  
+					  sellf.val('');
+					  var $commentScroll = sellf.parent().parent().parent().find('.viewpost-comment-container');
+					  if($commentScroll.length){
+						  $commentScroll.animate({ scrollTop: $commentScroll[0].scrollHeight}, 1000);
+					  }
+				  } else {
+					  
+				  }
+			  },
+			  error: function(err) {
+				  console.log(err);
+			  }
+		  });
+		  
+	  }
   });
   }
 });

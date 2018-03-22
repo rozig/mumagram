@@ -34,7 +34,7 @@ public class LikeServlet extends HttpServlet {
         likeRepository = new LikeRepository();
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JsonResponse jsonResponse = new JsonResponse();
 		jsonResponse.setCode(2000);
 		jsonResponse.setStatus("error");
@@ -51,13 +51,12 @@ public class LikeServlet extends HttpServlet {
 		return;
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if(service.validateSession(session)) {
 			String postId = request.getParameter("post_id");
-			String userId = request.getParameter("user_id");
 
-			if(postId == null || postId.isEmpty() || userId == null || userId.isEmpty()) {
+			if(postId == null || postId.isEmpty()) {
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(2000);
 				jsonResponse.setStatus("error");
@@ -75,11 +74,11 @@ public class LikeServlet extends HttpServlet {
 			}
 			
 			User user = (User) session.getAttribute("user");
-			if(Integer.parseInt(userId) != user.getId()) {
+			if(user == null) {
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(3000);
 				jsonResponse.setStatus("denied");
-				jsonResponse.setData("Your user id doesn't match with session user id!");
+				jsonResponse.setData("Your user id doesn't exist!");
 
 				ObjectMapper mapper = new ObjectMapper();
 				String resultJson = mapper.writeValueAsString(jsonResponse);
@@ -111,10 +110,12 @@ public class LikeServlet extends HttpServlet {
 			}
 
 			Like existingLike = likeRepository.isLiked(post, user);
+			String status = "liked";
 			String responseMessage;
 			if(existingLike != null) {
 				likeRepository.delete(existingLike);
 				responseMessage = "You disliked this post!";
+				status = "disliked";
 			} else {
 				Like like = new Like();
 				like.setUser(user);
@@ -125,7 +126,7 @@ public class LikeServlet extends HttpServlet {
 
 			JsonResponse jsonResponse = new JsonResponse();
 			jsonResponse.setCode(1000);
-			jsonResponse.setStatus("success");
+			jsonResponse.setStatus(status);
 			jsonResponse.setData(responseMessage);
 
 			ObjectMapper mapper = new ObjectMapper();

@@ -55,7 +55,7 @@ public class CommentRepository {
 
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-					"SELECT id,comment,post_id,user_id,created_date,updated_date FROM comment WHERE post_id = ? ORDER BY created_date DESC,id DESC");
+					"SELECT id,comment,post_id,user_id,created_date,updated_date FROM comment WHERE post_id = ?");
 			preparedStatement.setInt(1, post.getId());
 			ResultSet rs = preparedStatement.executeQuery();
 			while(rs.next()) {
@@ -66,6 +66,7 @@ public class CommentRepository {
 				comment.setId(rs.getInt("id"));
 				comment.setPost(postObject);
 				comment.setUser(userObject);
+				comment.setComment(rs.getString("comment"));
 				comment.setCreatedDate(rs.getDate("created_date").toLocalDate());
 				if(rs.getDate("updated_date")!= null) {
 					comment.setUpdatedDate(rs.getDate("updated_date").toLocalDate());

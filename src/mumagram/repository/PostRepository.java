@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+
+import mumagram.model.Comment;
 import mumagram.model.Post;
 import mumagram.model.User;
 import mumagram.util.DbUtil;
@@ -57,9 +59,10 @@ public class PostRepository {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"SELECT p.id,p.picture,p.description,p.filter,p.user_id,p.created_date,p.updated_date,"
 				+ "(SELECT COUNT(1) FROM `like` l WHERE l.post_id = p.id) AS like_count,"
-				+ "(SELECT COUNT(id) FROM `comment` c WHERE c.post_id = p.id) AS comment_count"
-				+ " FROM post p WHERE p.user_id = ? "
-				+ "ORDER BY p.created_date DESC,p.id DESC LIMIT 9"
+				+ "(SELECT COUNT(id) FROM `comment` c WHERE c.post_id = p.id) AS comment_count,"
+				+ "COALESCE(l.id, 0) AS `liked` FROM post p "
+				+ "LEFT JOIN `like` l ON p.id = l.post_id WHERE p.user_id = ?"
+				+ " ORDER BY p.created_date DESC, p.id DESC LIMIT 9"
 			);
 			preparedStatement.setInt(1, user.getId());
 			ResultSet rs = preparedStatement.executeQuery();
@@ -74,6 +77,11 @@ public class PostRepository {
 				post.setCreatedDate(rs.getDate("created_date").toLocalDate());
 				post.setCommentCount(rs.getInt("comment_count"));
 				post.setLikeCount(rs.getInt("like_count"));
+				if(rs.getInt("liked") > 0) {
+					post.setLiked(true);
+				} else {
+					post.setLiked(false);
+				}
 				if(rs.getDate("updated_date")!= null) {
 					post.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
 				}
@@ -95,26 +103,42 @@ public class PostRepository {
 
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT p.id,p.picture,p.description,p.filter,p.user_id,p.created_date,p.updated_date,"
-				+ "(SELECT COUNT(1) FROM `like` l WHERE l.post_id = p.id) AS like_count,"
+				"SELECT feed.id, feed.picture, feed.description, feed.filter, feed.user_id, feed.created_date, feed.updated_date, feed.like_count, feed.comment_count, "
+				+ "COALESCE(l.id, 0) AS `liked` FROM "
+				+ "(SELECT p.id,p.picture,p.description,p.filter,p.user_id,p.created_date,p.updated_date,"
+				+ "(SELECT COUNT(1) FROM `like` l WHERE l.post_id = p.id) AS like_count, "
 				+ "(SELECT COUNT(id) FROM `comment` c WHERE c.post_id = p.id) AS comment_count "
-				+ "FROM post p INNER JOIN user_followers uf ON p.user_id = uf.user_id "
-				+ "WHERE uf.follower_id = ? ORDER BY p.created_date DESC,p.id DESC LIMIT 3 OFFSET ?"
+				+ "FROM post p inner JOIN user_followers uf ON (p.user_id = uf.user_id ) "
+				+ "WHERE uf.follower_id = ? UNION "
+				+ "SELECT p.id,p.picture,p.description,p.filter,p.user_id,p.created_date,p.updated_date,"
+				+ "(SELECT COUNT(1) FROM `like` l WHERE l.post_id = p.id) AS like_count, "
+				+ "(SELECT COUNT(id) FROM `comment` c WHERE c.post_id = p.id) AS comment_count "
+				+ "FROM post p WHERE p.user_id = ?) feed LEFT JOIN `like` l ON feed.id = l.post_id AND l.user_id = ? "
+				+ "ORDER BY created_date DESC,id DESC LIMIT 3 OFFSET ?"
 			);
 			preparedStatement.setInt(1, user.getId());
-			preparedStatement.setInt(2, page * 3);
+			preparedStatement.setInt(2, user.getId());
+			preparedStatement.setInt(3, user.getId());
+			preparedStatement.setInt(4, page * 3);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
+				User postUser = userRepository.findOneById(rs.getInt("user_id"));
 				Post post = new Post();
 				post.setId(rs.getInt("id"));
 				post.setPicture(rs.getString("picture"));
 				post.setDescription(rs.getString("description"));
 				post.setFilter(rs.getString("filter"));
-				
-				post.setUser(user);
+				if(rs.getInt("liked") > 0) {
+					post.setLiked(true);
+				} else {
+					post.setLiked(false);
+				}
+				post.setUser(postUser);
 				post.setCreatedDate(rs.getDate("created_date").toLocalDate());
 				post.setCommentCount(rs.getInt("comment_count"));
 				post.setLikeCount(rs.getInt("like_count"));
+				List<Comment> comments = getCommentsByPost(post);
+				post.setComments(comments);
 				if(rs.getDate("updated_date")!= null) {
 					post.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
 				}
@@ -130,6 +154,39 @@ public class PostRepository {
 
 		return posts;
 	}
+
+	public List<Comment> getCommentsByPost(Post post) {
+		List<Comment> comments = new ArrayList<Comment>();
+
+		try(Connection connection = DbUtil.getConnection()) {
+			PreparedStatement preparedStatement = connection.prepareStatement(
+					"SELECT id,comment,post_id,user_id,created_date,updated_date FROM comment WHERE post_id = ?");
+			preparedStatement.setInt(1, post.getId());
+			ResultSet rs = preparedStatement.executeQuery();
+			while(rs.next()) {
+				Post postObject = findOneById(rs.getInt("post_id"));
+				User userObject = userRepository.findOneById(rs.getInt("user_id"));
+
+				Comment comment = new Comment();
+				comment.setId(rs.getInt("id"));
+				comment.setPost(postObject);
+				comment.setUser(userObject);
+				comment.setComment(rs.getString("comment"));
+				comment.setCreatedDate(rs.getDate("created_date").toLocalDate());
+				if(rs.getDate("updated_date")!= null) {
+					comment.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
+				}
+				comments.add(comment);
+			}
+
+			rs.close();
+			preparedStatement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return comments;
+	}
 	
 	public List<Post> getPostsByProfile(User user, int page) {
 		List<Post> posts = new ArrayList<Post>();
@@ -138,11 +195,12 @@ public class PostRepository {
 			PreparedStatement preparedStatement = connection.prepareStatement(
 				"SELECT p.id,p.picture,p.description,p.filter,p.user_id,p.created_date,p.updated_date,"
 				+ "(SELECT COUNT(1) FROM `like` l WHERE l.post_id = p.id) AS like_count,"
-				+ "(SELECT COUNT(id) FROM `comment` c WHERE c.post_id = p.id) AS comment_count "
-				+ "FROM post p WHERE p.user_id = ? ORDER BY p.created_date DESC,p.id DESC LIMIT 10 OFFSET ?"
+				+ "(SELECT COUNT(id) FROM `comment` c WHERE c.post_id = p.id) AS comment_count,"
+				+ "COALESCE(l.id,0) AS liked FROM post p LEFT JOIN `like` l ON p.id = l.post_id "
+				+ "WHERE p.user_id = ? ORDER BY p.created_date DESC, id DESC LIMIT 9 OFFSET ?"
 			);
 			preparedStatement.setInt(1, user.getId());
-			preparedStatement.setInt(2, page * 10);
+			preparedStatement.setInt(2, page * 9);
 			ResultSet rs = preparedStatement.executeQuery();
 			while (rs.next()) {
 				Post post = new Post();
@@ -157,6 +215,11 @@ public class PostRepository {
 				post.setLikeCount(rs.getInt("like_count"));
 				if(rs.getDate("updated_date")!= null) {
 					post.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
+				}
+				if(rs.getInt("liked") > 0) {
+					post.setLiked(true);
+				} else {
+					post.setLiked(false);
 				}
 				
 				posts.add(post);

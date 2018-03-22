@@ -87,7 +87,6 @@ public class GetPostsServlet extends HttpServlet {
 
 				ObjectMapper mapper = new ObjectMapper();
 				String resultJson = mapper.writeValueAsString(jsonResponse);
-				
 				response.setContentType("application/json");
 				
 				PrintWriter out = response.getWriter();

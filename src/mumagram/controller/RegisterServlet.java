@@ -101,7 +101,7 @@ public class RegisterServlet extends HttpServlet {
 		user.setSalt(salt);
 
 		if(profilePicturePart != null) {
-			String profilePicture = service.imageUploader(username, profilePicturePart);
+			String profilePicture = service.imageUploader(username, profilePicturePart, "profile");
 			user.setProfilePicture(profilePicture);
 		}
 		
