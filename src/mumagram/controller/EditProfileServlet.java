@@ -56,7 +56,8 @@ public class EditProfileServlet extends HttpServlet {
 		isPrivate = isPrivate != null ? "true" : "false";
 
 		Part profilePicturePart = request.getPart("profile-picture");
-
+		
+		// returning error messages if some datas are missed
 		if (id < 0 || firstname == null || firstname.isEmpty() || lastname == null || lastname.isEmpty()
 				|| username == null || username.isEmpty() || email == null || email.isEmpty() || bio == null
 				|| bio.isEmpty()) {
@@ -64,6 +65,7 @@ public class EditProfileServlet extends HttpServlet {
 			request.getRequestDispatcher("/pages/edit-profile.jsp").forward(request, response);
 			return;
 		}
+		
 		// Checking username if wrong username pattern
 		Pattern usernamePattern = Pattern.compile("^[a-zA-Z0-9_-]{3,}$", Pattern.CASE_INSENSITIVE);
 		if (!usernamePattern.matcher(username).matches()) {
@@ -72,6 +74,7 @@ public class EditProfileServlet extends HttpServlet {
 			return;
 		}
 
+		//It checks if new user email is used for another account
 		User existingUserByEmail = userRepository.findOneByEmail(email);
 		if (existingUserByEmail != null && existingUserByEmail.getId() != id) {
 			request.setAttribute("errorMessage", "Email is in use!");
@@ -79,6 +82,7 @@ public class EditProfileServlet extends HttpServlet {
 			return;
 		}
 
+		//It checks if new username is used for another account
 		User existingUserByUsername = userRepository.findOneByUsername(username);
 		if (existingUserByUsername != null && existingUserByUsername.getId() != id) {
 			request.setAttribute("errorMessage", "Username is in use!");
@@ -92,6 +96,8 @@ public class EditProfileServlet extends HttpServlet {
 		HttpSession session = request.getSession(false);
 		if (service.validateSession(session)) {
 			User user = (User) session.getAttribute("user");
+			
+			// it checks if user id is not correct
 			if (user.getId() != id) {
 				request.setAttribute("errorMessage", "You can not modify other user's profile!!!");
 				request.getRequestDispatcher("/pages/edit-profile.jsp").forward(request, response);
@@ -108,6 +114,7 @@ public class EditProfileServlet extends HttpServlet {
 			user.setUpdatedDate(LocalDate.now());
 			userRepository.update(user);
 
+			//it send user to email about update information
 			service.sendEmail(email, "Your information updated!", "Your information is updated!");
 			if (oldEmail != null && !oldEmail.isEmpty()) {
 				service.sendEmail(oldEmail, "Your information updated!", "Your information is updated!");

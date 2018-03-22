@@ -20,10 +20,14 @@ import mumagram.repository.CommentRepository;
 import mumagram.repository.PostRepository;
 import mumagram.service.Service;
 
+/*
+It is used for adding comments on posts. It will give response for ajax request which is from client 
+*/
+
 @WebServlet("/AddCommentServlet")
 public class AddCommentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private Service service;
+	private Service service; 
 	private PostRepository postRepository;
 	private CommentRepository commentRepository;
 
@@ -50,7 +54,8 @@ public class AddCommentServlet extends HttpServlet {
 		out.flush();
 		return;
 	}
-
+	
+	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if(service.validateSession(session)) {
@@ -58,6 +63,8 @@ public class AddCommentServlet extends HttpServlet {
 			String postId = request.getParameter("post_id");
 			String userId = request.getParameter("user_id");
 			User user = null;
+			
+			// returning error messages if some datas are missed
 			if(comment == null || comment.isEmpty() ||
 			   postId == null || postId.isEmpty() ||
 			   userId == null || userId.isEmpty()) {
@@ -78,6 +85,8 @@ public class AddCommentServlet extends HttpServlet {
 			}
 			
 			user = (User) session.getAttribute("user");
+			
+			//it will check if uses session is correct
 			if(Integer.parseInt(userId) != user.getId()) {
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(3000);
@@ -95,6 +104,7 @@ public class AddCommentServlet extends HttpServlet {
 				return;
 			}
 			
+			//it checks if post exists or not
 			Post post = postRepository.findOneById(Integer.parseInt(postId));
 			if(post == null) {
 				JsonResponse jsonResponse = new JsonResponse();

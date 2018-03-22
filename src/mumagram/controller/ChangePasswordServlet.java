@@ -153,7 +153,7 @@ public class ChangePasswordServlet extends HttpServlet {
 
 			/*
 			 * password is saved with encrypted in database. So below service is used for
-			 * encrypt with saved salt (cryptography) and checking input password
+			 * encrypt password with saved salt (cryptography) and checking input password
 			 */
 			if (service.checkPassword(existingpass, existingsalt, oldPassword)) {
 

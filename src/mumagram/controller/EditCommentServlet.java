@@ -54,6 +54,8 @@ public class EditCommentServlet extends HttpServlet {
 			String commentId = request.getParameter("comment_id");
 			String comment = request.getParameter("comment");
 			User user = null;
+			
+			// returning error messages if some datas are missed
 			if(comment == null || comment.isEmpty() || commentId == null || commentId.isEmpty()) {
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(2000);

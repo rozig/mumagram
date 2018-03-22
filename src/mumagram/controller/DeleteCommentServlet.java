@@ -36,6 +36,8 @@ public class DeleteCommentServlet extends HttpServlet {
 			String commentId = request.getParameter("comment_id");
 			String userId = request.getParameter("user_id");
 			User user = null;
+			
+			// returning error messages if some datas are missed
 			if(commentId == null || commentId.isEmpty() || userId == null || userId.isEmpty()) {
 				JsonResponse jsonResponse = new JsonResponse();
 				jsonResponse.setCode(2000);
