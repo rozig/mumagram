@@ -31,7 +31,7 @@ public class EditCommentServlet extends HttpServlet {
         commentRepository = new CommentRepository();
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		JsonResponse jsonResponse = new JsonResponse();
 		jsonResponse.setCode(2000);
 		jsonResponse.setStatus("error");
@@ -48,7 +48,7 @@ public class EditCommentServlet extends HttpServlet {
 		return;
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if(service.validateSession(session)) {
 			String commentId = request.getParameter("comment_id");
