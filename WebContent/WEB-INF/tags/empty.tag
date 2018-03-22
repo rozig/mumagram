@@ -1,11 +1,12 @@
 <%@tag description="Login page template" pageEncoding="UTF-8"%>
+<%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 <%@attribute name="pagetitle" fragment="true" %>
 <!DOCTYPE html>
 <html>
 
   <head>
     <jsp:invoke fragment="pagetitle"/>
-    <%@include file="../html/head.html" %>
+    <t:head/>
   </head>
   
   <body>
@@ -24,6 +25,6 @@
 	  </div>
 	</section>
     
-	<%@include file="../html/foot.html" %>
+	<t:foot/>
   </body>
 </html>

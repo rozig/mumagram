@@ -6,13 +6,13 @@
 
   <head>
     <jsp:invoke fragment="pagetitle"/>
-    <%@include file="../html/head.html" %>
+    <t:head/>
   </head>
   
   <body data-url="${ baseUrl }">
 	<div class="main-wrapper">
 	
-    <t:header></t:header>
+    <t:header/>
 
     <div class="main-main">
       <div class="main-container">
@@ -26,6 +26,6 @@
     </div>
   </div>
     
-	<%@include file="../html/foot.html" %>
+  <t:foot/>
   </body>
 </html>

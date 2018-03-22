@@ -121,6 +121,7 @@ $(function(){
       $follow.html(data);
     }
   }
+//follow button section
   
   if($searchinput.length){
     $searchinput.on('input', function(){
