@@ -24,7 +24,7 @@
               <div class="profile-header-top uk-flex uk-flex-middle">
                 <h1 class="profile-post-name">${profile.username }</h1>
                 <c:choose>
-	  				<c:when test="${not empty profile_user}">
+	  				<c:when test="${user.id != profile.id}">
 		                <span class="follow-button">
 		                  <button id="follow" data-user-id="${ user.id }" data-profile-id="${ profile.id }" class="uk-button uk-button-default uk-button-small">Follow</button>
 		                </span>

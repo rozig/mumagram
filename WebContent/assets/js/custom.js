@@ -1,5 +1,7 @@
 $(function(){
   'use strict'
+	var _base_url = $('body').data('url');
+	console.log(_base_url+":baseUrl");
   var $instapic = $('#insta-pic'),
   $instaoption = $('.insta-pic-href'),
   $insta = $('#instagram'),
@@ -20,7 +22,7 @@ $(function(){
 	  
 	  var get_status = function(){
 		  $.ajax({
-			  url: 'follow',
+			  url: _base_url+'/follow',
 			  method: 'GET',
 			  data: {
 				  'profile_id': profile_id
@@ -54,7 +56,7 @@ $(function(){
 		  
 		  function work(){
 			  $.ajax({
-				  url: 'search',
+				  url: _base_url+'/search',
 			      method: 'GET',
 			      data: {
 			    	  'query': self.val()

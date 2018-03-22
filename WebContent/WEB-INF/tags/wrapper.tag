@@ -9,7 +9,7 @@
     <%@include file="../html/head.html" %>
   </head>
   
-  <body>
+  <body data-url="${ baseUrl }">
 	<div class="main-wrapper">
 	
     <t:header></t:header>

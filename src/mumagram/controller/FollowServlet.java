@@ -33,50 +33,6 @@ public class FollowServlet extends HttpServlet {
         followerRepository = new FollowerRepository();
     }
 
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		HttpSession session = request.getSession(false);
-		JsonResponse jsonResponse = new JsonResponse();
-		
-		if(service.validateSession(session)) {
-			jsonResponse.setCode(1000);
-			jsonResponse.setStatus("success");
-			jsonResponse.setData("GET Method is not allowed!");
-			
-			User user = (User)session.getAttribute("user");
-			String id = (String) request.getAttribute("profile_id");
-			
-			User follower = userRepository.findOneById(Integer.parseInt(id));
-			if(follower!=null) {
-				if(followerRepository.isFollower(user, follower) != null) {
-					jsonResponse.setCode(1000);
-					jsonResponse.setStatus("success");
-					jsonResponse.setData("true");
-				}else {
-					jsonResponse.setCode(1000);
-					jsonResponse.setStatus("success");
-					jsonResponse.setData("false");
-				}
-			}else {
-				jsonResponse.setCode(3000);
-				jsonResponse.setStatus("denied");
-				jsonResponse.setData("User not found!");
-			}
-		}else {
-			jsonResponse.setCode(3000);
-			jsonResponse.setStatus("denied");
-			jsonResponse.setData("You're not logged in!");			
-		}
-		
-		ObjectMapper mapper = new ObjectMapper();
-		String resultJson = mapper.writeValueAsString(jsonResponse);
-		
-		response.setContentType("application/json");
-		
-		PrintWriter out = response.getWriter();
-		out.write(resultJson);
-		out.flush();
-	}
-
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		if(service.validateSession(session)) {
