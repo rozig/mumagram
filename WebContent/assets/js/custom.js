@@ -135,7 +135,7 @@ $(function(){
 	          append_profile_posts(data.data);
 	        }else{
 	          //doesn't exist
-	          console.log('post doesnt exist');
+	        	limit = true;
 	        }
 	      }else{
 	        //error exists
