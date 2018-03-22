@@ -95,8 +95,6 @@ public class RegisterServlet extends HttpServlet {
 		String salt = service.getNextSalt();
 		String encodedPassword = service.encodePassword(password, salt);
 
-		String profilePicture = service.imageUploader(username, profilePicturePart);
-
 		User user = new User();
 		user.setFirstname(firstname);
 		user.setLastname(lastname);
@@ -104,7 +102,12 @@ public class RegisterServlet extends HttpServlet {
 		user.setUsername(username);
 		user.setPassword(encodedPassword);
 		user.setSalt(salt);
-		user.setProfilePicture(profilePicture);
+
+		if(profilePicturePart != null) {
+			String profilePicture = service.imageUploader(username, profilePicturePart);
+			user.setProfilePicture(profilePicture);
+		}
+		
 		userRepository.save(user);
 		
 		service.sendEmail(email, "Welcome to mumagram", "Registration successful");

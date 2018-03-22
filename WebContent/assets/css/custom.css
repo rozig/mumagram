@@ -820,6 +820,34 @@ a:hover{
 .mum-error{
   text-align:center;
 }
+.search-result .search-dropdown{
+  display:none;
+  padding: 0px;
+  box-shadow: none;
+  border: 1px solid #efefef;
+  max-height: 295px;
+  overflow: auto;
+  position: absolute;
+  z-index: 1020;
+  box-sizing: border-box;
+  min-width: 200px;
+  padding: 0px;
+  background: #fff;
+  color: #666;
+}
+#search-input{
+	width: 200px;
+}
+.search-result .sidebar-profile-wrapper{
+	padding: 8px 14px;
+	border-bottom: solid 1px #efefef;
+	height: 65px;
+	margin: 0px;
+}
+.result-error{
+  padding: 15px;
+  margin: 0px;
+}
 
 /*start eta css*/
 .edit-profile{

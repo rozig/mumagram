@@ -137,7 +137,7 @@ public class UserRepository {
 		List<User> users = new ArrayList<User>();
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-					"SELECT id, firstname, lastname, email, username, profile_picture FROM user WHERE username LIKE ? OR firstname LIKE ? OR lastname LIKE ?");
+					"SELECT id, firstname, lastname, email, username, profile_picture FROM user WHERE username LIKE ? OR firstname LIKE ? OR lastname LIKE ? LIMIT 15");
 			preparedStatement.setString(1, "%" + query + "%");
 			preparedStatement.setString(2, "%" + query + "%");
 			preparedStatement.setString(3, "%" + query + "%");
