@@ -24,17 +24,16 @@
               <div class="profile-header-top uk-flex uk-flex-middle">
                 <h1 class="profile-post-name">${profile.username }</h1>
                 <c:choose>
-  				<c:when test="${not empty profile_user}">
-	                <a href="#" class="follow-button">
-	                  <button
-								class="uk-button uk-button-default uk-button-small">Follow</button>
-	                </a>
-	            </c:when>
+	  				<c:when test="${not empty profile_user}">
+		                <span class="follow-button">
+		                  <button id="follow" data-user-id="${ user.id }" data-profile-id="${ profile.id }" class="uk-button uk-button-default uk-button-small">Follow</button>
+		                </span>
+		            </c:when>
               		<c:otherwise>
-               		<a href="${ baseUrl }/profile/edit" class="profile-button">
-	                  <button
-								class="uk-button uk-button-default uk-button-small">Edit profile</button>
-	                </a>
+	               		<a href="${ baseUrl }/profile/edit" class="profile-button">
+		                  <button
+									class="uk-button uk-button-default uk-button-small">Edit profile</button>
+		                </a>
               		</c:otherwise>
 				</c:choose>
               </div>

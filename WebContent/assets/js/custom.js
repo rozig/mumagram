@@ -11,7 +11,41 @@ $(function(){
   $form = $('#post-form'),
   $inputfilter = $('#input-filter'),
   $searchresult = $('#search-result'),
+  $follow = $('#follow'),
   $searchinput = $('#search-input');
+  
+  if($follow.length){
+	  var profile_id = $follow.attr('data-profile-id');
+	  var user_id = $follow.attr('data-user-id');
+	  
+	  var get_status = function(){
+		  $.ajax({
+			  url: 'follow',
+			  method: 'GET',
+			  data: {
+				  'profile_id': profile_id
+			  }
+		  }).done(function(data){
+			  console.log(data);
+			  
+			  if(data.code === 1000){
+	  			if(Object.keys(data.data).length>0){
+	  				
+	  			}else{
+	  				//doesn't exist
+	  				$follow.hide();
+	  			}
+		  	  }else{
+		  		//error exists
+		  		console.log(data.data);
+		  	  }
+		  }).fail(function(e){
+			  console.log(e);
+		  });
+	  };
+	  
+	  get_status();
+  }
   
   if($searchinput.length){
 	  $searchinput.on('input', function(){

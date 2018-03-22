@@ -34,11 +34,39 @@ public class FollowServlet extends HttpServlet {
     }
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		HttpSession session = request.getSession(false);
 		JsonResponse jsonResponse = new JsonResponse();
-		jsonResponse.setCode(1000);
-		jsonResponse.setStatus("success");
-		jsonResponse.setData("GET Method is not allowed!");
-
+		
+		if(service.validateSession(session)) {
+			jsonResponse.setCode(1000);
+			jsonResponse.setStatus("success");
+			jsonResponse.setData("GET Method is not allowed!");
+			
+			User user = (User)session.getAttribute("user");
+			String id = (String) request.getAttribute("profile_id");
+			
+			User follower = userRepository.findOneById(Integer.parseInt(id));
+			if(follower!=null) {
+				if(followerRepository.isFollower(user, follower) != null) {
+					jsonResponse.setCode(1000);
+					jsonResponse.setStatus("success");
+					jsonResponse.setData("true");
+				}else {
+					jsonResponse.setCode(1000);
+					jsonResponse.setStatus("success");
+					jsonResponse.setData("false");
+				}
+			}else {
+				jsonResponse.setCode(3000);
+				jsonResponse.setStatus("denied");
+				jsonResponse.setData("User not found!");
+			}
+		}else {
+			jsonResponse.setCode(3000);
+			jsonResponse.setStatus("denied");
+			jsonResponse.setData("You're not logged in!");			
+		}
+		
 		ObjectMapper mapper = new ObjectMapper();
 		String resultJson = mapper.writeValueAsString(jsonResponse);
 		
