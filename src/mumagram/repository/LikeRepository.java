@@ -24,7 +24,7 @@ public class LikeRepository {
 		Like like = null;
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT id, user_id, post_id, created_date, updated_date FROM like WHERE id = ?"
+				"SELECT id, user_id, post_id, created_date, updated_date FROM `like` WHERE id = ?"
 			);
 			preparedStatement.setInt(1, id);
 			ResultSet rs = preparedStatement.executeQuery();
@@ -37,7 +37,9 @@ public class LikeRepository {
 				like.setUser(user);
 				like.setPost(post);
 				like.setCreatedDate(rs.getDate("created_date").toLocalDate());
-				like.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
+				if(rs.getDate("updated_date") != null) {
+					like.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
+				}
 			}
 
 			rs.close();
@@ -52,7 +54,7 @@ public class LikeRepository {
 		Like result = null;
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"SELECT id, user_id, post_id, created_date, updated_date FROM like WHERE user_id = ? AND post_id = ?"
+				"SELECT id, user_id, post_id, created_date, updated_date FROM `like` WHERE user_id = ? AND post_id = ?"
 			);
 			preparedStatement.setInt(1, user.getId());
 			preparedStatement.setInt(2, post.getId());
@@ -66,7 +68,9 @@ public class LikeRepository {
 				result.setUser(likedUser);
 				result.setPost(likedPost);
 				result.setCreatedDate(rs.getDate("created_date").toLocalDate());
-				result.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
+				if(rs.getDate("updated_date") != null) {
+					result.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
+				}
 			}
 
 			rs.close();
@@ -81,7 +85,7 @@ public class LikeRepository {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"INSERT INTO like(user_id, post_id, created_date)"
+				"INSERT INTO `like`(user_id, post_id, created_date)"
 				+ "VALUES"
 				+ "(?, ?, ?)"
 			);
@@ -101,7 +105,7 @@ public class LikeRepository {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"UPDATE like SET user_id = ?, post_id = ?, updated_date = ?"
+				"UPDATE `like` SET user_id = ?, post_id = ?, updated_date = ?"
 				+ "WHERE id = ?"
 			);
 			preparedStatement.setInt(1, like.getUser().getId());
@@ -121,7 +125,7 @@ public class LikeRepository {
 		boolean result = false;
 		try(Connection connection = DbUtil.getConnection()) {
 			PreparedStatement preparedStatement = connection.prepareStatement(
-				"DELETE FROM like WHERE id = ?"
+				"DELETE FROM `like` WHERE id = ?"
 			);
 			preparedStatement.setInt(1, like.getId());
 			result = preparedStatement.execute();

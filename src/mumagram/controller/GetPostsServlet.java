@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import mumagram.model.JsonResponse;
 import mumagram.model.Post;
 import mumagram.model.User;
+import mumagram.repository.CommentRepository;
 import mumagram.repository.PostRepository;
 import mumagram.service.Service;
 
@@ -24,6 +25,7 @@ public class GetPostsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private Service service;
 	private PostRepository postRepository;
+	private CommentRepository commentRepository;
        
     public GetPostsServlet() {
         super();

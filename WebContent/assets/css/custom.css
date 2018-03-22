@@ -344,7 +344,10 @@ a:hover {
 .post-footer {
 	padding: 0 16px;
 }
-
+.post-comments{
+	max-height: 160px;
+	overflow-y: scroll;
+}
 .post-comments ul {
 	margin: 0px;
 	padding: 0px;
@@ -936,7 +939,9 @@ a:hover {
 .mum-error {
 	text-align: center;
 }
-
+.nice-liked span{
+	color: red !important;
+}
 .search-result .search-dropdown {
 	display: none;
 	padding: 0px;
