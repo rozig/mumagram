@@ -58,11 +58,13 @@ public class PostRepository {
 				post.setId(rs.getInt("id"));
 				post.setPicture(rs.getString("picture"));
 				post.setDescription(rs.getString("description"));
+				
 				post.setUser(user);
 				post.setCreatedDate(rs.getDate("created_date").toLocalDate());
 				if(rs.getDate("updated_date")!= null) {
 					post.setUpdatedDate(rs.getDate("updated_date").toLocalDate());
 				}
+				
 				posts.add(post);
 			}
 

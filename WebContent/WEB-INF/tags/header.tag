@@ -9,10 +9,15 @@
         <a class="uk-navbar-item uk-logo main-logo" href="${baseUrl}">Mumagram</a>
 
         <div class="uk-navbar-toggle">
-          <form class="uk-search uk-search-default">
-            <span uk-search-icon></span>
-            <input class="uk-search-input" type="search" placeholder="Search...">
-          </form>
+        	<div class="uk-inline search-result">
+	          <form class="uk-search uk-search-default">
+	            <span uk-search-icon></span>
+	            <input class="uk-search-input" id="search-input" type="search" placeholder="Search...">
+	          </form>
+	          
+			    <div id="search-result" class="search-dropdown">
+			    </div>
+		    </div>
         </div>
       </div>
 

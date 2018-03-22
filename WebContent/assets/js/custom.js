@@ -9,7 +9,73 @@ $(function(){
   $input = $('#main-input'),
   $inputbutton = $('#input-save'),
   $form = $('#post-form'),
-  $inputfilter = $('#input-filter');
+  $inputfilter = $('#input-filter'),
+  $searchresult = $('#search-result'),
+  $searchinput = $('#search-input');
+  
+  if($searchinput.length){
+	  $searchinput.on('input', function(){
+		  var a = setTimeout(work, 10);
+		  var self = $(this);
+		  
+		  function work(){
+			  $.ajax({
+				  url: 'search',
+			      method: 'GET',
+			      data: {
+			    	  'query': self.val()
+			      }
+		  	  }).done(function(data){
+		  		  $searchresult.html('');
+		  		  if(data.code === 1000){
+		  			
+		  			if(Object.keys(data.data).length>0){
+		  				data.data.forEach(function(t){
+				  	    	var template = `<div class="sidebar-profile-wrapper">
+						        <div class="sidebar-profile-pic-wrapper">
+						          <a href="/mumagram/profile/@${t.username}" class="sidebar-pic uk-border-circle">
+						            <img src="${t.profilePicture}" alt="">
+						          </a>
+						        </div>
+						        <div class="sidebar-profile-text">
+						          <div class="sidebar-profile-username">
+						            <a href="/mumagram/profile/@${t.username}" class="sidebar-username link">
+						              ${t.username}
+						            </a>
+						          </div>
+						          <div class="sidebar-profile-name">
+						            ${t.fullname}
+						          </div>
+						        </div>
+						      </div>`;
+				  	    	
+				  	    	$searchresult.append(template);
+				  	      });
+			  		  
+		  			}else{
+		  				$searchresult.append( $('<p class="result-error"></p>').text('Not found') );
+		  			}
+		  			
+		  		  }else{
+		  			  $searchresult.append( $('<p class="result-error"></p>').text(data.data) );
+		  		  }
+		  	  }).fail(function(e){
+		  		  console.log(e);
+		  	  });
+			  $searchresult.show();  
+		  }
+	  });
+	  
+	  $(document).on("click", function(event){
+	        var $trigger1 = $searchresult;
+	        var $trigger2 = $searchinput;
+	        if($trigger1 !== event.target && !$trigger1.has(event.target).length &&
+	        		$trigger2 !== event.target && !$trigger2.has(event.target).length
+	        ){
+	        	$searchresult.hide();
+	        }
+	    });
+  }
 
   var image = false;
   
