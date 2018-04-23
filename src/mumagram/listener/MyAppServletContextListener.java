@@ -12,8 +12,9 @@ public class MyAppServletContextListener implements ServletContextListener {
     public void contextDestroyed(ServletContextEvent arg0)  {}
 
 	public void contextInitialized(ServletContextEvent arg0)  {
-//		String baseUrl = "http://mumagram.cf";
-		String baseUrl = "http://localhost:8080/mumagram";
+		String baseUrl = "http://mumagram.cf";
+//		String baseUrl = "http://localhost:8080/mumagram";
+//		String baseUrl = "http://35.196.34.153";
     	arg0.getServletContext().setAttribute("baseUrl", baseUrl);
     }
 }
